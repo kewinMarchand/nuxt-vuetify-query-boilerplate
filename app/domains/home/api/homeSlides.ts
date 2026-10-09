@@ -2,7 +2,7 @@ import { buildSources } from '@/domains/home/services/imageSources'
 
 import type { Carousel } from '@/features/carousel'
 
-const SLIDE_WIDTHS = [640, 1280]
+const SLIDE_WIDTHS = [640, 750, 960, 1280]
 
 const slideImage = (base: string) => ({
   src: `/images/${base}-1280.webp`,

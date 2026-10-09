@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ScrollCarousel } from '@/features/carousel'
+import { defineLazyHydrationComponent } from '#imports'
 
 import BlogSection from './BlogSection.vue'
 import HomeHero from './HomeHero.vue'
 import { HOME_SLIDES } from '../api/homeSlides'
+
+const ScrollCarousel = defineLazyHydrationComponent('visible', () =>
+  import('@/features/carousel').then((carousel) => carousel.ScrollCarousel),
+)
 </script>
 
 <template>

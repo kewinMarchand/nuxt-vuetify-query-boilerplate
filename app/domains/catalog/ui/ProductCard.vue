@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useHead } from '#imports'
+
 import { EXPOSURE_LABELS, SIZE_LABELS } from '../common/models/catalogQuery'
 import { formatPrice } from '../services/formatPrice'
 
@@ -11,11 +13,27 @@ const {
 } = defineProps<{ product: Catalog.Product; eager?: boolean; priority?: boolean }>()
 
 const FORMATS = ['avif', 'webp']
-const SIZES = '(min-width: 1024px) 280px, (min-width: 480px) 50vw, 200px'
+const PRODUCT_WIDTHS = [400, 640, 800]
+const SIZES = '(min-width: 1024px) 280px, (min-width: 480px) 50vw, calc(100vw - 58px)'
 const srcset = (format: string) =>
-  [400, 800]
-    .map((width) => `/images/product-${product.image}-${width}.${format} ${width}w`)
-    .join(', ')
+  PRODUCT_WIDTHS.map(
+    (width) => `/images/product-${product.image}-${width}.${format} ${width}w`,
+  ).join(', ')
+
+if (priority) {
+  useHead({
+    link: [
+      {
+        rel: 'preload',
+        as: 'image',
+        type: 'image/avif',
+        imagesrcset: srcset('avif'),
+        imagesizes: SIZES,
+        fetchpriority: 'high',
+      },
+    ],
+  })
+}
 </script>
 
 <template>

@@ -12,7 +12,8 @@ const { slides, labelledby } = defineProps<{
   labelledby: string
 }>()
 
-const SLIDE_SIZES = '(min-width: 960px) 33vw, (min-width: 600px) 50vw, 100vw'
+const SLIDE_SIZES =
+  '(min-width: 960px) calc((min(100vw, 1440px) - 64px) / 3), (min-width: 600px) calc(50vw - 40px), calc(100vw - 32px)'
 
 const trackId = useId()
 const { viewport, isReady, snapCount, selectedIndex, canPrev, canNext, prev, next, goTo } =
@@ -26,7 +27,12 @@ const setViewport = (element: unknown) => {
 <template>
   <section aria-roledescription="carrousel" :aria-labelledby="labelledby">
     <slot />
-    <div :ref="setViewport" class="carousel-viewport" :class="{ 'is-ready': isReady }">
+    <div
+      :ref="setViewport"
+      class="carousel-viewport"
+      :class="{ 'is-ready': isReady }"
+      :tabindex="isReady ? undefined : 0"
+    >
       <div :id="trackId" class="carousel-track" data-testid="carousel-track">
         <div
           v-for="(slide, position) in slides"
@@ -37,7 +43,7 @@ const setViewport = (element: unknown) => {
           :aria-label="`${position + 1} sur ${slides.length}`"
           data-testid="carousel-slide"
         >
-          <picture>
+          <picture v-if="position === 0 || isReady">
             <source
               v-for="source in slide.image.sources"
               :key="source.type"
@@ -56,6 +62,22 @@ const setViewport = (element: unknown) => {
               class="carousel-image rounded"
             />
           </picture>
+          <template v-else>
+            <div
+              class="carousel-placeholder rounded"
+              :style="{ aspectRatio: `${slide.image.width} / ${slide.image.height}` }"
+            />
+            <noscript data-allow-mismatch="children">
+              <img
+                :src="slide.image.src"
+                alt=""
+                :width="slide.image.width"
+                :height="slide.image.height"
+                loading="lazy"
+                class="carousel-image rounded"
+              />
+            </noscript>
+          </template>
           <h3 class="mt-4">{{ slide.title }}</h3>
           <p>{{ slide.text }}</p>
         </div>
@@ -134,6 +156,14 @@ const setViewport = (element: unknown) => {
   width: 100%;
   height: auto;
   user-select: none;
+}
+
+.carousel-placeholder {
+  background: rgba(var(--v-theme-on-surface), 0.06);
+}
+
+html:not([data-js]) .carousel-placeholder {
+  display: none;
 }
 
 .carousel-controls {

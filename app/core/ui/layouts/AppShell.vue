@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useRoute } from '#imports'
+import { defineLazyHydrationComponent, useRoute } from '#imports'
 
 import AppBreadcrumb from './AppBreadcrumb.vue'
-import AppFooter from './AppFooter.vue'
 import AppHeader from './AppHeader.vue'
 import SkipLink from './SkipLink.vue'
+
+const AppFooter = defineLazyHydrationComponent('visible', () => import('./AppFooter.vue'))
 
 const { currentLabel } = defineProps<{ currentLabel?: string }>()
 const route = useRoute()

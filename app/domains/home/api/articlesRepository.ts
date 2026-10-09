@@ -26,7 +26,7 @@ const ARTICLES: Article.Entity[] = [
   },
 ]
 
-const LATENCY_MS = 300
+const LATENCY_MS = import.meta.client ? 300 : 0
 
 export const findLatestArticles = (): Promise<Article.Entity[]> =>
   new Promise((resolve) => setTimeout(() => resolve(ARTICLES), LATENCY_MS))

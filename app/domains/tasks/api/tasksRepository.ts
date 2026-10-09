@@ -6,7 +6,7 @@ const TASKS: Task.Entity[] = [
   { id: '3', title: 'Lancer make qa', done: true },
 ]
 
-const LATENCY_MS = 300
+const LATENCY_MS = import.meta.client ? 300 : 0
 
 export const findAllTasks = (): Promise<Task.Entity[]> =>
   new Promise((resolve) => setTimeout(() => resolve(TASKS), LATENCY_MS))

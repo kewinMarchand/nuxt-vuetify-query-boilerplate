@@ -4,8 +4,8 @@ import { useHead } from '#imports'
 import { SITE } from '@/core/config'
 import { buildSources, buildSrcset } from '@/domains/home/services/imageSources'
 
-const HERO_WIDTHS = [640, 1280, 1920]
-const HERO_SIZES = '(min-width: 600px) 100vw, 360px'
+const HERO_WIDTHS = [640, 828, 960, 1280, 1920]
+const HERO_SIZES = '100vw'
 const HERO_SOURCES = buildSources('hero', HERO_WIDTHS)
 
 useHead({

@@ -8,6 +8,13 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-10-01',
   devtools: { enabled: false },
   telemetry: false,
+  hooks: {
+    'build:manifest': (manifest) => {
+      for (const chunk of Object.values(manifest)) {
+        if (!chunk.isEntry) chunk.preload = false
+      }
+    },
+  },
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
@@ -18,6 +25,9 @@ export default defineNuxtConfig({
     },
   ],
   imports: { autoImport: false },
+  experimental: {
+    defaults: { nuxtLink: { prefetchOn: { visibility: false, interaction: true } } },
+  },
   nitro: {
     imports: { autoImport: true },
     compressPublicAssets: { gzip: true, brotli: true },
