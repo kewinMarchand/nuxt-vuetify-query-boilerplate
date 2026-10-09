@@ -1,10 +1,19 @@
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Liberation Sans'), local('LiberationSans-Regular');
+  size-adjust: 107.12%;
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+}
+
 :root {
   --app-font-scale: 1;
   --app-z-skip-link: 2400;
   --app-z-menu: 1500;
   --app-container-max: 1440px;
   --app-gutter: 16px;
-  --v-font-body: 'Inter', system-ui, sans-serif;
+  --v-font-body: 'Inter', 'Inter Fallback', system-ui, sans-serif;
 }
 
 html {
