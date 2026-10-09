@@ -1,0 +1,119 @@
+<script setup lang="ts">
+import { computed, useId } from 'vue'
+
+import { Icon } from '@/core/ui/ui-kit'
+
+import { SORT_LABELS, SORTS, toFormFields } from '../common/models/catalogQuery'
+
+import type { Catalog } from '../common/models/catalog'
+
+const { query, total, action } = defineProps<{
+  query: Catalog.Query
+  total: number
+  action: string
+  gridHref: string
+  listHref: string
+}>()
+
+const emit = defineEmits<{ sort: [sort: Catalog.Sort] }>()
+
+const sortId = useId()
+const hiddenFields = computed(() => toFormFields(query, ['tri']))
+const countLabel = computed(() => `${total} produit${total > 1 ? 's' : ''}`)
+
+const onSortChange = (event: Event) => {
+  if (!(event.target instanceof HTMLSelectElement)) return
+  const { value } = event.target
+  const sort = SORTS.find((candidate) => candidate === value)
+  if (sort) emit('sort', sort)
+}
+</script>
+
+<template>
+  <div class="catalog-toolbar a11y-chrome">
+    <p role="status" aria-live="polite" class="results-count" data-testid="catalog-results-count">
+      {{ countLabel }}
+    </p>
+    <form method="get" :action="action" class="sort-form" @submit.prevent>
+      <input
+        v-for="field in hiddenFields"
+        :key="`${field.name}-${field.value}`"
+        type="hidden"
+        :name="field.name"
+        :value="field.value"
+      />
+      <label :for="sortId">Trier par</label>
+      <select
+        :id="sortId"
+        name="tri"
+        class="native-select"
+        data-testid="catalog-sort"
+        @change="onSortChange"
+      >
+        <option v-for="sort in SORTS" :key="sort" :value="sort" :selected="sort === query.sort">
+          {{ SORT_LABELS[sort] }}
+        </option>
+      </select>
+      <button type="submit" class="native-button no-js-only">Trier</button>
+    </form>
+    <nav aria-label="Affichage" class="view-toggle">
+      <NuxtLink
+        :to="gridHref"
+        class="view-link"
+        :aria-current="query.view === 'grille' ? 'page' : undefined"
+        data-testid="catalog-view-grid"
+      >
+        <Icon name="view-grid" />
+        Grille
+      </NuxtLink>
+      <NuxtLink
+        :to="listHref"
+        class="view-link"
+        :aria-current="query.view === 'liste' ? 'page' : undefined"
+        data-testid="catalog-view-list"
+      >
+        <Icon name="view-list" />
+        Liste
+      </NuxtLink>
+    </nav>
+  </div>
+</template>
+
+<style scoped>
+.catalog-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  margin-bottom: 24px;
+}
+
+.results-count {
+  margin: 0 auto 0 0;
+  font-weight: 600;
+}
+
+.sort-form,
+.view-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.view-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding-inline: 12px;
+  border-radius: 4px;
+  color: rgb(var(--v-theme-primary));
+  text-decoration: none;
+}
+
+.view-link[aria-current='page'] {
+  background: rgb(var(--v-theme-primary));
+  color: rgb(var(--v-theme-on-primary));
+}
+</style>

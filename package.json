@@ -1,0 +1,81 @@
+{
+  "name": "nuxt-vuetify-query-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --port 3010",
+    "build": "nuxt build",
+    "start": "node .output/server/index.mjs",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "nuxt typecheck",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:e2e": "playwright test tests/e2e",
+    "test:a11y": "playwright test tests/a11y",
+    "lhci": "lhci autorun",
+    "api:types": "openapi-typescript $API_SCHEMA_URL --output app/core/api/schema.d.ts",
+    "prepare": "husky"
+  },
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": ">=24.14.0"
+  },
+  "license": "MIT",
+  "description": "Boilerplate Nuxt 4, Vuetify, TanStack Query, vee-validate et zod, avec lint, tests unitaires, e2e, accessibilité et Lighthouse",
+  "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@tanstack/vue-query": "^5.104.1",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-vue": "^8.6.0",
+    "embla-carousel-wheel-gestures": "^8.1.0",
+    "nuxt": "4.5.2",
+    "vee-validate": "^4.15.1",
+    "vue": "^3.5.43",
+    "vue-router": "^5.4.0",
+    "vuetify": "^4.2.4",
+    "zod": "^4.6.5"
+  },
+  "resolutions": {
+    "eslint-plugin-regexp": "3.1.1",
+    "@vue/test-utils": "2.4.6"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@lhci/cli": "^0.15.1",
+    "@nuxt/eslint": "^1.17.0",
+    "@nuxt/fonts": "^0.14.0",
+    "@playwright/test": "^1.64.0",
+    "@tanstack/vue-query-devtools": "^6.3.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/user-event": "^14.6.7",
+    "@testing-library/vue": "^8.1.0",
+    "@types/node": "^24",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "eslint": "^10",
+    "husky": "^9.1.7",
+    "jsdom": "^29",
+    "lint-staged": "^17.6.0",
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.9.9",
+    "typescript": "~6.0.3",
+    "vite": "^8",
+    "vite-plugin-vuetify": "^2.1.3",
+    "vitest": "^5.0.3",
+    "vue-tsc": "^3.3.12"
+  },
+  "lint-staged": {
+    "*.{ts,vue,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,yml}": [
+      "prettier --write"
+    ]
+  }
+}

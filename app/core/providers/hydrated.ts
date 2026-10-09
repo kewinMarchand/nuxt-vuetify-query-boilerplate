@@ -1,0 +1,7 @@
+import { defineNuxtPlugin } from '#imports'
+
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.hook('app:suspense:resolve', () => {
+    document.documentElement.dataset.hydrated = ''
+  })
+})

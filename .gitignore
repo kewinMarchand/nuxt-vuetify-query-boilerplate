@@ -1,0 +1,32 @@
+# dependencies
+/node_modules
+
+# nuxt
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# logs
+logs
+*.log
+
+# misc
+.DS_Store
+.fleet
+.idea
+
+# env files
+.env
+.env.*
+!.env.example
+
+# qa
+/coverage/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/.lighthouseci/
