@@ -3,6 +3,15 @@ import { expect, test } from '@playwright/test'
 import { field, gotoHydrated } from '../support/page'
 
 test.describe('Contact', () => {
+  test('annonce que tous les champs sont obligatoires', async ({ page }) => {
+    await gotoHydrated(page, '/contact')
+
+    await expect(page.getByTestId('contact-required-notice')).toBeVisible()
+    for (const testId of ['contact-name', 'contact-email', 'contact-message']) {
+      await expect(field(page, testId)).toHaveAttribute('required', '')
+    }
+  })
+
   test('affiche les erreurs de validation quand le formulaire est vide', async ({ page }) => {
     await gotoHydrated(page, '/contact')
     await page.getByTestId('contact-submit').click()

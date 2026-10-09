@@ -18,6 +18,9 @@ const {
 </script>
 
 <template>
+  <p class="text-body-medium" data-testid="contact-required-notice">
+    Tous les champs sont obligatoires.
+  </p>
   <form novalidate class="contact-form d-flex flex-column ga-4" @submit="onSubmit">
     <v-text-field
       v-model="name"

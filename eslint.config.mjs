@@ -1,3 +1,5 @@
+import { readdirSync } from 'node:fs'
+
 import withNuxt from './.nuxt/eslint.config.mjs'
 
 const RELATIVE_DEPTH = { group: ['../../*'], message: 'Utiliser l’alias @/ au-delà d’un niveau.' }
@@ -5,6 +7,9 @@ const ICONS_WRAPPER = {
   group: ['@mdi/js'],
   message: 'Les icônes passent par le wrapper @/core/ui/ui-kit/Icon.',
 }
+const DOMAINS = readdirSync(new URL('./app/domains', import.meta.url), { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
 const DOMAIN_PUBLIC_API = {
   group: ['@/domains/*/*', '~/domains/*/*'],
   message: "Un domaine s'importe uniquement via son index.ts public.",
@@ -55,6 +60,21 @@ export default withNuxt(
       ],
     },
   },
+  ...DOMAINS.map((domain) => ({
+    files: [`app/domains/${domain}/**`],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            RELATIVE_DEPTH,
+            ICONS_WRAPPER,
+            { ...DOMAIN_PUBLIC_API, group: ['@/domains/*/*', `!@/domains/${domain}/*`] },
+          ],
+        },
+      ],
+    },
+  })),
   {
     files: ['app/core/ui/ui-kit/Icon.vue'],
     rules: { 'no-restricted-imports': 'off', 'vue/multi-word-component-names': 'off' },

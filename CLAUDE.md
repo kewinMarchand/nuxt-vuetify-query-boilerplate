@@ -10,7 +10,7 @@ Boilerplate personnel, transposition Nuxt de `next-mui-query-boilerplate`. Les c
 - **Design system** : Vuetify 4 branché à la main (plugin `app/core/providers/vuetify.ts` + `vite-plugin-vuetify` en `autoImport`). Thème dans `app/core/theme/theme.ts`, tokens CSS et mode renforcé dans `app/core/theme/global.css`. Thème clair forcé (`defaultTheme: 'light'`, Vuetify 4 suit sinon le système).
 - **Données** : TanStack Vue Query. Un `QueryClient` par requête serveur et par navigateur (`app/core/providers/vueQuery.ts`), état déshydraté dans le payload Nuxt et réhydraté au démarrage. Les blocs SEO (articles de l'accueil, catalogue) sont préchargés côté serveur par `onServerPrefetch(() => query.suspense())`. Les tâches restent chargées côté client, comme dans le modèle.
 - **Devtools TanStack** : rendus dans `app.vue`. Le paquet n'exporte qu'un stub vide hors condition `development`, ils n'existent donc qu'en `nuxt dev`.
-- **Formulaires** : vee-validate + zod 4, schéma dans `common/models/` du domaine. L'adaptateur `app/features/forms/toTypedSchema.ts` remplace `@vee-validate/zod`.
+- **Formulaires** : vee-validate + zod 4, schéma dans `common/models/` du domaine. L'adaptateur `app/features/forms/toTypedSchema.ts` remplace `@vee-validate/zod`. Les chemins d'erreur suivent la notation de vee-validate (`contacts[1].email`). Limites de l'adaptateur : ni `cast` (pas de valeurs par défaut tirées du schéma), ni `describe` (`meta.required` reste faux), et une erreur portée par une union ou un `refine` au niveau de l'objet arrive sur le chemin vide, donc au niveau du formulaire et non d'un champ.
 - **Icônes** : `@mdi/js`, uniquement via `app/core/ui/ui-kit/Icon.vue` (règle ESLint). Les icônes internes de Vuetify passent par le jeu `mdi-svg`, qui embarque ses propres tracés.
 - **Carrousel** : Embla Carousel 8 (`embla-carousel-vue` + `embla-carousel-wheel-gestures` pour la molette et le trackpad), importé uniquement dans `app/features/carousel/`.
 - **Police** : Inter servie localement par `@nuxt/fonts` (téléchargée au build, `font-display: swap`, latin, graisses 400 à 700). Unité de police : `px`, multipliée par `--app-font-scale` (1 ou 1,25 en mode renforcé).
@@ -60,7 +60,7 @@ Node imposé : 24.14 (`.nvmrc`). Plusieurs paquets récents exigent 24.15.
 ## Règles ESLint propres au projet
 
 - `@typescript-eslint/no-namespace` avec `allowDeclarations` : les types sont en `export declare namespace Xxx {}`.
-- `no-restricted-imports` : chemins relatifs au-delà d'un niveau interdits, `@mdi/js` interdit hors du wrapper `Icon.vue`, import profond d'un domaine (`@/domains/x/...`) interdit depuis `app/pages/`, `app/core/`, `app/features/`, `app/*.vue` et `server/`.
+- `no-restricted-imports` : chemins relatifs au-delà d'un niveau interdits, `@mdi/js` interdit hors du wrapper `Icon.vue`, import profond d'un domaine (`@/domains/x/...`) interdit partout sauf dans ce domaine lui-même. Une entrée de configuration par domaine (lue dans `app/domains/`) autorise son propre dossier et bloque les autres.
 - `import/order` (fourni par `eslint-plugin-import-x`, déjà inclus dans `@nuxt/eslint-config`) : externes, puis `#imports` et autres alias Nuxt, puis `@/`, puis relatifs, puis types.
 - Règles TypeScript limitées aux fichiers `.ts` et `.vue` : sinon `consistent-type-imports` exige des informations de type sur `eslint.config.mjs`.
 - `vue/multi-word-component-names` coupée pour `Icon.vue` seulement : le nom est imposé et ne masque aucun élément HTML.

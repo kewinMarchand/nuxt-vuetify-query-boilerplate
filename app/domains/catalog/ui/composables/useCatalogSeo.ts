@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRuntimeConfig } from '#imports'
 
 import { usePageSeo } from '@/core/seo'
+import { PAGE_SIZE } from '@/domains/catalog/common/models/catalogFilters'
 import { isRefined } from '@/domains/catalog/common/models/catalogQuery'
 
 import type { Catalog } from '@/domains/catalog/common/models/catalog'
@@ -38,7 +39,7 @@ export const useCatalogSeo = (
         name: title.value,
         itemListElement: (page.value?.items ?? []).map((product, index) => ({
           '@type': 'ListItem',
-          position: (currentPage.value - 1) * 12 + index + 1,
+          position: (currentPage.value - 1) * PAGE_SIZE + index + 1,
           name: product.name,
           url: `${new URL(path.value, siteUrl).href}#produit-${product.slug}`,
         })),
