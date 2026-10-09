@@ -40,3 +40,9 @@ jobs:
           path: playwright-report
           retention-days: 7
       - run: make metrics
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          retention-days: 7
