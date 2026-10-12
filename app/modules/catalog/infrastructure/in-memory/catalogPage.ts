@@ -1,14 +1,9 @@
-import {
-  countFacet,
-  filterProducts,
-  paginate,
-  sortProducts,
-} from '@/modules/catalog/domain/catalogFilters'
 import { EXPOSURES, SIZES } from '@/modules/catalog/domain/catalogQuery'
 import { categoryHref } from '@/modules/catalog/domain/categoryPath'
 import { collectLeafSlugs, findCategoryChain } from '@/modules/catalog/domain/categoryTree'
 
 import { CATEGORY_TREE } from './categories'
+import { countFacet, filterProducts, paginate, sortProducts } from './productSearch'
 
 import type { Catalog } from '@/modules/catalog/domain/catalog'
 

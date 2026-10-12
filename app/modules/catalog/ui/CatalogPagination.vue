@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import { Icon } from '@/shared/ui/kit'
 
-import { paginationWindow } from '../domain/catalogFilters'
+import { paginationWindow } from './pagination'
 
 const { page, pageCount, hrefFor } = defineProps<{
   page: number

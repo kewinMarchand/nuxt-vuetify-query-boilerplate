@@ -1,20 +1,16 @@
-import {
-  countFacet,
-  filterProducts,
-  paginate,
-  paginationWindow,
-  sortProducts,
-} from './catalogFilters'
-import { DEFAULT_QUERY, EXPOSURES } from './catalogQuery'
+import { DEFAULT_QUERY, EXPOSURES } from '@/modules/catalog/domain/catalogQuery'
+import { Price } from '@/modules/catalog/domain/price'
 
-import type { Catalog } from './catalog'
+import { countFacet, filterProducts, paginate, sortProducts } from './productSearch'
+
+import type { Catalog } from '@/modules/catalog/domain/catalog'
 
 const product = (id: string, overrides: Partial<Catalog.Product>): Catalog.Product => ({
   id,
   slug: `produit-${id}`,
   name: `Produit ${id}`,
   categorySlug: 'monstera',
-  price: 1000,
+  price: Price.fromCents(1000),
   exposure: 'soleil',
   size: 'M',
   inStock: true,
@@ -23,10 +19,16 @@ const product = (id: string, overrides: Partial<Catalog.Product>): Catalog.Produ
 })
 
 const PRODUCTS = [
-  product('1', { name: 'Calathea', price: 2500, exposure: 'ombre', size: 'S' }),
-  product('2', { name: 'Anthurium', price: 1500, exposure: 'mi-ombre', size: 'M', inStock: false }),
-  product('3', { name: 'Begonia', price: 4000, exposure: 'mi-ombre', size: 'L' }),
-  product('4', { name: 'Ficus', price: 900, exposure: 'soleil', size: 'M' }),
+  product('1', { name: 'Calathea', price: Price.fromCents(2500), exposure: 'ombre', size: 'S' }),
+  product('2', {
+    name: 'Anthurium',
+    price: Price.fromCents(1500),
+    exposure: 'mi-ombre',
+    size: 'M',
+    inStock: false,
+  }),
+  product('3', { name: 'Begonia', price: Price.fromCents(4000), exposure: 'mi-ombre', size: 'L' }),
+  product('4', { name: 'Ficus', price: Price.fromCents(900), exposure: 'soleil', size: 'M' }),
 ]
 
 describe('filterProducts', () => {
@@ -84,17 +86,5 @@ describe('paginate', () => {
     expect(paginate(items, 3, 12)).toEqual({ items: [24], page: 3, pageCount: 3 })
     expect(paginate(items, 9, 12).page).toBe(3)
     expect(paginate([], 1, 12)).toEqual({ items: [], page: 1, pageCount: 1 })
-  })
-})
-
-describe('paginationWindow', () => {
-  it('affiche toutes les pages jusqu’à 7', () => {
-    expect(paginationWindow(4, 7)).toEqual([1, 2, 3, 4, 5, 6, 7])
-  })
-
-  it('insère des ellipses au-delà de 7 pages', () => {
-    expect(paginationWindow(5, 10)).toEqual([1, 'ellipsis', 4, 5, 6, 'ellipsis', 10])
-    expect(paginationWindow(1, 10)).toEqual([1, 2, 'ellipsis', 10])
-    expect(paginationWindow(10, 10)).toEqual([1, 'ellipsis', 9, 10])
   })
 })

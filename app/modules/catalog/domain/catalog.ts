@@ -1,3 +1,7 @@
+import type { Price } from './price'
+
+export const PAGE_SIZE = 12
+
 export declare namespace Catalog {
   type Exposure = 'soleil' | 'mi-ombre' | 'ombre'
   type Size = 'S' | 'M' | 'L'
@@ -24,7 +28,7 @@ export declare namespace Catalog {
     slug: string
     name: string
     categorySlug: string
-    price: number
+    price: Price
     exposure: Exposure
     size: Size
     inStock: boolean

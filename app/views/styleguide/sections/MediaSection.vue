@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BlogGrid } from '@/modules/blog'
-import { ProductCard } from '@/modules/catalog'
+import { eurosToCents, ProductCard } from '@/modules/catalog'
 
 import type { Catalog } from '@/modules/catalog'
 
@@ -16,7 +16,7 @@ const PRODUCT: Catalog.Product = {
   slug: 'exemple',
   name: 'Anthurium d’exemple',
   categorySlug: 'anthurium',
-  price: 2990,
+  price: eurosToCents(29.9),
   exposure: 'mi-ombre',
   size: 'M',
   inStock: false,

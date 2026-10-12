@@ -1,3 +1,5 @@
+import { Price } from '@/modules/catalog/domain/price'
+
 import type { Catalog } from '@/modules/catalog/domain/catalog'
 
 type Row = [string, string, number, Catalog.Exposure, Catalog.Size, boolean]
@@ -59,7 +61,7 @@ export const PRODUCTS: Catalog.Product[] = ROWS.map(
     slug: slugify(name),
     name,
     categorySlug,
-    price,
+    price: Price.fromCents(price),
     exposure,
     size,
     inStock,

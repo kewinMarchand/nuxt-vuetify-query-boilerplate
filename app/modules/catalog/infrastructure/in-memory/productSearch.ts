@@ -1,10 +1,13 @@
-import type { Catalog } from './catalog'
+/**
+ * Simulateur de l'API : filtre, comptage disjonctif, tri et pagination appartiennent au
+ * fournisseur. Au branchement de l'API, ce dossier disparaît ou ne sert plus qu'aux tests.
+ */
+import { PAGE_SIZE } from '@/modules/catalog/domain/catalog'
+import { eurosToCents } from '@/modules/catalog/domain/price'
+
+import type { Catalog } from '@/modules/catalog/domain/catalog'
 
 type FacetKey = 'exposures' | 'sizes'
-
-const CENTS_PER_EURO = 100
-export const PAGE_SIZE = 12
-const MAX_PAGES_WITHOUT_ELLIPSIS = 7
 
 export const filterProducts = (
   products: Catalog.Product[],
@@ -17,8 +20,8 @@ export const filterProducts = (
         !query.exposures.length ||
         query.exposures.includes(product.exposure)) &&
       (ignored === 'sizes' || !query.sizes.length || query.sizes.includes(product.size)) &&
-      (query.priceMin === null || product.price >= query.priceMin * CENTS_PER_EURO) &&
-      (query.priceMax === null || product.price <= query.priceMax * CENTS_PER_EURO) &&
+      (query.priceMin === null || product.price >= eurosToCents(query.priceMin)) &&
+      (query.priceMax === null || product.price <= eurosToCents(query.priceMax)) &&
       (!query.inStock || product.inStock),
   )
 
@@ -54,22 +57,4 @@ export const paginate = <TItem>(items: TItem[], page: number, pageSize = PAGE_SI
     page: current,
     pageCount,
   }
-}
-
-export type PaginationEntry = number | 'ellipsis'
-
-export const paginationWindow = (page: number, pageCount: number): PaginationEntry[] => {
-  if (pageCount <= MAX_PAGES_WITHOUT_ELLIPSIS) {
-    return Array.from({ length: pageCount }, (_, index) => index + 1)
-  }
-  const pages = [1, page - 1, page, page + 1, pageCount].filter(
-    (candidate, index, list) =>
-      candidate >= 1 && candidate <= pageCount && list.indexOf(candidate) === index,
-  )
-  return pages.flatMap((current, index) => {
-    const previous = pages[index - 1]
-    return previous !== undefined && current - previous > 1
-      ? ['ellipsis' as const, current]
-      : [current]
-  })
 }

@@ -2,7 +2,7 @@
 import { useHead } from '#imports'
 
 import { EXPOSURE_LABELS, SIZE_LABELS } from './labels'
-import { formatPrice } from '../domain/formatPrice'
+import { formatPrice } from '../domain/price'
 
 import type { Catalog } from '../domain/catalog'
 

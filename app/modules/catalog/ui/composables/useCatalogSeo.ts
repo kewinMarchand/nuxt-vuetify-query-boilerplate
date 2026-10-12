@@ -2,7 +2,7 @@ import { computed } from 'vue'
 
 import { useRuntimeConfig } from '#imports'
 
-import { PAGE_SIZE } from '@/modules/catalog/domain/catalogFilters'
+import { PAGE_SIZE } from '@/modules/catalog/domain/catalog'
 import { isRefined } from '@/modules/catalog/domain/catalogQuery'
 import { categoryTrail } from '@/modules/catalog/domain/categoryPath'
 import { usePageSeo } from '@/shared/seo'
