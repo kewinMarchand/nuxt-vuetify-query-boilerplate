@@ -29,7 +29,7 @@ const emit = defineEmits<{ retry: [] }>()
     <template #append>
       <v-btn variant="text" data-testid="tasks-retry" @click="emit('retry')">
         <template #prepend>
-          <Icon name="refresh" />
+          <Icon name="rotate-cw" />
         </template>
         Réessayer
       </v-btn>
@@ -49,7 +49,7 @@ const emit = defineEmits<{ retry: [] }>()
       data-testid="tasks-item"
     >
       <template #prepend>
-        <Icon :name="task.done ? 'check-circle' : 'circle-outline'" class="mr-4" />
+        <Icon :name="task.done ? 'circle-check' : 'circle'" class="mr-4" />
       </template>
     </v-list-item>
   </v-list>

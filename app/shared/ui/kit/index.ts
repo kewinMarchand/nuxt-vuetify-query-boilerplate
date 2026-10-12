@@ -1,2 +1,3 @@
-export { default as Icon, ICON_NAMES } from './Icon.vue'
-export type { IconName } from './Icon.vue'
+export { default as Icon } from './Icon.vue'
+export { ICON_NAMES } from './iconNames'
+export type { IconName } from './iconNames'

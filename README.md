@@ -23,7 +23,7 @@ Les pages de démonstration montrent chaque brique en situation :
 | TanStack Vue Query 5                      | Cache et synchronisation des données, compatible SSR             |
 | vee-validate + zod 4                      | Formulaires, validation et types dérivés du même schéma          |
 | Embla Carousel 8                          | Carrousel (glisser, swipe, molette), via `shared/ui/`            |
-| @mdi/js                                   | Icônes, via le wrapper `Icon`                                    |
+| Lucide (sprite SVG)                       | Icônes : `icons.json`, `make icons`, composant `Icon`            |
 | @nuxt/fonts                               | Police Inter servie localement                                   |
 | ESLint 10 (@nuxt/eslint), Prettier, Husky | Qualité du code, vérifiée à chaque commit                        |
 | Vitest 5 + Testing Library                | Tests unitaires et fonctionnels                                  |
@@ -65,19 +65,20 @@ Variables d'environnement (`.env`) :
 
 `make help` liste toutes les commandes. Les principales :
 
-| Commande                               | Effet                                                                                      |
-| -------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `make up`                              | Serveur de développement sur le port 3010                                                  |
-| `make build` / `make start`            | Build de production, puis le servir                                                        |
-| `make qa`                              | QA rapide : lint (dont architecture), auto-test des règles, format, types, tests unitaires |
-| `make arch-selftest`                   | Écrit des imports interdits, exige l'échec d'ESLint, puis les retire                       |
-| `make qa-full`                         | QA complète : QA rapide, e2e, accessibilité, Lighthouse                                    |
-| `make test-unit`                       | Vitest                                                                                     |
-| `make test-e2e`                        | Playwright, desktop et mobile                                                              |
-| `make test-a11y`                       | axe-core, WCAG 2.1 AA, sur chaque page, en mode normal et renforcé                         |
-| `make metrics`                         | Lighthouse CI : échoue sous 90 en performance ou sous 100 en accessibilité et SEO          |
-| `make api-types`                       | Génère `app/shared/api/schema.d.ts` depuis `API_SCHEMA_URL`                                |
-| `make docker-build` / `make docker-up` | Image de production, sur le port `PORT` (3010 par défaut)                                  |
+| Commande                               | Effet                                                                                                        |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `make up`                              | Serveur de développement sur le port 3010                                                                    |
+| `make build` / `make start`            | Build de production, puis le servir                                                                          |
+| `make qa`                              | QA rapide : lint (dont architecture), auto-test des règles, sprite d'icônes, format, types, tests unitaires  |
+| `make arch-selftest`                   | Écrit des imports interdits, exige l'échec d'ESLint, puis les retire                                         |
+| `make qa-full`                         | QA complète : QA rapide, e2e, accessibilité, Lighthouse                                                      |
+| `make test-unit`                       | Vitest                                                                                                       |
+| `make test-e2e`                        | Playwright, desktop et mobile                                                                                |
+| `make test-a11y`                       | axe-core, WCAG 2.1 AA, sur chaque page, en mode normal et renforcé                                           |
+| `make metrics`                         | Lighthouse CI : échoue sous 90 en performance ou sous 100 en accessibilité et SEO                            |
+| `make icons` / `make icons-check`      | Génère le sprite `public/icons.svg` et le type `IconName` depuis `icons.json`, ou vérifie qu'ils sont à jour |
+| `make api-types`                       | Génère `app/shared/api/schema.d.ts` depuis `API_SCHEMA_URL`                                                  |
+| `make docker-build` / `make docker-up` | Image de production, sur le port `PORT` (3010 par défaut)                                                    |
 
 ## Architecture
 
@@ -140,7 +141,7 @@ Pour un contenu à indexer, ajouter `onServerPrefetch(() => query.suspense())` d
 
 ### Ajouter une icône
 
-Importer l'icône `@mdi/js` dans `app/shared/ui/kit/Icon.vue` et l'ajouter à `ICONS`. Ne jamais importer `@mdi/js` ailleurs, ESLint le refuse.
+Ajouter son nom Lucide dans `icons.json`, puis lancer `make icons` : le sprite `public/icons.svg` et le type `IconName` sont régénérés, à versionner tous les deux. `make qa` échoue s'ils sont périmés. Les outils d'icônes (`@iconify-json/lucide`, `svgstore`) ne s'importent que dans `tools/icons.ts`, ESLint le refuse ailleurs.
 
 ### Ajouter une catégorie au catalogue
 

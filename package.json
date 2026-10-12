@@ -28,7 +28,6 @@
   "license": "MIT",
   "description": "Boilerplate Nuxt 4, Vuetify, TanStack Query, vee-validate et zod, avec lint, tests unitaires, e2e, accessibilité et Lighthouse",
   "dependencies": {
-    "@mdi/js": "^7.4.47",
     "@sentry/nuxt": "^11.6.0",
     "@tanstack/vue-query": "^5.104.1",
     "embla-carousel": "^8.6.0",
@@ -47,6 +46,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@boundaries/eslint-plugin": "^7.2.0",
+    "@iconify-json/lucide": "^1.2.143",
     "@lhci/cli": "^0.15.1",
     "@nuxt/eslint": "^1.17.0",
     "@nuxt/fonts": "^0.14.0",
@@ -65,6 +65,7 @@
     "lint-staged": "^17.6.0",
     "openapi-typescript": "^7.13.0",
     "prettier": "^3.9.9",
+    "svgstore": "^3.0.1",
     "typescript": "~6.0.3",
     "vite": "^8",
     "vite-plugin-vuetify": "^2.1.3",

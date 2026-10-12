@@ -49,7 +49,7 @@ const {
     />
     <v-btn type="submit" color="primary" :loading="isPending" data-testid="contact-submit">
       <template #prepend>
-        <Icon name="email" />
+        <Icon name="mail" />
       </template>
       Envoyer
       <template #loader>

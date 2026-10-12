@@ -21,6 +21,9 @@ start: ## Sert le build de production
 api-types: ## Génère les types TypeScript depuis le schéma OpenAPI (API_SCHEMA_URL)
 	yarn api:types
 
+icons: ## Génère public/icons.svg et le type des noms depuis icons.json (noms Lucide)
+	node tools/icons.ts
+
 docker-build: ## Construit l'image Docker de production
 	docker compose build
 
@@ -30,4 +33,4 @@ docker-up: ## Lance l'image de production (port PORT, 3010 par défaut)
 docker-down: ## Arrête le conteneur
 	docker compose down
 
-.PHONY: help install up build start api-types docker-build docker-up docker-down
+.PHONY: help install up build start icons api-types docker-build docker-up docker-down

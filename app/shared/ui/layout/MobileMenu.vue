@@ -76,7 +76,7 @@ watch(isOpen, (open) => {
           {{ levelTitle }}
         </h2>
         <v-btn icon variant="text" aria-label="Fermer le menu" @click="close">
-          <Icon name="close" />
+          <Icon name="x" />
         </v-btn>
       </div>
 

@@ -16,7 +16,7 @@ const { isEnhanced, toggle } = useA11yMode()
     @click="toggle"
   >
     <template #prepend>
-      <Icon name="accessibility" />
+      <Icon name="person-standing" />
     </template>
     <span class="a11y-mode-toggle-label" data-testid="a11y-mode-toggle-label"
       >Accessibilité renforcée</span

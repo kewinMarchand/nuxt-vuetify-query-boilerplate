@@ -64,7 +64,7 @@ const onSortChange = (event: Event) => {
         :aria-current="query.view === 'grille' ? 'page' : undefined"
         data-testid="catalog-view-grid"
       >
-        <Icon name="view-grid" />
+        <Icon name="layout-grid" />
         Grille
       </NuxtLink>
       <NuxtLink
@@ -73,7 +73,7 @@ const onSortChange = (event: Event) => {
         :aria-current="query.view === 'liste' ? 'page' : undefined"
         data-testid="catalog-view-list"
       >
-        <Icon name="view-list" />
+        <Icon name="layout-list" />
         Liste
       </NuxtLink>
     </nav>

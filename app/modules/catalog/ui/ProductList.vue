@@ -34,7 +34,7 @@ const emit = defineEmits<{ retry: [] }>()
     <template #append>
       <v-btn variant="text" data-testid="catalog-retry" @click="emit('retry')">
         <template #prepend>
-          <Icon name="refresh" />
+          <Icon name="rotate-cw" />
         </template>
         Réessayer
       </v-btn>

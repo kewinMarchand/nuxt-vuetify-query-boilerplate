@@ -13,8 +13,9 @@ const MODULES_WITHOUT_APPLICATION = readdirSync(MODULES_ROOT).filter(
 
 const RELATIVE_DEPTH = { group: ['../../*'], message: 'Utiliser l’alias @/ au-delà d’un niveau.' }
 const ICONS_WRAPPER = {
-  group: ['@mdi/js'],
-  message: 'Les icônes passent par le wrapper @/shared/ui/kit/Icon.',
+  group: ['@iconify-json/*', 'svgstore'],
+  message:
+    'Les icônes passent par le sprite : nom dans icons.json, make icons, puis @/shared/ui/kit/Icon.',
 }
 const CAROUSEL_WRAPPER = {
   group: ['embla-carousel', 'embla-carousel-*'],
@@ -230,13 +231,11 @@ export default withNuxt(
   },
   {
     files: ['app/shared/ui/kit/Icon.vue'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        { patterns: [RELATIVE_DEPTH, CAROUSEL_WRAPPER, OBSERVABILITY_WRAPPER] },
-      ],
-      'vue/multi-word-component-names': 'off',
-    },
+    rules: { 'vue/multi-word-component-names': 'off' },
+  },
+  {
+    files: ['tools/icons.ts'],
+    rules: { 'no-restricted-imports': ['error', { patterns: [RELATIVE_DEPTH] }] },
   },
   {
     files: ['app/shared/ui/carousel/**'],

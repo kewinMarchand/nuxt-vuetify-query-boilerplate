@@ -16,7 +16,7 @@ Boilerplate personnel, transposition Nuxt de `next-mui-query-boilerplate`. Les c
 - **Données** : TanStack Vue Query. Un `QueryClient` par requête serveur et par navigateur (`app/shared/providers/vueQuery.ts`), état déshydraté dans le payload Nuxt et réhydraté au démarrage. Les blocs SEO (articles de l'accueil, catalogue) sont préchargés côté serveur par `onServerPrefetch(() => query.suspense())`. Les tâches restent chargées côté client, comme dans le modèle.
 - **Devtools TanStack** : rendus dans `app.vue`. Le paquet n'exporte qu'un stub vide hors condition `development`, ils n'existent donc qu'en `nuxt dev`.
 - **Formulaires** : vee-validate + zod 4, schéma dans `domain/` du module. L'adaptateur `app/shared/forms/toTypedSchema.ts` remplace `@vee-validate/zod`. Les chemins d'erreur suivent la notation de vee-validate (`contacts[1].email`). Limites de l'adaptateur : ni `cast` (pas de valeurs par défaut tirées du schéma), ni `describe` (`meta.required` reste faux), et une erreur portée par une union ou un `refine` au niveau de l'objet arrive sur le chemin vide, donc au niveau du formulaire et non d'un champ.
-- **Icônes** : `@mdi/js`, uniquement via `app/shared/ui/kit/Icon.vue` (règle ESLint). Les icônes internes de Vuetify passent par le jeu `mdi-svg`, qui embarque ses propres tracés.
+- **Icônes** : sprite SVG tiré de Lucide (section 17 de la spec commune), à la place de MDI. La liste des noms Lucide est dans `icons.json`. `make icons` (`tools/icons.ts`) génère `public/icons.svg` (un `<symbol>` par ligne) et le type `IconName` (`app/shared/ui/kit/iconNames.ts`), les trois sont versionnés. `make qa` échoue si le sprite ou le type sont périmés (`make icons-check`). Un seul composant `Icon.vue` : `<svg>` avec `<use href="/icons.svg#nom">`, décoratif par défaut, `role="img"` et `aria-label` avec `label`. Le mode renforcé utilise `person-standing`. Les icônes internes de Vuetify (`v-alert`, `v-select`, cases à cocher) gardent le jeu `vuetify/iconsets/mdi-svg`, qui embarque ses propres tracés sans dépendre de `@mdi/js` : c'est le minimum qui fonctionne sans redéfinir chaque alias du thème.
 - **Carrousel** : Embla Carousel 8 (`embla-carousel-vue` + `embla-carousel-wheel-gestures` pour la molette et le trackpad), importé uniquement dans `app/shared/ui/carousel/` (règle ESLint).
 - **Police** : Inter servie localement par `@nuxt/fonts` (téléchargée au build, `font-display: swap`, latin, graisses 400 à 700). Unité de police : `px`, multipliée par `--app-font-scale` (1 ou 1,25 en mode renforcé).
 - **Conteneur** : 1440 px, gouttières 16/24/32 px (`.app-container` dans `global.css`).
@@ -69,6 +69,8 @@ Node imposé : 24.14 (`.nvmrc`). Plusieurs paquets récents exigent 24.15.
 - `embla-carousel`, `embla-carousel-vue`, `embla-carousel-wheel-gestures` : carrousel imposé par la spec commune (glisser, swipe, molette). `embla-carousel` est déclaré en direct parce que le plugin de molette l'attend en peer, il est dédupliqué avec celui de l'adaptateur Vue.
 - `@nuxt/fonts` : équivalent de `next/font`, police servie localement.
 - `vite-plugin-vuetify`, `@vitejs/plugin-vue` : import à la demande des composants Vuetify, au build et dans Vitest.
+- `@iconify-json/lucide` 1.2 (dev, aucun effet sur le bundle) : les tracés Lucide (licence ISC) au format Iconify, lus par `tools/icons.ts`. Remplace `@mdi/js`, retiré.
+- `svgstore` 3.0 (dev, aucun effet sur le bundle) : assemble le sprite, un `<symbol>` par icône avec son `viewBox`. Il ne publie pas de types : `tools/svgstore.d.ts` déclare la seule API utilisée.
 - `@sentry/nuxt` 11.6 (dépendance d'exécution) : SDK GlitchTip imposé par la spec (section 16), même version majeure que les dépôts Next et SvelteKit. Côté navigateur, il ne vit que dans un chunk chargé à la demande, après l'affichage et seulement avec un DSN : le JS initial ne gagne que le module de programmation (`errorReporting.client.ts`). Poids du chunk non mesuré (aucun build lancé). Environ 85 Mo installés dans `node_modules/@sentry` et `@sentry-internal`.
 
 ## Règles ESLint propres au projet
@@ -78,7 +80,7 @@ Node imposé : 24.14 (`.nvmrc`). Plusieurs paquets récents exigent 24.15.
 - Le dossier `app` lui-même est déclaré comme routage, en dernier : les motifs d'éléments du plugin désignent des dossiers, `app/*.vue` n'est pas reconnu, et c'est la seule façon de classer `app.vue` et `error.vue` sans déplacer des fichiers que Nuxt attend à cet endroit. Les descripteurs plus précis (modules, socle, vues, pages) passent avant.
 - `no-restricted-imports` :
   - frameworks interdits dans `domain/` et `application/` (`vue`, `vue-router`, `nuxt`, `#app`, `#imports`, `#components`, `@tanstack/*`, `vuetify`, `vee-validate`). Les motifs `#...` sont écrits `\#...` : la syntaxe gitignore de la règle lit un `#` initial comme un commentaire, et la règle était muette sur les imports virtuels de Nuxt (l'auto-test l'a montré).
-  - `@mdi/js` interdit hors du wrapper `Icon.vue`.
+  - `@iconify-json/*` et `svgstore` interdits hors de `tools/icons.ts`.
   - `embla-carousel*` interdit hors de `shared/ui/carousel/`.
   - `@sentry/*` interdit hors de `shared/observability/`.
   - chemins relatifs à plus d'un niveau interdits.

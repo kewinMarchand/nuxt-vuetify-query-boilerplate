@@ -1,42 +1,9 @@
-<script lang="ts">
-import {
-  mdiCheckboxBlankCircleOutline,
-  mdiCheckCircleOutline,
-  mdiChevronDown,
-  mdiChevronLeft,
-  mdiChevronRight,
-  mdiClose,
-  mdiEmailOutline,
-  mdiFilterVariant,
-  mdiHuman,
-  mdiMenu,
-  mdiRefresh,
-  mdiViewGridOutline,
-  mdiViewListOutline,
-} from '@mdi/js'
-
-const ICONS = {
-  accessibility: mdiHuman,
-  'check-circle': mdiCheckCircleOutline,
-  'chevron-down': mdiChevronDown,
-  'chevron-left': mdiChevronLeft,
-  'chevron-right': mdiChevronRight,
-  'circle-outline': mdiCheckboxBlankCircleOutline,
-  close: mdiClose,
-  email: mdiEmailOutline,
-  filter: mdiFilterVariant,
-  menu: mdiMenu,
-  refresh: mdiRefresh,
-  'view-grid': mdiViewGridOutline,
-  'view-list': mdiViewListOutline,
-} as const
-
-export type IconName = keyof typeof ICONS
-
-export const ICON_NAMES = Object.keys(ICONS).filter((name): name is IconName => name in ICONS)
-</script>
-
 <script setup lang="ts">
+import type { IconName } from './iconNames'
+
+const SPRITE = '/icons.svg'
+
+/** Symbole du sprite `public/icons.svg` (Lucide), décoratif sauf si un libellé est fourni. */
 const {
   name,
   size = 20,
@@ -49,26 +16,10 @@ const {
 </script>
 
 <template>
-  <svg
-    v-if="label"
-    :width="size"
-    :height="size"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    role="img"
-    :aria-label="label"
-  >
-    <path :d="ICONS[name]" />
+  <svg v-if="label" :width="size" :height="size" role="img" :aria-label="label">
+    <use :href="`${SPRITE}#${name}`" />
   </svg>
-  <svg
-    v-else
-    :width="size"
-    :height="size"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    aria-hidden="true"
-    focusable="false"
-  >
-    <path :d="ICONS[name]" />
+  <svg v-else :width="size" :height="size" aria-hidden="true" focusable="false">
+    <use :href="`${SPRITE}#${name}`" />
   </svg>
 </template>

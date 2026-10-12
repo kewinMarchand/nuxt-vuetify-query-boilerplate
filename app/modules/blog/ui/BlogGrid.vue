@@ -39,7 +39,7 @@ const BLOG_SIZES = '(min-width: 960px) 33vw, (min-width: 600px) 50vw, 100vw'
     <template #append>
       <v-btn variant="text" data-testid="home-blog-retry" @click="emit('retry')">
         <template #prepend>
-          <Icon name="refresh" />
+          <Icon name="rotate-cw" />
         </template>
         Réessayer
       </v-btn>

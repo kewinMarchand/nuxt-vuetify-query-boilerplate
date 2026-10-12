@@ -13,7 +13,7 @@ defineProps<{
       <li v-for="filter in filters" :key="filter.id">
         <NuxtLink :to="filter.href" class="chip" data-testid="catalog-active-filter">
           <span class="d-sr-only">Retirer le filtre : </span>{{ filter.label }}
-          <Icon name="close" :size="16" />
+          <Icon name="x" :size="16" />
         </NuxtLink>
       </li>
     </ul>

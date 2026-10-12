@@ -25,7 +25,7 @@ const SEVERITIES = [
         <template #append>
           <v-btn variant="text">
             <template #prepend>
-              <Icon name="refresh" />
+              <Icon name="rotate-cw" />
             </template>
             Réessayer
           </v-btn>

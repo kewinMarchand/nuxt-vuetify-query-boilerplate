@@ -26,7 +26,7 @@ const titleId = useId()
         data-testid="catalog-filters-open"
       >
         <template #prepend>
-          <Icon name="filter" />
+          <Icon name="list-filter" />
         </template>
         Filtrer
         <span v-if="activeCount">&nbsp;({{ activeCount }})</span>
@@ -37,7 +37,7 @@ const titleId = useId()
       <div class="d-flex align-center justify-space-between ga-2 mb-2">
         <h2 :id="titleId" class="side-panel-title">Filtres</h2>
         <v-btn icon variant="text" aria-label="Fermer les filtres" @click="isOpen = false">
-          <Icon name="close" />
+          <Icon name="x" />
         </v-btn>
       </div>
       <slot />
