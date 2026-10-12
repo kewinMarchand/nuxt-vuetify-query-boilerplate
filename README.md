@@ -151,6 +151,106 @@ Modifier l'arbre `CATEGORY_TREE` de `app/modules/catalog/infrastructure/in-memor
 
 `.github/workflows/ci.yml` lance `make qa`, puis les tests e2e, accessibilité et Lighthouse, à chaque push sur `main` et sur chaque pull request. En cas d'échec, le rapport Playwright est joint au run.
 
+## Démarrer un projet à partir de ce dépôt
+
+### Créer le dépôt
+
+Le dépôt est un template GitHub. Voie recommandée : le bouton « Use this template », ou en ligne de commande :
+
+```sh
+gh repo create mon-projet --template kewinMarchand/nuxt-vuetify-query-boilerplate --private --clone
+cd mon-projet
+```
+
+Le nouveau dépôt part d'un historique neuf, sans lien avec celui-ci.
+
+Pour suivre les évolutions du boilerplate ou y contribuer, passer plutôt par un fork. `gh repo fork` le clone, le déclare en `origin` et ajoute ce dépôt en `upstream`. Un fork d'un dépôt public reste public.
+
+```sh
+gh repo fork kewinMarchand/nuxt-vuetify-query-boilerplate --clone --fork-name mon-projet
+```
+
+Ensuite, suivre [Démarrage](#démarrage).
+
+### Récupérer les mises à jour
+
+Avec un fork, l'historique est commun, une fusion suffit :
+
+```sh
+git fetch upstream
+git merge upstream/main
+```
+
+Depuis un template, l'historique n'est pas commun. Une fusion rejouerait tout le dépôt. Il faut prendre les commits utiles un par un :
+
+```sh
+git remote add boilerplate https://github.com/kewinMarchand/nuxt-vuetify-query-boilerplate.git
+git fetch boilerplate
+git log --oneline boilerplate/main   # repérer les commits à reprendre
+git cherry-pick <sha>
+```
+
+### Personnaliser
+
+| Quoi                             | Fichiers                                                                                                                                                         |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nom du paquet et titre           | `package.json` (`name`), titre de ce README et du `CLAUDE.md`, titulaire dans `LICENSE`                                                                          |
+| Identité du site                 | `app/shared/config/site.ts` : nom, description, langue, éditeur, hébergeur, résultat d'audit d'accessibilité. Les valeurs fournies sont fictives                 |
+| Nom affiché dans les tests       | `tests/e2e/home.e2e.ts` (h1 du hero) et `tests/e2e/layout.e2e.ts` (nom accessible du logo), à aligner sur `SITE.name`                                            |
+| Couleur principale               | `app/shared/theme/colors.ts` (`PRIMARY_COLOR`), reprise par le thème Vuetify et la balise `theme-color`. Reporter la valeur dans `theme_color` du manifeste      |
+| Manifeste                        | `public/manifest.webmanifest` : `name`, `short_name`, `theme_color`                                                                                              |
+| URL publique                     | `NUXT_PUBLIC_SITE_URL` dans `.env.example`, `compose.yaml` et la valeur par défaut de `nuxt.config.ts`                                                           |
+| Port de développement (3010)     | script `dev` de `package.json`, `.env.example`, `compose.yaml`, `nuxt.config.ts`, aides de `make up` et `make docker-up` dans le `Makefile`                      |
+| Ports de test (3110, 3111, 3210) | `tests/support/ports.ts` pour Playwright, `.lighthouserc.json` pour Lighthouse. À changer seulement s'ils entrent en conflit avec un autre projet                |
+| Logo                             | `public/images/logo-mark.svg`, affiché par le header, le footer et la charte graphique                                                                           |
+| Favicons et partage              | `public/favicon.ico`, `public/favicon.svg`, `public/apple-touch-icon.png`, `public/icon-192.png`, `public/icon-512.png`, `public/og-image.jpg`                   |
+| Accueil                          | `app/views/home/` : hero (`HomeHero.vue`) et carrousel (`homeSlides.ts`), images `public/images/hero-*` et `slide-*`                                             |
+| Pages légales                    | `app/views/legal/` : `LegalNoticeView.vue`, `PersonalDataView.vue`, `AccessibilityStatementView.vue`. Les données viennent de `site.ts`, le texte reste à relire |
+| URL Lighthouse                   | `ci.url` de `.lighthouserc.json`, une entrée par route à mesurer                                                                                                 |
+| Intégration continue             | `.github/workflows/ci.yml` : branche surveillée (`main`), puis `make qa`, `make test-e2e test-a11y` et `make metrics`                                            |
+
+### Retirer les modules d'exemple
+
+Le catalogue, le blog et les tâches servent de démonstration. Le module `contact` reste, il sert de modèle et porte les règles d'architecture. Le catalogue est le plus câblé, puisqu'il fournit le menu de catégories du header, le fil d'Ariane des catégories, le plan du site et le sitemap.
+
+1. **Supprimer**
+   - les modules `app/modules/catalog/`, `app/modules/blog/` et `app/modules/task/`
+   - les pages `app/pages/taches.vue` et `app/pages/catalogue/`
+   - le menu de catégories du socle : `app/shared/ui/layout/CategoryMenu.vue` et le dossier `app/shared/ui/layout/composables/` (`useCategoryMenu.ts`, `useMenuDrillDown.ts`)
+   - les tests `tests/e2e/catalogue.e2e.ts`, `tests/e2e/taches.e2e.ts` et `tests/e2e/category-menu.e2e.ts`
+   - les images `public/images/product-*` et `public/images/blog-*`
+2. **Débrancher le routage**
+   - `app/app.vue` : retirer l'import du catalogue et rendre `<AppShell>` sans `category-menu` ni `breadcrumb-trail`
+   - `app/error.vue` : retirer `getCategoryMenu` et la mention du catalogue dans la description
+   - `server/routes/sitemap.xml.ts` (route Nitro) : ne garder que `MAIN_NAVIGATION` et `LEGAL_NAVIGATION`
+3. **Simplifier le layout**
+   - `AppShell.vue` et `AppHeader.vue` : retirer la prop `categoryMenu` et l'entrée `CategoryMenu` de la navigation
+   - `MobileMenu.vue` : retirer la prop `menu`, le sous-menu par niveaux et le bouton du catalogue. Le panneau garde le titre « Menu » et `MAIN_NAVIGATION`
+4. **Nettoyer les vues**
+   - `app/views/home/HomeView.vue` : retirer `BlogSection`
+   - `app/views/home/HomeHero.vue` : retirer le bouton vers `/taches`
+   - `app/views/legal/SitemapView.vue` : retirer la section Catalogue
+   - `app/views/errors/ErrorView.vue` : retirer le lien vers le catalogue
+   - `app/views/styleguide/sections/MediaSection.vue` : retirer les cartes de blog et produit
+   - `app/views/styleguide/sections/NavigationSection.vue` : retirer pagination et filtres actifs, et pointer le fil d'Ariane d'exemple sur `/contact`
+5. **Mettre à jour la navigation et les URL**
+   - `app/shared/config/navigation.ts` : retirer `/taches`
+   - `tests/support/routes.ts` : retirer `/taches`, `/catalogue` et `/catalogue/plantes-interieur/feuillages`
+   - `.lighthouserc.json` : retirer `/taches` et les trois URL `/catalogue`
+6. **Adapter les tests restants**
+   - `tests/e2e/home.e2e.ts` : retirer l'attente du lien `/taches` et le test des articles
+   - `tests/e2e/layout.e2e.ts` : faire porter le test du fil d'Ariane sur `/contact` (deux éléments, `Contact` courant)
+   - `tests/e2e/pages.e2e.ts` : retirer `/catalogue/categorie-inconnue` et l'attente du lien catalogue de la 404
+   - `tests/e2e/captures.e2e.ts` : capturer `/contact` à la place de `/catalogue`
+   - `tests/a11y/pages.a11y.ts` : retirer l'URL filtrée du catalogue et limiter le test du menu ouvert au mobile
+7. **Repointer `tools/archSelftest.ts` sur `contact`**
+   - Les violations du domaine vont dans `app/modules/contact/domain/` et importent `../infrastructure/sendContactMessage`.
+   - Celles du socle, des vues, de `server/` et de `app/` importent `ContactView` ou `@/modules/contact/infrastructure/sendContactMessage`.
+   - Celle des types générés va dans `app/modules/contact/ui/`.
+   - Retirer les trois entrées qui demandent une couche `application/` ou un second module : « application vers framework », « module vers autre module » et « interface vers infrastructure dans un module à couche application ». Les rétablir dès que le projet a un second module ou une couche application.
+8. **Vérifier** : `make qa` doit passer, avec 9 violations volontaires au lieu de 12. Lancer ensuite `make test-e2e` et `make test-a11y`.
+9. **Mettre à jour la documentation** : le tableau des pages de démonstration et les recettes de ce README, et les paragraphes du `CLAUDE.md` qui décrivent le catalogue.
+
 ## Licence
 
 MIT
