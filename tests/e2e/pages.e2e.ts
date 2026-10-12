@@ -77,3 +77,15 @@ test('la charte graphique présente toutes ses sections en développement', asyn
     await expect(page.getByTestId(`styleguide-${section}`)).toBeVisible()
   }
 })
+
+test('sans variable d’observabilité, aucun traceur ni paragraphe de mesure d’audience', async ({
+  page,
+}) => {
+  const requests: string[] = []
+  page.on('request', (request) => requests.push(request.url()))
+  await gotoHydrated(page, '/donnees-personnelles')
+
+  await expect(page.getByTestId('legal-audience-measurement')).toHaveCount(0)
+  expect(await page.evaluate(() => '_paq' in window || '__SENTRY__' in window)).toBe(false)
+  expect(requests.filter((url) => /matomo|sentry|glitchtip/i.test(url))).toEqual([])
+})

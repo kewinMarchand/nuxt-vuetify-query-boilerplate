@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     '@/shared/providers/vueQuery',
     { src: '@/shared/providers/hydrated', mode: 'client' },
     { src: '@/shared/providers/errorReporting', mode: 'client' },
+    { src: '@/shared/providers/matomo', mode: 'client' },
   ],
   css: ['@/shared/theme/global.css'],
   build: { transpile: ['vuetify'] },
@@ -64,6 +65,8 @@ export default defineNuxtConfig({
       devTools: process.env.NODE_ENV !== 'production',
       glitchtipDsn: '',
       glitchtipEnvironment: '',
+      matomoUrl: '',
+      matomoSiteId: '',
     },
   },
   fonts: {

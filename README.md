@@ -49,15 +49,17 @@ make up        # http://localhost:3010
 
 Variables d'environnement (`.env`) :
 
-| Variable                            | Rôle                                                                                 |
-| ----------------------------------- | ------------------------------------------------------------------------------------ |
-| `NUXT_PUBLIC_SITE_URL`              | URL publique, utilisée pour les URL canoniques, Open Graph, le sitemap et le JSON-LD |
-| `API_SCHEMA_URL`                    | Schéma OpenAPI de l'API consommée, lu par `make api-types`                           |
-| `MAINTENANCE`                       | `1` pour servir la page de maintenance (503) sur toutes les routes                   |
-| `NUXT_GLITCHTIP_DSN`                | DSN GlitchTip du serveur. Vide : aucun SDK chargé, aucune requête                    |
-| `NUXT_PUBLIC_GLITCHTIP_DSN`         | DSN GlitchTip du navigateur, SDK chargé après l'affichage. Vide : rien               |
-| `NUXT_PUBLIC_GLITCHTIP_ENVIRONMENT` | Environnement des erreurs (défaut : `development` en dev, `production` sinon)        |
-| `NUXT_PUBLIC_DEV_TOOLS`             | `true` pour ouvrir la charte graphique et la route de test de la 500 hors dev        |
+| Variable                            | Rôle                                                                                         |
+| ----------------------------------- | -------------------------------------------------------------------------------------------- |
+| `NUXT_PUBLIC_SITE_URL`              | URL publique, utilisée pour les URL canoniques, Open Graph, le sitemap et le JSON-LD         |
+| `API_SCHEMA_URL`                    | Schéma OpenAPI de l'API consommée, lu par `make api-types`                                   |
+| `MAINTENANCE`                       | `1` pour servir la page de maintenance (503) sur toutes les routes                           |
+| `NUXT_GLITCHTIP_DSN`                | DSN GlitchTip du serveur. Vide : aucun SDK chargé, aucune requête                            |
+| `NUXT_PUBLIC_GLITCHTIP_DSN`         | DSN GlitchTip du navigateur, SDK chargé après l'affichage. Vide : rien                       |
+| `NUXT_PUBLIC_GLITCHTIP_ENVIRONMENT` | Environnement des erreurs (défaut : `development` en dev, `production` sinon)                |
+| `NUXT_PUBLIC_MATOMO_URL`            | URL de l'instance Matomo, mesure d'audience sans cookie. Vide : aucun script, aucune requête |
+| `NUXT_PUBLIC_MATOMO_SITE_ID`        | Identifiant du site dans Matomo                                                              |
+| `NUXT_PUBLIC_DEV_TOOLS`             | `true` pour ouvrir la charte graphique et la route de test de la 500 hors dev                |
 
 ## Commandes
 

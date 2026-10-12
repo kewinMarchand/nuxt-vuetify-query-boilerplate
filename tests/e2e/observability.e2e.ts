@@ -12,6 +12,7 @@ import type { Server } from 'node:http'
 
 const APP_URL = `http://localhost:${OBSERVABILITY_PORT}`
 const DSN = `http://clefactice@localhost:${FAKE_GLITCHTIP_PORT}/1`
+const MATOMO_URL = 'http://matomo.test/'
 
 // La configuration est lue à l'exécution : ce test sert le build de la suite principale avec des
 // valeurs factices, et ne contacte aucune instance réelle.
@@ -22,7 +23,41 @@ const ENV = {
   NUXT_PUBLIC_DEV_TOOLS: 'true',
   NUXT_GLITCHTIP_DSN: DSN,
   NUXT_PUBLIC_GLITCHTIP_DSN: DSN,
+  NUXT_PUBLIC_MATOMO_URL: MATOMO_URL,
+  NUXT_PUBLIC_MATOMO_SITE_ID: '1',
 }
+
+/** Traceur factice : applique la file `_paq` et envoie une requête par page vue, comme Matomo. */
+const FAKE_TRACKER = `(() => {
+  const state = {}
+  window.__matomoCommands = []
+  const apply = (...commands) => commands.forEach((command) => {
+    window.__matomoCommands.push(command)
+    const [name, value] = command
+    if (name === 'setTrackerUrl') state.tracker = value
+    if (name === 'setSiteId') state.site = value
+    if (name === 'setCustomUrl') state.url = value
+    if (name === 'setDocumentTitle') state.title = value
+    if (name === 'trackPageView') {
+      const params = new URLSearchParams({ idsite: state.site, url: state.url, action_name: state.title })
+      fetch(state.tracker + '?' + params, { mode: 'no-cors' })
+    }
+  })
+  apply(...(window._paq ?? []))
+  window._paq = { push: apply }
+})()`
+
+const pageViews: URL[] = []
+
+const routeMatomo = (page: Page) =>
+  page.route(`${MATOMO_URL}**`, (route) => {
+    const url = new URL(route.request().url())
+    if (url.pathname.endsWith('/matomo.js')) {
+      return route.fulfill({ contentType: 'application/javascript', body: FAKE_TRACKER })
+    }
+    pageViews.push(url)
+    return route.fulfill({ status: 204 })
+  })
 
 const envelopes: string[] = []
 const events = () => envelopes.filter((body) => body.includes('"type":"event"'))
@@ -54,7 +89,7 @@ const throwInBrowser = async (page: Page, message: string) => {
   }, message)
 }
 
-test.describe('Observabilité, avec un DSN factice', () => {
+test.describe('Observabilité, avec un DSN et une instance Matomo factices', () => {
   test.describe.configure({ mode: 'serial' })
 
   let app: ChildProcess | undefined
@@ -74,8 +109,10 @@ test.describe('Observabilité, avec un DSN factice', () => {
     glitchtip?.close()
   })
 
-  test.beforeEach(() => {
+  test.beforeEach(async ({ page }) => {
     envelopes.length = 0
+    pageViews.length = 0
+    await routeMatomo(page)
   })
 
   test('une erreur serveur inattendue est envoyée', async ({ request }) => {
@@ -105,5 +142,42 @@ test.describe('Observabilité, avec un DSN factice', () => {
 
     expect(events()).toHaveLength(1)
     expect(events()[0]).toContain('Témoin après la 404')
+  })
+
+  test('Matomo envoie une page vue par navigation, avec l’URL et le titre à jour', async ({
+    page,
+  }) => {
+    await page.goto(APP_URL)
+    await expect.poll(() => pageViews.length).toBe(1)
+    expect(pageViews[0]?.searchParams.get('url')).toBe(`${APP_URL}/`)
+
+    await page.locator('[data-testid="layout-nav-link"][href="/contact"]').click()
+    await expect(page).toHaveURL(`${APP_URL}/contact`)
+    await expect.poll(() => pageViews.length).toBe(2)
+    expect(pageViews[1]?.searchParams.get('url')).toBe(`${APP_URL}/contact`)
+    expect(pageViews[1]?.searchParams.get('action_name')).toBe(await page.title())
+  })
+
+  test('Matomo ne pose aucun cookie et désactive les cookies en premier', async ({
+    page,
+    context,
+  }) => {
+    await page.goto(`${APP_URL}/taches`)
+    await expect.poll(() => pageViews.length).toBe(1)
+
+    expect(await context.cookies()).toEqual([])
+    expect(await page.evaluate(() => document.cookie)).toBe('')
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { __matomoCommands: string[][] }).__matomoCommands[0],
+      ),
+    ).toEqual(['disableCookies'])
+  })
+
+  test('la page Données personnelles décrit la mesure d’audience quand elle est active', async ({
+    page,
+  }) => {
+    await page.goto(`${APP_URL}/donnees-personnelles`)
+    await expect(page.getByTestId('legal-audience-measurement')).toBeVisible()
   })
 })

@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import { useRuntimeConfig } from '#imports'
+
 import { SITE } from '@/shared/config'
+import { matomoConfig } from '@/shared/observability'
+
+const { matomoUrl, matomoSiteId } = useRuntimeConfig().public
+const isAudienceMeasured = matomoConfig(matomoUrl, matomoSiteId) !== null
 </script>
 
 <template>
@@ -36,4 +42,18 @@ import { SITE } from '@/shared/config'
 
   <h2>Cookies</h2>
   <p>Ce site ne dépose aucun cookie de mesure d’audience.</p>
+
+  <section
+    v-if="isAudienceMeasured"
+    aria-labelledby="mesure-audience"
+    data-testid="legal-audience-measurement"
+  >
+    <h2 id="mesure-audience">Mesure d’audience</h2>
+    <p>
+      La fréquentation du site est mesurée avec Matomo, hébergé par l’éditeur, configuré sans cookie
+      et sans identifiant : aucun suivi d’un site à l’autre, adresse IP anonymisée, aucune donnée
+      transmise à un tiers. Les statistiques produites sont anonymes et servent uniquement à
+      améliorer le site. Les données brutes sont conservées 25 mois au plus.
+    </p>
+  </section>
 </template>
