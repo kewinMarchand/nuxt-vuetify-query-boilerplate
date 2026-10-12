@@ -18,7 +18,7 @@
     "test:e2e": "playwright test tests/e2e",
     "test:a11y": "playwright test tests/a11y",
     "lhci": "lhci autorun",
-    "api:types": "openapi-typescript $API_SCHEMA_URL --output app/core/api/schema.d.ts",
+    "api:types": "openapi-typescript $API_SCHEMA_URL --output app/shared/api/schema.d.ts",
     "prepare": "husky"
   },
   "packageManager": "yarn@1.22.22",
@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
+    "@boundaries/eslint-plugin": "^7.2.0",
     "@lhci/cli": "^0.15.1",
     "@nuxt/eslint": "^1.17.0",
     "@nuxt/fonts": "^0.14.0",
@@ -57,6 +58,7 @@
     "@types/node": "^24",
     "@vitejs/plugin-vue": "^6.0.9",
     "eslint": "^10",
+    "eslint-import-resolver-typescript": "^4.4.5",
     "husky": "^9.1.7",
     "jsdom": "^29",
     "lint-staged": "^17.6.0",

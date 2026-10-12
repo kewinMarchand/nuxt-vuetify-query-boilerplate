@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usePageSeo } from '@/core/seo'
-import { ContactView } from '@/domains/contact'
+import { ContactView } from '@/modules/contact'
+import { usePageSeo } from '@/shared/seo'
 
 usePageSeo({
   title: 'Contact',

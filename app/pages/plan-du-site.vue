@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usePageSeo } from '@/core/seo'
-import { SitemapView } from '@/domains/legal'
+import { usePageSeo } from '@/shared/seo'
+import { SitemapView } from '@/views/legal'
 
 usePageSeo({
   title: 'Plan du site',

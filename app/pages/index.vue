@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { definePageMeta, useRuntimeConfig } from '#imports'
 
-import { SITE } from '@/core/config'
-import { organizationJsonLd, usePageSeo, websiteJsonLd } from '@/core/seo'
-import { HomeView } from '@/domains/home'
+import { SITE } from '@/shared/config'
+import { organizationJsonLd, usePageSeo, websiteJsonLd } from '@/shared/seo'
+import { HomeView } from '@/views/home'
 
 definePageMeta({ fullBleed: true })
 

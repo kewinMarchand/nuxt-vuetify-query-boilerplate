@@ -1,5 +1,0 @@
-export type { Catalog } from './common/models/catalog'
-export { default as CatalogView } from './ui/CatalogView.vue'
-export { default as ActiveFilters } from './ui/ActiveFilters.vue'
-export { default as CatalogPagination } from './ui/CatalogPagination.vue'
-export { default as ProductCard } from './ui/ProductCard.vue'

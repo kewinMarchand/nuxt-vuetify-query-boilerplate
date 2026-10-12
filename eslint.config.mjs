@@ -1,19 +1,109 @@
-import { readdirSync } from 'node:fs'
+import { existsSync, readdirSync } from 'node:fs'
+
+import boundaries from '@boundaries/eslint-plugin'
 
 import withNuxt from './.nuxt/eslint.config.mjs'
+
+const MODULES_ROOT = 'app/modules'
+const LAYERS = ['domain', 'application', 'infrastructure', 'ui']
+
+const MODULES_WITHOUT_APPLICATION = readdirSync(MODULES_ROOT).filter(
+  (module) => !existsSync(`${MODULES_ROOT}/${module}/application`),
+)
 
 const RELATIVE_DEPTH = { group: ['../../*'], message: 'Utiliser l’alias @/ au-delà d’un niveau.' }
 const ICONS_WRAPPER = {
   group: ['@mdi/js'],
-  message: 'Les icônes passent par le wrapper @/core/ui/ui-kit/Icon.',
+  message: 'Les icônes passent par le wrapper @/shared/ui/kit/Icon.',
 }
-const DOMAINS = readdirSync(new URL('./app/domains', import.meta.url), { withFileTypes: true })
-  .filter((entry) => entry.isDirectory())
-  .map((entry) => entry.name)
-const DOMAIN_PUBLIC_API = {
-  group: ['@/domains/*/*', '~/domains/*/*'],
-  message: "Un domaine s'importe uniquement via son index.ts public.",
+const CAROUSEL_WRAPPER = {
+  group: ['embla-carousel', 'embla-carousel-*'],
+  message: 'Embla passe par le wrapper @/shared/ui/carousel.',
 }
+const FRAMEWORKS_IN_DOMAIN = {
+  group: [
+    'vue',
+    'vue-router',
+    'nuxt',
+    'nuxt/*',
+    '\\#app',
+    '\\#imports',
+    '\\#components',
+    '@tanstack/*',
+    'vuetify',
+    'vuetify/*',
+    'vee-validate',
+  ],
+  message: 'Le domaine ne dépend d’aucun framework : données immuables et fonctions pures.',
+}
+
+const sameModule = (type) => ({
+  element: { type, captured: { module: '{{ from.element.captured.module }}' } },
+})
+
+const policy = (from, to, message, extra = {}) => ({
+  from: { element: { type: from } },
+  allow: { to: typeof to === 'string' ? { element: { type: to } } : to, ...extra },
+  message,
+})
+
+const ARCHITECTURE_POLICIES = [
+  policy('routes', 'views', 'Routage : vues, index public des modules et socle seulement.'),
+  policy('routes', 'module', 'Routage : vues, index public des modules et socle seulement.'),
+  policy('routes', 'shared', 'Routage : vues, index public des modules et socle seulement.'),
+  policy('views', 'module', 'Vue : index public des modules et socle seulement.'),
+  policy('views', 'shared', 'Vue : index public des modules et socle seulement.'),
+  policy(
+    'views',
+    { element: { type: 'views', captured: { view: '{{ from.element.captured.view }}' } } },
+    'Vue : index public des modules et socle seulement.',
+  ),
+  ...LAYERS.map((layer) =>
+    policy('module', sameModule(layer), 'Index public : seulement les couches de son module.'),
+  ),
+  policy('domain', sameModule('domain'), 'Domaine : seulement le domaine de son module.'),
+  policy('domain', 'shared', 'Domaine : seulement les types du socle.', {
+    dependency: { kind: 'type' },
+  }),
+  policy('application', sameModule('domain'), 'Application : domaine et infrastructure du module.'),
+  policy(
+    'application',
+    sameModule('infrastructure'),
+    'Application : domaine et infrastructure du module.',
+  ),
+  policy('application', 'shared', 'Application : seulement les types du socle.', {
+    dependency: { kind: 'type' },
+  }),
+  policy(
+    'infrastructure',
+    sameModule('domain'),
+    'Infrastructure : domaine du module et client HTTP.',
+  ),
+  policy(
+    'infrastructure',
+    sameModule('infrastructure'),
+    'Infrastructure : domaine du module et client HTTP.',
+  ),
+  policy('infrastructure', 'shared-api', 'Infrastructure : domaine du module et client HTTP.'),
+  policy(
+    'infrastructure',
+    'shared',
+    'Transitoire jusqu’à l’étape (b) : l’arbre des catégories est encore dans le socle.',
+  ),
+  policy('ui', sameModule('domain'), 'Interface : domaine, application et interface du module.'),
+  policy(
+    'ui',
+    sameModule('application'),
+    'Interface : domaine, application et interface du module.',
+  ),
+  policy('ui', sameModule('ui'), 'Interface : domaine, application et interface du module.'),
+  policy('ui', 'shared', 'Interface : domaine, application et interface du module.'),
+  ...MODULES_WITHOUT_APPLICATION.map((module) => ({
+    from: { element: { type: 'ui', captured: { module } } },
+    allow: { to: sameModule('infrastructure') },
+  })),
+  policy('shared', 'shared', 'Socle : n’importe ni module, ni vue, ni routage.'),
+]
 
 export default withNuxt(
   {
@@ -22,7 +112,7 @@ export default withNuxt(
       'playwright-report/**',
       'test-results/**',
       '.lighthouseci/**',
-      'app/core/api/schema.d.ts',
+      'app/shared/api/schema.d.ts',
     ],
   },
   {
@@ -38,7 +128,10 @@ export default withNuxt(
           alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
-      'no-restricted-imports': ['error', { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER] }],
+      'no-restricted-imports': [
+        'error',
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER] },
+      ],
     },
   },
   {
@@ -52,31 +145,68 @@ export default withNuxt(
     },
   },
   {
-    files: ['app/pages/**', 'app/core/**', 'app/features/**', 'app/*.vue', 'server/**'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, DOMAIN_PUBLIC_API] },
+    files: ['app/**/*.ts', 'app/**/*.vue', 'server/**/*.ts'],
+    plugins: { boundaries },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: ['.nuxt/tsconfig.app.json', '.nuxt/tsconfig.server.json'],
+          noWarnOnMultipleProjects: true,
+        },
+      },
+      'boundaries/elements': [
+        ...LAYERS.map((layer) => ({
+          type: layer,
+          pattern: `${MODULES_ROOT}/*/${layer}`,
+          capture: ['module'],
+          partialMatch: false,
+          exclusive: true,
+        })),
+        { type: 'module', pattern: `${MODULES_ROOT}/*`, capture: ['module'], partialMatch: false },
+        { type: 'shared-api', pattern: 'app/shared/api', partialMatch: false, exclusive: true },
+        { type: 'shared', pattern: 'app/shared/*', capture: ['area'], partialMatch: false },
+        { type: 'views', pattern: 'app/views/*', capture: ['view'], partialMatch: false },
+        { type: 'routes', pattern: 'app/pages', partialMatch: false },
+        { type: 'routes', pattern: 'server', partialMatch: false },
+        { type: 'routes', pattern: 'app', partialMatch: false },
       ],
     },
-  },
-  ...DOMAINS.map((domain) => ({
-    files: [`app/domains/${domain}/**`],
     rules: {
-      'no-restricted-imports': [
+      'boundaries/dependencies': [
         'error',
         {
-          patterns: [
-            RELATIVE_DEPTH,
-            ICONS_WRAPPER,
-            { ...DOMAIN_PUBLIC_API, group: ['@/domains/*/*', `!@/domains/${domain}/*`] },
-          ],
+          default: 'disallow',
+          checkInternals: false,
+          message:
+            'Architecture : la couche « {{ from.element.type }} » ne peut pas importer « {{ to.element.type }} ».',
+          policies: ARCHITECTURE_POLICIES,
         },
       ],
     },
-  })),
+  },
   {
-    files: ['app/core/ui/ui-kit/Icon.vue'],
-    rules: { 'no-restricted-imports': 'off', 'vue/multi-word-component-names': 'off' },
+    files: ['app/modules/*/domain/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, FRAMEWORKS_IN_DOMAIN] },
+      ],
+    },
+  },
+  {
+    files: ['tools/**'],
+    rules: { 'no-console': 'off' },
+  },
+  {
+    files: ['app/shared/ui/kit/Icon.vue'],
+    rules: {
+      'no-restricted-imports': ['error', { patterns: [RELATIVE_DEPTH, CAROUSEL_WRAPPER] }],
+      'vue/multi-word-component-names': 'off',
+    },
+  },
+  {
+    files: ['app/shared/ui/carousel/**'],
+    rules: { 'no-restricted-imports': ['error', { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER] }] },
   },
 )

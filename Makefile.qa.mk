@@ -1,9 +1,12 @@
-qa: lint format-check typecheck test-unit ## QA rapide : lint, format, types, tests unitaires
+qa: lint arch-selftest format-check typecheck test-unit ## QA rapide : lint (dont architecture), auto-test des règles, format, types, tests unitaires
 
 qa-full: qa test-e2e test-a11y metrics ## QA complète : QA rapide + e2e + a11y + Lighthouse
 
 lint: ## ESLint
 	yarn lint
+
+arch-selftest: ## Écrit des violations volontaires des règles d'architecture, exige l'échec d'ESLint, puis les retire
+	node tools/archSelftest.ts
 
 lint-fix: ## ESLint avec correction automatique
 	yarn lint:fix
@@ -31,4 +34,4 @@ test-a11y: ## Tests d'accessibilité WCAG 2.1 AA (axe-core + Playwright)
 metrics: build ## Métriques Lighthouse CI (perf ≥ 90, a11y et SEO = 100)
 	CHROME_PATH=$$(node -e 'console.log(require("@playwright/test").chromium.executablePath())') yarn lhci
 
-.PHONY: qa qa-full lint lint-fix format format-check typecheck test test-unit test-e2e test-a11y metrics
+.PHONY: qa qa-full lint arch-selftest lint-fix format format-check typecheck test test-unit test-e2e test-a11y metrics

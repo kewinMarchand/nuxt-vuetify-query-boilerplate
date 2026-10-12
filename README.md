@@ -19,10 +19,10 @@ Les pages de démonstration montrent chaque brique en situation :
 | ----------------------------------------- | ------------------------------------------------------- |
 | Nuxt 4 (SSR), Vue 3                       | Routage, rendu serveur, SEO, routes serveur             |
 | TypeScript 6 (strict), vue-tsc            | Typage                                                  |
-| Vuetify 4                                 | Design system, thème dans `app/core/theme/theme.ts`     |
+| Vuetify 4                                 | Design system, thème dans `app/shared/theme/theme.ts`   |
 | TanStack Vue Query 5                      | Cache et synchronisation des données, compatible SSR    |
 | vee-validate + zod 4                      | Formulaires, validation et types dérivés du même schéma |
-| Embla Carousel 8                          | Carrousel (glisser, swipe, molette), via `features/`    |
+| Embla Carousel 8                          | Carrousel (glisser, swipe, molette), via `shared/ui/`   |
 | @mdi/js                                   | Icônes, via le wrapper `Icon`                           |
 | @nuxt/fonts                               | Police Inter servie localement                          |
 | ESLint 10 (@nuxt/eslint), Prettier, Husky | Qualité du code, vérifiée à chaque commit               |
@@ -59,44 +59,50 @@ Variables d'environnement (`.env`) :
 
 `make help` liste toutes les commandes. Les principales :
 
-| Commande                               | Effet                                                                             |
-| -------------------------------------- | --------------------------------------------------------------------------------- |
-| `make up`                              | Serveur de développement sur le port 3010                                         |
-| `make build` / `make start`            | Build de production, puis le servir                                               |
-| `make qa`                              | QA rapide : lint, format, types, tests unitaires                                  |
-| `make qa-full`                         | QA complète : QA rapide, e2e, accessibilité, Lighthouse                           |
-| `make test-unit`                       | Vitest                                                                            |
-| `make test-e2e`                        | Playwright, desktop et mobile                                                     |
-| `make test-a11y`                       | axe-core, WCAG 2.1 AA, sur chaque page, en mode normal et renforcé                |
-| `make metrics`                         | Lighthouse CI : échoue sous 90 en performance ou sous 100 en accessibilité et SEO |
-| `make api-types`                       | Génère `app/core/api/schema.d.ts` depuis `API_SCHEMA_URL`                         |
-| `make docker-build` / `make docker-up` | Image de production, sur le port `PORT` (3010 par défaut)                         |
+| Commande                               | Effet                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `make up`                              | Serveur de développement sur le port 3010                                                  |
+| `make build` / `make start`            | Build de production, puis le servir                                                        |
+| `make qa`                              | QA rapide : lint (dont architecture), auto-test des règles, format, types, tests unitaires |
+| `make arch-selftest`                   | Écrit des imports interdits, exige l'échec d'ESLint, puis les retire                       |
+| `make qa-full`                         | QA complète : QA rapide, e2e, accessibilité, Lighthouse                                    |
+| `make test-unit`                       | Vitest                                                                                     |
+| `make test-e2e`                        | Playwright, desktop et mobile                                                              |
+| `make test-a11y`                       | axe-core, WCAG 2.1 AA, sur chaque page, en mode normal et renforcé                         |
+| `make metrics`                         | Lighthouse CI : échoue sous 90 en performance ou sous 100 en accessibilité et SEO          |
+| `make api-types`                       | Génère `app/shared/api/schema.d.ts` depuis `API_SCHEMA_URL`                                |
+| `make docker-build` / `make docker-up` | Image de production, sur le port `PORT` (3010 par défaut)                                  |
 
 ## Architecture
 
 ```
 app/
-  pages/       routeur uniquement : chaque page délègue à une vue de domains/
-  error.vue    pages 404 et 500, dans le layout du site
-  domains/     un dossier par domaine de page, avec sa logique métier
+  pages/        routage : chaque page délègue à une vue de views/ ou d'un module
+  app.vue       layout racine (routage)
+  error.vue     pages 404 et 500 (routage), affichage dans views/errors/
+  views/        pages sans métier ou qui composent des modules
+    home/        accueil : hero, carrousel, articles du blog
+    legal/       mentions, données personnelles, déclaration d'accessibilité, plan du site
+    errors/      contenu des pages 404 et 500
+    styleguide/  charte graphique (développement uniquement)
+  modules/      un dossier par sous-domaine métier
     catalog/
-      api/               accès aux données (ici en mémoire)
-      common/models/     types, schéma d'URL zod, fonctions pures de filtre et de tri
-      common/exceptions/
-      services/          règles métier (construction d'une page de catalogue)
-      ui/                composants, dont la vue rendue par la page
-      ui/composables/    état, effets et appels (useCatalog)
-      index.ts           seul export public du domaine
-  features/    briques agnostiques du métier : carrousel, adaptateur de formulaire
-  core/        socle : config, thème, providers, SEO, mode renforcé, layouts, ui-kit
-server/        robots.txt, sitemap.xml, maintenance, compression du HTML
+      domain/            types (namespace Catalog), état de recherche dans l'URL, règles pures
+      infrastructure/    accès aux données, simulateur de l'API dans in-memory/
+      ui/                composants, composables, vue rendue par la page
+      index.ts           seul export public du module
+    blog/, contact/, task/   même découpage, sans application/
+  shared/       socle sans métier : config, thème, providers, SEO, formulaires,
+                kit d'interface, layout, carrousel, mode renforcé
+server/         robots.txt, sitemap.xml, maintenance, compression du HTML (routage)
 tests/
-  e2e/         un fichier par page ou par brique transverse
-  a11y/        audit axe de chaque page, dans les deux modes
-  support/     routes testées, ports, actions partagées
+  e2e/          un fichier par page ou par brique transverse
+  a11y/         audit axe de chaque page, dans les deux modes
+  support/      routes testées, ports, actions partagées
+tools/          archSelftest.ts (auto-test des règles d'architecture)
 ```
 
-Le sens des dépendances est `domains/` vers `features/` vers `core/`, jamais l'inverse. Hors de son propre dossier, un domaine ne s'importe que par son `index.ts`, et une règle ESLint le vérifie.
+Le sens des dépendances est routage vers `views/`, puis vers l'index public des modules, puis vers `shared/`, jamais l'inverse. Un module n'importe jamais un autre module : la composition se fait dans `views/`. À l'intérieur d'un module, `domain/` ne dépend que de lui-même et d'aucun framework. Ces règles sont vérifiées par ESLint (`@boundaries/eslint-plugin`), et `make arch-selftest` prouve qu'elles échouent sur des imports interdits.
 
 Les conventions de code viennent du `CLAUDE.md` global de l'auteur. Le `CLAUDE.md` de ce dépôt note les choix propres au projet, les versions épinglées et les pièges connus.
 
@@ -104,16 +110,16 @@ Les conventions de code viennent du `CLAUDE.md` global de l'auteur. Le `CLAUDE.m
 
 ### Ajouter une page
 
-1. Créer le domaine `app/domains/<nom>/` avec sa vue `ui/<Nom>View.vue` et son `index.ts`.
+1. Créer la vue `app/views/<nom>/<Nom>View.vue` et son `index.ts` (ou, si la page porte un métier propre, un module `app/modules/<nom>/` avec ses couches).
 2. Créer `app/pages/<route>.vue`, qui appelle `usePageSeo` et rend la vue.
-3. Ajouter la route à `app/core/config/navigation.ts` (menu, plan du site, sitemap et fil d'Ariane) et à `tests/support/routes.ts` (tests de réponse, de SEO, d'accessibilité et de débordement).
+3. Ajouter la route à `app/shared/config/navigation.ts` (menu, plan du site, sitemap et fil d'Ariane) et à `tests/support/routes.ts` (tests de réponse, de SEO, d'accessibilité et de débordement).
 4. Écrire `tests/e2e/<route>.e2e.ts` et ajouter l'URL à `.lighthouserc.json`.
 
 ### Charger des données avec TanStack Query
 
-Le pattern est dans `app/domains/tasks/` :
+Le pattern est dans `app/modules/task/` :
 
-- `api/tasksRepository.ts` fournit la donnée. Pour brancher une vraie API, remplacer son contenu par un appel typé, sans toucher à l'UI.
+- `infrastructure/taskRepository.ts` fournit la donnée. Pour brancher une vraie API, remplacer son contenu par un appel typé, sans toucher à l'UI.
 - `ui/composables/useTasks.ts` encapsule `useQuery`, avec une clé de cache exportée et une erreur métier (`TasksLoadError`).
 - `ui/TaskList.vue` affiche les trois états à partir de props, ce qui le rend testable sans réseau.
 - `ui/TasksPanel.vue` relie le composable au composant d'affichage.
@@ -122,16 +128,16 @@ Pour un contenu à indexer, ajouter `onServerPrefetch(() => query.suspense())` d
 
 ### Ajouter un champ de formulaire
 
-1. Ajouter le champ et son message d'erreur dans `app/domains/contact/common/models/contactSchema.ts`. Le type du formulaire en découle.
+1. Ajouter le champ et son message d'erreur dans `app/modules/contact/domain/contactSchema.ts`. Le type du formulaire en découle.
 2. Ajouter `defineField('champ', FIELD_CONFIG)` dans `useContactForm.ts`, puis le `v-text-field` dans `ContactForm.vue` avec `v-model` et `v-bind`. Vuetify relie le message au champ par `aria-describedby`.
 
 ### Ajouter une icône
 
-Importer l'icône `@mdi/js` dans `app/core/ui/ui-kit/Icon.vue` et l'ajouter à `ICONS`. Ne jamais importer `@mdi/js` ailleurs, ESLint le refuse.
+Importer l'icône `@mdi/js` dans `app/shared/ui/kit/Icon.vue` et l'ajouter à `ICONS`. Ne jamais importer `@mdi/js` ailleurs, ESLint le refuse.
 
 ### Ajouter une catégorie au catalogue
 
-Modifier l'arbre `CATEGORY_TREE` de `app/core/config/categories.ts`. Menu, fil d'Ariane, plan du site et sitemap en découlent.
+Modifier l'arbre `CATEGORY_TREE` de `app/shared/config/categories.ts`. Menu, fil d'Ariane, plan du site et sitemap en découlent.
 
 ## Tests
 

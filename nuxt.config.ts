@@ -1,8 +1,8 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
-import { A11Y_MODE_BOOT_SCRIPT, JS_FLAG_SCRIPT } from './app/core/a11y/a11yModeBootScript'
-import { PRIMARY_COLOR } from './app/core/theme/colors'
+import { PRIMARY_COLOR } from './app/shared/theme/colors'
+import { A11Y_MODE_BOOT_SCRIPT, JS_FLAG_SCRIPT } from './app/shared/ui/a11y-mode/a11yModeBootScript'
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-10-01',
@@ -33,11 +33,11 @@ export default defineNuxtConfig({
     compressPublicAssets: { gzip: true, brotli: true },
   },
   plugins: [
-    '@/core/providers/vuetify',
-    '@/core/providers/vueQuery',
-    { src: '@/core/providers/hydrated', mode: 'client' },
+    '@/shared/providers/vuetify',
+    '@/shared/providers/vueQuery',
+    { src: '@/shared/providers/hydrated', mode: 'client' },
   ],
-  css: ['@/core/theme/global.css'],
+  css: ['@/shared/theme/global.css'],
   build: { transpile: ['vuetify'] },
   vite: { vue: { template: { transformAssetUrls } } },
   app: {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usePageSeo } from '@/core/seo'
-import { LegalNoticeView } from '@/domains/legal'
+import { usePageSeo } from '@/shared/seo'
+import { LegalNoticeView } from '@/views/legal'
 
 usePageSeo({
   title: 'Mentions légales',

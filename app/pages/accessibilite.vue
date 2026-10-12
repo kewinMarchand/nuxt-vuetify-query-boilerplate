@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usePageSeo } from '@/core/seo'
-import { AccessibilityStatementView } from '@/domains/legal'
+import { usePageSeo } from '@/shared/seo'
+import { AccessibilityStatementView } from '@/views/legal'
 
 usePageSeo({
   title: 'Déclaration d’accessibilité',

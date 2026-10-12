@@ -1,4 +1,4 @@
-import { ALL_NAVIGATION } from '@/core/config'
+import { ALL_NAVIGATION } from '@/shared/config'
 
 export default defineEventHandler((event) => {
   const { siteUrl } = useRuntimeConfig(event).public

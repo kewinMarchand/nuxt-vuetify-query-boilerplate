@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { createError, useRuntimeConfig } from '#imports'
 
-import { usePageSeo } from '@/core/seo'
-import { StyleguideView } from '@/domains/styleguide'
+import { usePageSeo } from '@/shared/seo'
+import { StyleguideView } from '@/views/styleguide'
 
 if (!useRuntimeConfig().public.devTools) {
   throw createError({ statusCode: 404, fatal: true })

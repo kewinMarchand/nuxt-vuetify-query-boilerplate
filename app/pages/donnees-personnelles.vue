@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usePageSeo } from '@/core/seo'
-import { PersonalDataView } from '@/domains/legal'
+import { usePageSeo } from '@/shared/seo'
+import { PersonalDataView } from '@/views/legal'
 
 usePageSeo({
   title: 'Données personnelles',
