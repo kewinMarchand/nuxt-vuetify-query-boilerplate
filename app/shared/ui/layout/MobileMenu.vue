@@ -49,16 +49,18 @@ watch(isOpen, (open) => {
     <template #activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
+        icon
+        rounded
         variant="outlined"
+        :width="44"
+        :height="44"
         class="requires-js"
+        aria-label="Menu"
         :aria-expanded="isOpen ? 'true' : 'false'"
         :aria-controls="panelId"
         data-testid="layout-mobile-menu-toggle"
       >
-        <template #prepend>
-          <Icon name="menu" />
-        </template>
-        Menu
+        <Icon name="menu" />
       </v-btn>
     </template>
 

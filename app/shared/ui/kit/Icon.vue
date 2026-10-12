@@ -8,15 +8,15 @@ import {
   mdiClose,
   mdiEmailOutline,
   mdiFilterVariant,
+  mdiHuman,
   mdiMenu,
   mdiRefresh,
   mdiViewGridOutline,
   mdiViewListOutline,
-  mdiWheelchairAccessibility,
 } from '@mdi/js'
 
 const ICONS = {
-  accessibility: mdiWheelchairAccessibility,
+  accessibility: mdiHuman,
   'check-circle': mdiCheckCircleOutline,
   'chevron-down': mdiChevronDown,
   'chevron-left': mdiChevronLeft,

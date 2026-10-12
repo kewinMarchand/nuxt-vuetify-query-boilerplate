@@ -132,3 +132,53 @@ test.describe('Libellés de la déclaration d’accessibilité', () => {
     await expect(sitemapEntry).toHaveText('Déclaration d’accessibilité')
   })
 })
+
+test.describe('Header mobile compact', () => {
+  test.skip(({ isMobile }) => !isMobile, 'Header compact réservé aux petits écrans')
+
+  test('logo et deux boutons icône de 44 px sur une seule rangée, menu qui s’ouvre', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 812 })
+    await gotoHydrated(page, '/')
+    const logo = page.getByTestId('layout-logo')
+    const menuToggle = page.getByTestId('layout-mobile-menu-toggle')
+    const a11yToggle = page.getByTestId('a11y-mode-toggle')
+
+    await expect(menuToggle).toHaveAccessibleName('Menu')
+    await expect(a11yToggle).toHaveAccessibleName('Accessibilité renforcée')
+    await expect(a11yToggle).toHaveAttribute('aria-pressed', 'false')
+    await expect(page.getByTestId('a11y-mode-toggle-label')).toBeHidden()
+
+    const boxes = await Promise.all(
+      [logo, menuToggle, a11yToggle].map((item) => item.boundingBox()),
+    )
+    const [logoBox, menuBox, a11yBox] = boxes
+    if (!logoBox || !menuBox || !a11yBox) throw new Error('Élément du header introuvable')
+    for (const button of [menuBox, a11yBox]) {
+      expect(button.width).toBeGreaterThanOrEqual(44)
+      expect(button.height).toBeGreaterThanOrEqual(44)
+      expect(button.y).toBeLessThan(logoBox.y + logoBox.height)
+      expect(button.y + button.height).toBeGreaterThan(logoBox.y)
+    }
+    expect(menuBox.x).toBeGreaterThan(logoBox.x + logoBox.width - 1)
+    expect(a11yBox.x).toBeGreaterThan(menuBox.x)
+
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false')
+    await menuToggle.click()
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'true')
+    await expect(page.getByTestId('layout-mobile-menu')).toBeVisible()
+  })
+})
+
+test.describe('Header desktop', () => {
+  test.skip(({ isMobile }) => isMobile, 'Desktop seulement')
+
+  test('le bouton du mode renforcé garde son libellé visible et le menu mobile est masqué', async ({
+    page,
+  }) => {
+    await gotoHydrated(page, '/')
+    await expect(page.getByTestId('a11y-mode-toggle-label')).toBeVisible()
+    await expect(page.getByTestId('layout-mobile-menu-toggle')).toBeHidden()
+  })
+})

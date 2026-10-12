@@ -46,14 +46,20 @@ const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
 
 .header-logo {
   display: inline-flex;
+  flex: 1 1 0;
   align-items: center;
   gap: 12px;
+  min-width: 0;
   min-height: 44px;
-  margin-right: auto;
   color: inherit;
-  font-size: calc(20px * var(--app-font-scale));
+  font-size: calc(16px * var(--app-font-scale));
   font-weight: 600;
+  line-height: 1.25;
   text-decoration: none;
+}
+
+.header-logo img {
+  flex-shrink: 0;
 }
 
 .header-nav-list,
@@ -73,8 +79,17 @@ const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
   position: relative;
 }
 
+.header-actions {
+  flex-wrap: nowrap;
+}
+
 .header-actions :deep(.v-btn) {
   color: inherit;
+}
+
+.header-actions :deep(.v-btn:focus-visible) {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
 }
 
 html[data-js] .header-nav {
@@ -82,6 +97,13 @@ html[data-js] .header-nav {
 }
 
 @media (min-width: 1024px) {
+  .header-logo {
+    flex: 0 0 auto;
+    margin-right: auto;
+    font-size: calc(20px * var(--app-font-scale));
+    line-height: inherit;
+  }
+
   html[data-js] .header-nav {
     display: block;
   }
