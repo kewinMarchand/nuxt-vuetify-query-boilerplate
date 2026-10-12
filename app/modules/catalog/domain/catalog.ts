@@ -44,7 +44,6 @@ export declare namespace Catalog {
 
   interface FacetValue<TValue extends string> {
     value: TValue
-    label: string
     count: number
   }
 

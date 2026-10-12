@@ -5,7 +5,7 @@ import {
   paginationWindow,
   sortProducts,
 } from './catalogFilters'
-import { DEFAULT_QUERY, EXPOSURE_LABELS, EXPOSURES } from './catalogQuery'
+import { DEFAULT_QUERY, EXPOSURES } from './catalogQuery'
 
 import type { Catalog } from './catalog'
 
@@ -53,10 +53,10 @@ describe('filterProducts', () => {
 describe('countFacet', () => {
   it('compte chaque valeur en ignorant sa propre facette (comptage disjonctif)', () => {
     const query = { ...DEFAULT_QUERY, exposures: ['ombre'], sizes: ['M'] } satisfies Catalog.Query
-    expect(countFacet(PRODUCTS, query, 'exposures', EXPOSURES, EXPOSURE_LABELS)).toEqual([
-      { value: 'soleil', label: 'Soleil', count: 1 },
-      { value: 'mi-ombre', label: 'Mi-ombre', count: 1 },
-      { value: 'ombre', label: 'Ombre', count: 0 },
+    expect(countFacet(PRODUCTS, query, 'exposures', EXPOSURES)).toEqual([
+      { value: 'soleil', count: 1 },
+      { value: 'mi-ombre', count: 1 },
+      { value: 'ombre', count: 0 },
     ])
   })
 })

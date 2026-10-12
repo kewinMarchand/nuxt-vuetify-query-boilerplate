@@ -4,12 +4,7 @@ import {
   paginate,
   sortProducts,
 } from '@/modules/catalog/domain/catalogFilters'
-import {
-  EXPOSURE_LABELS,
-  EXPOSURES,
-  SIZE_LABELS,
-  SIZES,
-} from '@/modules/catalog/domain/catalogQuery'
+import { EXPOSURES, SIZES } from '@/modules/catalog/domain/catalogQuery'
 import { categoryHref } from '@/modules/catalog/domain/categoryPath'
 import { collectLeafSlugs, findCategoryChain } from '@/modules/catalog/domain/categoryTree'
 
@@ -41,8 +36,8 @@ export const buildCatalogPage = (
     page,
     pageCount,
     facets: {
-      exposures: countFacet(branch, query, 'exposures', EXPOSURES, EXPOSURE_LABELS),
-      sizes: countFacet(branch, query, 'sizes', SIZES, SIZE_LABELS),
+      exposures: countFacet(branch, query, 'exposures', EXPOSURES),
+      sizes: countFacet(branch, query, 'sizes', SIZES),
       categories: children.map((child) => ({
         slug: child.slug,
         label: child.label,

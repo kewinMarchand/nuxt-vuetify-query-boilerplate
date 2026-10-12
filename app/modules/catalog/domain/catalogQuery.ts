@@ -6,23 +6,6 @@ export const EXPOSURES: Catalog.Exposure[] = ['soleil', 'mi-ombre', 'ombre']
 export const SIZES: Catalog.Size[] = ['S', 'M', 'L']
 export const SORTS: Catalog.Sort[] = ['pertinence', 'prix-asc', 'prix-desc', 'nom']
 
-export const EXPOSURE_LABELS: Record<Catalog.Exposure, string> = {
-  soleil: 'Soleil',
-  'mi-ombre': 'Mi-ombre',
-  ombre: 'Ombre',
-}
-export const SIZE_LABELS: Record<Catalog.Size, string> = {
-  S: 'Petite (S)',
-  M: 'Moyenne (M)',
-  L: 'Grande (L)',
-}
-export const SORT_LABELS: Record<Catalog.Sort, string> = {
-  pertinence: 'Pertinence',
-  'prix-asc': 'Prix croissant',
-  'prix-desc': 'Prix décroissant',
-  nom: 'Nom',
-}
-
 export const DEFAULT_QUERY: Catalog.Query = {
   exposures: [],
   sizes: [],
@@ -118,46 +101,6 @@ export const clearFilters = (query: Catalog.Query): Catalog.Query => ({
   ...DEFAULT_QUERY,
   view: query.view,
 })
-
-export interface ActiveFilter {
-  id: string
-  label: string
-  query: Catalog.Query
-}
-
-export const describeActiveFilters = (query: Catalog.Query): ActiveFilter[] => [
-  ...query.exposures.map((value) => ({
-    id: `exposition-${value}`,
-    label: EXPOSURE_LABELS[value],
-    query: withFilters(query, { exposures: query.exposures.filter((other) => other !== value) }),
-  })),
-  ...query.sizes.map((value) => ({
-    id: `taille-${value}`,
-    label: SIZE_LABELS[value],
-    query: withFilters(query, { sizes: query.sizes.filter((other) => other !== value) }),
-  })),
-  ...(query.priceMin !== null
-    ? [
-        {
-          id: 'prix-min',
-          label: `Dès ${query.priceMin} €`,
-          query: withFilters(query, { priceMin: null }),
-        },
-      ]
-    : []),
-  ...(query.priceMax !== null
-    ? [
-        {
-          id: 'prix-max',
-          label: `Jusqu’à ${query.priceMax} €`,
-          query: withFilters(query, { priceMax: null }),
-        },
-      ]
-    : []),
-  ...(query.inStock
-    ? [{ id: 'en-stock', label: 'En stock', query: withFilters(query, { inStock: false }) }]
-    : []),
-]
 
 export const toFormFields = (query: Catalog.Query, omitted: string[]) =>
   Object.entries(serializeCatalogQuery({ ...query, page: 1 }))

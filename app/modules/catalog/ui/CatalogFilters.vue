@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 
+import { EXPOSURE_LABELS, SIZE_LABELS } from './labels'
 import { formDataToQuery, toFormFields } from '../domain/catalogQuery'
 
 import type { Catalog } from '../domain/catalog'
@@ -62,7 +63,7 @@ const onChange = (event: Event) => {
             :disabled="option.count === 0 && !query.exposures.includes(option.value)"
             :data-testid="`catalog-filter-exposure-${option.value}`"
           />
-          {{ option.label }} ({{ option.count }})
+          {{ EXPOSURE_LABELS[option.value] }} ({{ option.count }})
         </label>
       </fieldset>
     </details>
@@ -80,7 +81,7 @@ const onChange = (event: Event) => {
             :disabled="option.count === 0 && !query.sizes.includes(option.value)"
             :data-testid="`catalog-filter-size-${option.value}`"
           />
-          {{ option.label }} ({{ option.count }})
+          {{ SIZE_LABELS[option.value] }} ({{ option.count }})
         </label>
       </fieldset>
     </details>

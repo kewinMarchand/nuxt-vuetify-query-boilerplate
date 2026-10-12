@@ -3,7 +3,8 @@ import { computed, useId } from 'vue'
 
 import { Icon } from '@/shared/ui/kit'
 
-import { SORT_LABELS, SORTS, toFormFields } from '../domain/catalogQuery'
+import { SORT_LABELS } from './labels'
+import { SORTS, toFormFields } from '../domain/catalogQuery'
 
 import type { Catalog } from '../domain/catalog'
 

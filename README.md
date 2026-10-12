@@ -87,7 +87,8 @@ app/
     styleguide/  charte graphique (développement uniquement)
   modules/      un dossier par sous-domaine métier
     catalog/
-      domain/            types (namespace Catalog), état de recherche dans l'URL, règles pures
+      domain/            types (namespace Catalog), état de recherche dans l'URL, chemin de catégories
+      application/       cas d'utilisation sans framework : ouvrir une catégorie, charger une page
       infrastructure/    accès aux données, simulateur de l'API dans in-memory/
       ui/                composants, composables, vue rendue par la page
       index.ts           seul export public du module

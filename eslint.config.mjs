@@ -20,21 +20,27 @@ const CAROUSEL_WRAPPER = {
   group: ['embla-carousel', 'embla-carousel-*'],
   message: 'Embla passe par le wrapper @/shared/ui/carousel.',
 }
+const FRAMEWORK_PACKAGES = [
+  'vue',
+  'vue-router',
+  'nuxt',
+  'nuxt/*',
+  '\\#app',
+  '\\#imports',
+  '\\#components',
+  '@tanstack/*',
+  'vuetify',
+  'vuetify/*',
+  'vee-validate',
+]
 const FRAMEWORKS_IN_DOMAIN = {
-  group: [
-    'vue',
-    'vue-router',
-    'nuxt',
-    'nuxt/*',
-    '\\#app',
-    '\\#imports',
-    '\\#components',
-    '@tanstack/*',
-    'vuetify',
-    'vuetify/*',
-    'vee-validate',
-  ],
+  group: FRAMEWORK_PACKAGES,
   message: 'Le domaine ne dépend d’aucun framework : données immuables et fonctions pures.',
+}
+const FRAMEWORKS_IN_APPLICATION = {
+  group: FRAMEWORK_PACKAGES,
+  message:
+    'L’application ne dépend d’aucun framework : elle renvoie une union que la couche de routage traduit.',
 }
 
 const sameModule = (type) => ({
@@ -186,6 +192,15 @@ export default withNuxt(
       'no-restricted-imports': [
         'error',
         { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, FRAMEWORKS_IN_DOMAIN] },
+      ],
+    },
+  },
+  {
+    files: ['app/modules/*/application/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, FRAMEWORKS_IN_APPLICATION] },
       ],
     },
   },

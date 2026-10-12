@@ -27,13 +27,11 @@ export const countFacet = <TValue extends string>(
   query: Catalog.Query,
   facet: FacetKey,
   values: TValue[],
-  labels: Record<TValue, string>,
 ): Catalog.FacetValue<TValue>[] => {
   const candidates = filterProducts(products, query, facet)
   const field = facet === 'exposures' ? 'exposure' : 'size'
   return values.map((value) => ({
     value,
-    label: labels[value],
     count: candidates.filter((product) => product[field] === value).length,
   }))
 }

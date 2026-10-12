@@ -3,13 +3,8 @@ import { computed, onServerPrefetch, watch } from 'vue'
 
 import { createError, showError, useRoute, useRouter } from '#imports'
 
+import { loadCatalogPage, resolveCatalogCategory } from '@/modules/catalog/application/catalogPage'
 import { parseCatalogQuery, serializeCatalogQuery } from '@/modules/catalog/domain/catalogQuery'
-import { resolveCategoryPath } from '@/modules/catalog/domain/categoryPath'
-import { CatalogLoadError } from '@/modules/catalog/infrastructure/CatalogLoadError'
-import {
-  findCatalogPage,
-  findCategoryTree,
-} from '@/modules/catalog/infrastructure/catalogRepository'
 
 import type { Catalog } from '@/modules/catalog/domain/catalog'
 
@@ -23,24 +18,20 @@ export const useCatalog = () => {
   const router = useRouter()
 
   const slugs = computed(() => toSlugs(route.params.slug))
-  const categoryPath = computed(() => resolveCategoryPath(findCategoryTree(), slugs.value))
-  if (!categoryPath.value) throw createError(NOT_FOUND)
-  watch(categoryPath, (path) => {
-    if (!path) showError(NOT_FOUND)
+  const resolution = computed(() => resolveCatalogCategory(slugs.value))
+  const categoryPath = computed(() =>
+    resolution.value.status === 'ok' ? resolution.value.path : null,
+  )
+  if (resolution.value.status === 'not-found') throw createError(NOT_FOUND)
+  watch(resolution, ({ status }) => {
+    if (status === 'not-found') showError(NOT_FOUND)
   })
 
   const query = computed(() => parseCatalogQuery(route.query))
 
   const catalog = useQuery({
     queryKey: ['catalog', slugs, query],
-    queryFn: async () => {
-      try {
-        return await findCatalogPage(slugs.value, query.value)
-      } catch (error) {
-        console.error(error)
-        throw new CatalogLoadError({ cause: error })
-      }
-    },
+    queryFn: () => loadCatalogPage(slugs.value, query.value),
     placeholderData: keepPreviousData,
   })
   onServerPrefetch(() => catalog.suspense())

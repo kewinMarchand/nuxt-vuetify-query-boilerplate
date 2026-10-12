@@ -5,6 +5,7 @@ import { useRoute } from '#imports'
 
 import { useMediaQuery } from '@/shared/ui/composables'
 
+import { describeActiveFilters } from './activeFilters'
 import ActiveFilters from './ActiveFilters.vue'
 import CatalogFilters from './CatalogFilters.vue'
 import CatalogPagination from './CatalogPagination.vue'
@@ -16,7 +17,6 @@ import ProductList from './ProductList.vue'
 import {
   activeFilterCount,
   clearFilters,
-  describeActiveFilters,
   hasActiveFilters,
   withFilters,
 } from '../domain/catalogQuery'
