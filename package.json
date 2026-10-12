@@ -29,6 +29,7 @@
   "description": "Boilerplate Nuxt 4, Vuetify, TanStack Query, vee-validate et zod, avec lint, tests unitaires, e2e, accessibilité et Lighthouse",
   "dependencies": {
     "@mdi/js": "^7.4.47",
+    "@sentry/nuxt": "^11.6.0",
     "@tanstack/vue-query": "^5.104.1",
     "embla-carousel": "^8.6.0",
     "embla-carousel-vue": "^8.6.0",

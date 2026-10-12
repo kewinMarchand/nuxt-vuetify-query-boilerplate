@@ -29,7 +29,10 @@ Boilerplate personnel, transposition Nuxt de `next-mui-query-boilerplate`. Les c
 - **Déclaration d'accessibilité** : libellée « Déclaration d’accessibilité » dans la navigation, le fil d'Ariane et le plan du site. L'état de conformité, calculé depuis `SITE.accessibility`, n'apparaît que dans le lien du footer (`footerLabel`).
 - **Erreurs** : aucune n'est avalée. Les composables de données journalisent l'erreur d'origine (`console.error`) puis lèvent l'erreur métier avec `cause`. L'échec d'écriture du mode renforcé est journalisé en `console.warn`. Les `.catch()` du schéma d'URL zod ne sont pas des erreurs : ils appliquent la règle « valeurs invalides ignorées ».
 - **Ciblage e2e** : les éléments interactifs sont trouvés par `data-testid`, complété par `href` quand plusieurs liens partagent le même identifiant (`linkTo` dans `tests/support/page.ts`), jamais par leur texte.
+- **DSN GlitchTip** : la clé publique d'un DSN au format Sentry n'accepte que des caractères de mot. Un tiret (`cle-factice`) rend le DSN invalide et le SDK s'éteint.
+- **Tests GlitchTip** : la configuration est lue à l'exécution. `tests/e2e/observability.e2e.ts` sert donc le build de la suite principale sur le port 3112 avec des DSN factices et démarre un faux GlitchTip local (port 3113) qui enregistre les enveloppes. Aucune instance réelle n'est contactée, et la suite principale tourne sans variable.
 - **Maintenance** : `MAINTENANCE=1` à l'exécution fait répondre 503 sur toutes les routes, avec `Retry-After` et une page HTML autonome (`server/middleware/maintenance.ts`).
+- **Suivi des erreurs (GlitchTip)** : `@sentry/nuxt`, section 16 de la spec commune, uniquement via `app/shared/observability/` (règle ESLint). Le module Nuxt `@sentry/nuxt/module` n'est pas enregistré : il sert à l'envoi des source maps et à l'injection automatique du SDK au démarrage, deux choses que ce dépôt ne veut pas. Neutre par défaut : sans `NUXT_GLITCHTIP_DSN` ni `NUXT_PUBLIC_GLITCHTIP_DSN` (lus à l'exécution par `runtimeConfig`), aucun SDK n'est importé et aucune requête ne part. Serveur : le plugin Nitro `server/plugins/errorReporting.ts` importe le SDK seulement avec un DSN et remonte les erreurs du hook `error` de Nitro. Navigateur : le plugin client `app/shared/providers/errorReporting.ts` programme le chargement du SDK par import dynamique, à l'inactivité après `load`, sans traçage, sans session ni rejeu, et lui transmet les erreurs des hooks `app:error` et `vue:error` (file d'attente avant le chargement). Filtre commun `shouldReportError` (testé) : ni 4xx (404, 422), ni maintenance 503, ni en-tête `X-Scenario`. Options : `sendDefaultPii: false`, `tracesSampleRate: 0`, corps de requête jamais joints côté serveur (`httpIntegration({ maxRequestBodySize: 'none' })`). Pas de CSP dans ce dépôt : aucune entrée à ajouter.
 
 ## Ports
 
@@ -39,6 +42,8 @@ Boilerplate personnel, transposition Nuxt de `next-mui-query-boilerplate`. Les c
 | Playwright, build avec outils de dev                    | 3110 |
 | Playwright, build de production (404 des routes de dev) | 3111 |
 | Lighthouse CI                                           | 3210 |
+| e2e observabilité, build servi avec un DSN factice      | 3112 |
+| e2e observabilité, faux GlitchTip                       | 3113 |
 
 ## Versions épinglées, et pourquoi
 
@@ -63,6 +68,7 @@ Node imposé : 24.14 (`.nvmrc`). Plusieurs paquets récents exigent 24.15.
 - `embla-carousel`, `embla-carousel-vue`, `embla-carousel-wheel-gestures` : carrousel imposé par la spec commune (glisser, swipe, molette). `embla-carousel` est déclaré en direct parce que le plugin de molette l'attend en peer, il est dédupliqué avec celui de l'adaptateur Vue.
 - `@nuxt/fonts` : équivalent de `next/font`, police servie localement.
 - `vite-plugin-vuetify`, `@vitejs/plugin-vue` : import à la demande des composants Vuetify, au build et dans Vitest.
+- `@sentry/nuxt` 11.6 (dépendance d'exécution) : SDK GlitchTip imposé par la spec (section 16), même version majeure que les dépôts Next et SvelteKit. Côté navigateur, il ne vit que dans un chunk chargé à la demande, après l'affichage et seulement avec un DSN : le JS initial ne gagne que le module de programmation (`errorReporting.client.ts`). Poids du chunk non mesuré (aucun build lancé). Environ 85 Mo installés dans `node_modules/@sentry` et `@sentry-internal`.
 
 ## Règles ESLint propres au projet
 
@@ -73,6 +79,7 @@ Node imposé : 24.14 (`.nvmrc`). Plusieurs paquets récents exigent 24.15.
   - frameworks interdits dans `domain/` et `application/` (`vue`, `vue-router`, `nuxt`, `#app`, `#imports`, `#components`, `@tanstack/*`, `vuetify`, `vee-validate`). Les motifs `#...` sont écrits `\#...` : la syntaxe gitignore de la règle lit un `#` initial comme un commentaire, et la règle était muette sur les imports virtuels de Nuxt (l'auto-test l'a montré).
   - `@mdi/js` interdit hors du wrapper `Icon.vue`.
   - `embla-carousel*` interdit hors de `shared/ui/carousel/`.
+  - `@sentry/*` interdit hors de `shared/observability/`.
   - chemins relatifs à plus d'un niveau interdits.
 - `make arch-selftest` (`tools/archSelftest.ts`, lancé par `make qa`) : écrit une violation volontaire de chaque règle (domaine vers infrastructure par chemin relatif, domaine vers framework et vers `#imports`, application vers framework, module vers module, interface vers infrastructure dans le catalogue, socle vers module en `.ts` et dans un composant `.vue`, vue vers l'intérieur d'un module, routage serveur et routage racine `app/*.vue` vers l'intérieur d'un module, types générés hors infrastructure), exige l'échec d'ESLint avec le message attendu, puis retire le fichier.
 - `no-console` désactivé dans `tools/` : outils en ligne de commande dont la sortie est le résultat.

@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     '@/shared/providers/vuetify',
     '@/shared/providers/vueQuery',
     { src: '@/shared/providers/hydrated', mode: 'client' },
+    { src: '@/shared/providers/errorReporting', mode: 'client' },
   ],
   css: ['@/shared/theme/global.css'],
   build: { transpile: ['vuetify'] },
@@ -57,7 +58,13 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    public: { siteUrl: 'http://localhost:3010', devTools: process.env.NODE_ENV !== 'production' },
+    glitchtipDsn: '',
+    public: {
+      siteUrl: 'http://localhost:3010',
+      devTools: process.env.NODE_ENV !== 'production',
+      glitchtipDsn: '',
+      glitchtipEnvironment: '',
+    },
   },
   fonts: {
     families: [

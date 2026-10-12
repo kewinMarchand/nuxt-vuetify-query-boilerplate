@@ -15,20 +15,21 @@ Les pages de démonstration montrent chaque brique en situation :
 
 ## Stack
 
-| Brique                                    | Rôle                                                    |
-| ----------------------------------------- | ------------------------------------------------------- |
-| Nuxt 4 (SSR), Vue 3                       | Routage, rendu serveur, SEO, routes serveur             |
-| TypeScript 6 (strict), vue-tsc            | Typage                                                  |
-| Vuetify 4                                 | Design system, thème dans `app/shared/theme/theme.ts`   |
-| TanStack Vue Query 5                      | Cache et synchronisation des données, compatible SSR    |
-| vee-validate + zod 4                      | Formulaires, validation et types dérivés du même schéma |
-| Embla Carousel 8                          | Carrousel (glisser, swipe, molette), via `shared/ui/`   |
-| @mdi/js                                   | Icônes, via le wrapper `Icon`                           |
-| @nuxt/fonts                               | Police Inter servie localement                          |
-| ESLint 10 (@nuxt/eslint), Prettier, Husky | Qualité du code, vérifiée à chaque commit               |
-| Vitest 5 + Testing Library                | Tests unitaires et fonctionnels                         |
-| Playwright + axe-core                     | Tests end-to-end et accessibilité, desktop et mobile    |
-| Lighthouse CI                             | Performance, accessibilité, SEO, bonnes pratiques       |
+| Brique                                    | Rôle                                                             |
+| ----------------------------------------- | ---------------------------------------------------------------- |
+| Nuxt 4 (SSR), Vue 3                       | Routage, rendu serveur, SEO, routes serveur                      |
+| TypeScript 6 (strict), vue-tsc            | Typage                                                           |
+| Vuetify 4                                 | Design system, thème dans `app/shared/theme/theme.ts`            |
+| TanStack Vue Query 5                      | Cache et synchronisation des données, compatible SSR             |
+| vee-validate + zod 4                      | Formulaires, validation et types dérivés du même schéma          |
+| Embla Carousel 8                          | Carrousel (glisser, swipe, molette), via `shared/ui/`            |
+| @mdi/js                                   | Icônes, via le wrapper `Icon`                                    |
+| @nuxt/fonts                               | Police Inter servie localement                                   |
+| ESLint 10 (@nuxt/eslint), Prettier, Husky | Qualité du code, vérifiée à chaque commit                        |
+| Vitest 5 + Testing Library                | Tests unitaires et fonctionnels                                  |
+| Playwright + axe-core                     | Tests end-to-end et accessibilité, desktop et mobile             |
+| @sentry/nuxt                              | Suivi des erreurs GlitchTip, activé par variable d'environnement |
+| Lighthouse CI                             | Performance, accessibilité, SEO, bonnes pratiques                |
 
 ## Prérequis
 
@@ -48,12 +49,15 @@ make up        # http://localhost:3010
 
 Variables d'environnement (`.env`) :
 
-| Variable                | Rôle                                                                                 |
-| ----------------------- | ------------------------------------------------------------------------------------ |
-| `NUXT_PUBLIC_SITE_URL`  | URL publique, utilisée pour les URL canoniques, Open Graph, le sitemap et le JSON-LD |
-| `API_SCHEMA_URL`        | Schéma OpenAPI de l'API consommée, lu par `make api-types`                           |
-| `MAINTENANCE`           | `1` pour servir la page de maintenance (503) sur toutes les routes                   |
-| `NUXT_PUBLIC_DEV_TOOLS` | `true` pour ouvrir la charte graphique et la route de test de la 500 hors dev        |
+| Variable                            | Rôle                                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------------------------ |
+| `NUXT_PUBLIC_SITE_URL`              | URL publique, utilisée pour les URL canoniques, Open Graph, le sitemap et le JSON-LD |
+| `API_SCHEMA_URL`                    | Schéma OpenAPI de l'API consommée, lu par `make api-types`                           |
+| `MAINTENANCE`                       | `1` pour servir la page de maintenance (503) sur toutes les routes                   |
+| `NUXT_GLITCHTIP_DSN`                | DSN GlitchTip du serveur. Vide : aucun SDK chargé, aucune requête                    |
+| `NUXT_PUBLIC_GLITCHTIP_DSN`         | DSN GlitchTip du navigateur, SDK chargé après l'affichage. Vide : rien               |
+| `NUXT_PUBLIC_GLITCHTIP_ENVIRONMENT` | Environnement des erreurs (défaut : `development` en dev, `production` sinon)        |
+| `NUXT_PUBLIC_DEV_TOOLS`             | `true` pour ouvrir la charte graphique et la route de test de la 500 hors dev        |
 
 ## Commandes
 

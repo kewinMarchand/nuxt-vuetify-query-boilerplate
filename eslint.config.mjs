@@ -20,6 +20,10 @@ const CAROUSEL_WRAPPER = {
   group: ['embla-carousel', 'embla-carousel-*'],
   message: 'Embla passe par le wrapper @/shared/ui/carousel.',
 }
+const OBSERVABILITY_WRAPPER = {
+  group: ['@sentry/*'],
+  message: 'Le SDK GlitchTip passe par le wrapper @/shared/observability.',
+}
 const FRAMEWORK_PACKAGES = [
   'vue',
   'vue-router',
@@ -131,7 +135,7 @@ export default withNuxt(
       ],
       'no-restricted-imports': [
         'error',
-        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER] },
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, OBSERVABILITY_WRAPPER] },
       ],
     },
   },
@@ -191,7 +195,15 @@ export default withNuxt(
     rules: {
       'no-restricted-imports': [
         'error',
-        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, FRAMEWORKS_IN_DOMAIN] },
+        {
+          patterns: [
+            RELATIVE_DEPTH,
+            ICONS_WRAPPER,
+            CAROUSEL_WRAPPER,
+            OBSERVABILITY_WRAPPER,
+            FRAMEWORKS_IN_DOMAIN,
+          ],
+        },
       ],
     },
   },
@@ -200,7 +212,15 @@ export default withNuxt(
     rules: {
       'no-restricted-imports': [
         'error',
-        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, FRAMEWORKS_IN_APPLICATION] },
+        {
+          patterns: [
+            RELATIVE_DEPTH,
+            ICONS_WRAPPER,
+            CAROUSEL_WRAPPER,
+            OBSERVABILITY_WRAPPER,
+            FRAMEWORKS_IN_APPLICATION,
+          ],
+        },
       ],
     },
   },
@@ -211,12 +231,29 @@ export default withNuxt(
   {
     files: ['app/shared/ui/kit/Icon.vue'],
     rules: {
-      'no-restricted-imports': ['error', { patterns: [RELATIVE_DEPTH, CAROUSEL_WRAPPER] }],
+      'no-restricted-imports': [
+        'error',
+        { patterns: [RELATIVE_DEPTH, CAROUSEL_WRAPPER, OBSERVABILITY_WRAPPER] },
+      ],
       'vue/multi-word-component-names': 'off',
     },
   },
   {
     files: ['app/shared/ui/carousel/**'],
-    rules: { 'no-restricted-imports': ['error', { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER] }] },
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, OBSERVABILITY_WRAPPER] },
+      ],
+    },
+  },
+  {
+    files: ['app/shared/observability/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER] },
+      ],
+    },
   },
 )
