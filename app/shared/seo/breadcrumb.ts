@@ -1,4 +1,4 @@
-import { ALL_NAVIGATION, CATALOG_ROOT, categoryHref, findCategoryPath } from '@/shared/config'
+import { ALL_NAVIGATION } from '@/shared/config'
 
 export declare namespace Breadcrumb {
   interface Item {
@@ -9,24 +9,16 @@ export declare namespace Breadcrumb {
 
 const HOME: Breadcrumb.Item = { label: 'Accueil', href: '/' }
 
-const catalogTrail = (path: string): Breadcrumb.Item[] | null => {
-  const slugs = path.slice(CATALOG_ROOT.href.length).split('/').filter(Boolean)
-  const categories = findCategoryPath(slugs)
-  if (!categories) return null
-  return [
-    CATALOG_ROOT,
-    ...categories.map((category, depth) => ({
-      label: category.label,
-      href: categoryHref(slugs.slice(0, depth + 1)),
-    })),
-  ]
-}
-
-export const buildBreadcrumb = (path: string, currentLabel?: string): Breadcrumb.Item[] => {
+/**
+ * Fil d'Ariane d'une page. Une piste fournie par un module (le catalogue) prime : le socle
+ * ne connaît que la navigation statique et le libellé donné par la page.
+ */
+export const buildBreadcrumb = (
+  path: string,
+  currentLabel?: string,
+  trail?: Breadcrumb.Item[] | null,
+): Breadcrumb.Item[] => {
   if (path === HOME.href) return []
-
-  const isCatalog = path === CATALOG_ROOT.href || path.startsWith(`${CATALOG_ROOT.href}/`)
-  const trail = isCatalog ? catalogTrail(path) : null
   if (trail) return [HOME, ...trail]
 
   const item = ALL_NAVIGATION.find((navigation) => navigation.href === path)

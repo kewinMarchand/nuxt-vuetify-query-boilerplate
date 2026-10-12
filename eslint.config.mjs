@@ -85,11 +85,6 @@ const ARCHITECTURE_POLICIES = [
     'Infrastructure : domaine du module et client HTTP.',
   ),
   policy('infrastructure', 'shared-api', 'Infrastructure : domaine du module et client HTTP.'),
-  policy(
-    'infrastructure',
-    'shared',
-    'Transitoire jusqu’à l’étape (b) : l’arbre des catégories est encore dans le socle.',
-  ),
   policy('ui', sameModule('domain'), 'Interface : domaine, application et interface du module.'),
   policy(
     'ui',

@@ -4,6 +4,7 @@ import { useRuntimeConfig } from '#imports'
 
 import { PAGE_SIZE } from '@/modules/catalog/domain/catalogFilters'
 import { isRefined } from '@/modules/catalog/domain/catalogQuery'
+import { categoryTrail } from '@/modules/catalog/domain/categoryPath'
 import { usePageSeo } from '@/shared/seo'
 
 import type { Catalog } from '@/modules/catalog/domain/catalog'
@@ -12,6 +13,7 @@ import type { ComputedRef, Ref } from 'vue'
 export const useCatalogSeo = (
   path: ComputedRef<string>,
   title: ComputedRef<string>,
+  categoryPath: ComputedRef<Catalog.CategoryPath | null>,
   query: ComputedRef<Catalog.Query>,
   page: Ref<Catalog.Page | undefined>,
   hrefForPage: (page: number) => string,
@@ -27,6 +29,7 @@ export const useCatalogSeo = (
     canonicalPath: () =>
       currentPage.value > 1 ? `${path.value}?page=${currentPage.value}` : path.value,
     noindex: () => isRefined(query.value),
+    breadcrumbTrail: () => (categoryPath.value ? categoryTrail(categoryPath.value) : null),
     pagination: () => ({
       ...(currentPage.value > 1 && { prev: hrefForPage(currentPage.value - 1) }),
       ...(page.value &&

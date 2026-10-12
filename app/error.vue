@@ -3,11 +3,13 @@ import { computed } from 'vue'
 
 import type { NuxtError } from '#app'
 
+import { getCategoryMenu } from '@/modules/catalog'
 import { usePageSeo } from '@/shared/seo'
 import { AppShell } from '@/shared/ui/layout'
 import { ErrorView } from '@/views/errors'
 
 const { error } = defineProps<{ error: NuxtError }>()
+const categoryMenu = getCategoryMenu()
 const isNotFound = computed(() => error.status === 404)
 const title = computed(() => (isNotFound.value ? 'Page introuvable' : 'Une erreur est survenue'))
 
@@ -23,7 +25,7 @@ usePageSeo({
 </script>
 
 <template>
-  <AppShell :current-label="title">
+  <AppShell :category-menu="categoryMenu" :current-label="title">
     <ErrorView :not-found="isNotFound" :title="title" />
   </AppShell>
 </template>

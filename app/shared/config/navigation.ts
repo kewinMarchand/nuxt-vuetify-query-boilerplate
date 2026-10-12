@@ -1,4 +1,3 @@
-import { CATALOG_ROOT, categoryHref, flattenCategories } from './categories'
 import { getComplianceLevel } from './complianceLevel'
 import { SITE } from './site'
 
@@ -6,6 +5,14 @@ export interface NavigationItem {
   href: string
   label: string
   footerLabel?: string
+}
+
+/** Nœud de menu générique : le socle affiche des menus sans connaître le métier qui les fournit. */
+export interface NavigationNode {
+  id: string
+  label: string
+  href: string
+  children: NavigationNode[]
 }
 
 export const MAIN_NAVIGATION: NavigationItem[] = [
@@ -25,16 +32,4 @@ export const LEGAL_NAVIGATION: NavigationItem[] = [
   { href: '/plan-du-site', label: 'Plan du site' },
 ]
 
-export const CATALOG_NAVIGATION: NavigationItem[] = [
-  CATALOG_ROOT,
-  ...flattenCategories().map(({ slugs, node }) => ({
-    href: categoryHref(slugs),
-    label: node.label,
-  })),
-]
-
-export const ALL_NAVIGATION: NavigationItem[] = [
-  ...MAIN_NAVIGATION,
-  ...CATALOG_NAVIGATION,
-  ...LEGAL_NAVIGATION,
-]
+export const ALL_NAVIGATION: NavigationItem[] = [...MAIN_NAVIGATION, ...LEGAL_NAVIGATION]

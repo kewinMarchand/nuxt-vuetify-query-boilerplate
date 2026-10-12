@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { nextTick, ref, useId, useTemplateRef, watch } from 'vue'
 
-import { CATALOG_ROOT, categoryHref } from '@/shared/config'
 import { Icon } from '@/shared/ui/kit'
 
 import { useCategoryMenu } from './composables/useCategoryMenu'
+
+import type { NavigationNode } from '@/shared/config'
+
+const { menu } = defineProps<{ menu: NavigationNode }>()
 
 const panelId = useId()
 const root = useTemplateRef<HTMLElement>('root')
@@ -13,6 +16,7 @@ const columnId = (depth: number) => `${panelId}-${depth}`
 
 const { isOpen, columns, isExpanded, reveal, close, toggle, onKeydown } = useCategoryMenu(
   root,
+  () => menu,
   () => toggleButton.value?.focus(),
 )
 
@@ -29,8 +33,8 @@ watch([isOpen, columns], async () => {
 
 <template>
   <div ref="root" class="category-menu" @keydown="onKeydown">
-    <NuxtLink :to="CATALOG_ROOT.href" class="header-link no-js-only">
-      {{ CATALOG_ROOT.label }}
+    <NuxtLink :to="menu.href" class="header-link no-js-only">
+      {{ menu.label }}
     </NuxtLink>
     <button
       ref="toggleButton"
@@ -41,7 +45,7 @@ watch([isOpen, columns], async () => {
       data-testid="layout-category-menu-toggle"
       @click="toggle"
     >
-      {{ CATALOG_ROOT.label }}
+      {{ menu.label }}
       <Icon name="chevron-down" />
     </button>
     <div
@@ -53,7 +57,7 @@ watch([isOpen, columns], async () => {
       data-testid="layout-category-menu"
     >
       <NuxtLink
-        :to="CATALOG_ROOT.href"
+        :to="menu.href"
         class="category-link category-all"
         data-testid="layout-category-link"
         @click="close"
@@ -67,15 +71,13 @@ watch([isOpen, columns], async () => {
           :key="column.depth"
           class="category-column"
         >
-          <li v-for="node in column.nodes" :key="node.slug">
+          <li v-for="node in column.nodes" :key="node.id">
             <NuxtLink
-              :to="categoryHref([...column.parents, node.slug])"
+              :to="node.href"
               class="category-link"
-              :aria-expanded="
-                node.children.length ? isExpanded(column.depth, node.slug) : undefined
-              "
+              :aria-expanded="node.children.length ? isExpanded(column.depth, node.id) : undefined"
               :aria-controls="
-                isExpanded(column.depth, node.slug) ? columnId(column.depth + 1) : undefined
+                isExpanded(column.depth, node.id) ? columnId(column.depth + 1) : undefined
               "
               data-testid="layout-category-link"
               @mouseenter="reveal(column.depth, node)"

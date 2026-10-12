@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { CATALOG_NAVIGATION, LEGAL_NAVIGATION, MAIN_NAVIGATION } from '@/shared/config'
+import { CATALOG_ROOT, listCatalogLinks } from '@/modules/catalog'
+import { LEGAL_NAVIGATION, MAIN_NAVIGATION } from '@/shared/config'
 
 const SECTIONS = [
   { id: 'plan-du-site-principal', title: 'Pages principales', items: MAIN_NAVIGATION },
-  { id: 'plan-du-site-catalogue', title: 'Catalogue', items: CATALOG_NAVIGATION },
+  {
+    id: 'plan-du-site-catalogue',
+    title: 'Catalogue',
+    items: [CATALOG_ROOT, ...listCatalogLinks()],
+  },
   { id: 'plan-du-site-legal', title: 'Informations légales', items: LEGAL_NAVIGATION },
 ]
 </script>

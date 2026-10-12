@@ -6,6 +6,10 @@ import MobileMenu from './MobileMenu.vue'
 import NavLink from './NavLink.vue'
 import A11yModeToggle from '../a11y-mode/A11yModeToggle.vue'
 
+import type { NavigationNode } from '@/shared/config'
+
+const { categoryMenu } = defineProps<{ categoryMenu: NavigationNode }>()
+
 const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
 </script>
 
@@ -19,12 +23,12 @@ const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
       <nav aria-label="Navigation principale" class="header-nav">
         <ul class="header-nav-list">
           <li v-if="HOME"><NavLink v-bind="HOME" /></li>
-          <li class="header-nav-menu"><CategoryMenu /></li>
+          <li class="header-nav-menu"><CategoryMenu :menu="categoryMenu" /></li>
           <li v-for="item in SECONDARY_NAVIGATION" :key="item.href"><NavLink v-bind="item" /></li>
         </ul>
       </nav>
       <div class="header-actions">
-        <MobileMenu />
+        <MobileMenu :menu="categoryMenu" />
         <A11yModeToggle />
       </div>
     </div>

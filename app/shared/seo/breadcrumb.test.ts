@@ -12,10 +12,15 @@ describe('buildBreadcrumb', () => {
     ])
   })
 
-  it('déroule les catégories du catalogue', () => {
-    expect(
-      buildBreadcrumb('/catalogue/plantes-interieur/feuillages').map(({ label }) => label),
-    ).toEqual(['Accueil', 'Catalogue', 'Plantes d’intérieur', 'Feuillages'])
+  it('préfixe par l’accueil la piste fournie par un module', () => {
+    const trail = [
+      { label: 'Catalogue', href: '/catalogue' },
+      { label: 'Feuillages', href: '/catalogue/feuillages' },
+    ]
+    expect(buildBreadcrumb('/catalogue/feuillages', undefined, trail)).toEqual([
+      { label: 'Accueil', href: '/' },
+      ...trail,
+    ])
   })
 
   it('prend le libellé fourni pour une page hors navigation', () => {

@@ -10,16 +10,16 @@ import {
   SIZE_LABELS,
   SIZES,
 } from '@/modules/catalog/domain/catalogQuery'
-import { categoryHref, CATEGORY_TREE, findCategoryPath } from '@/shared/config'
+import { categoryHref } from '@/modules/catalog/domain/categoryPath'
+import { collectLeafSlugs, findCategoryChain } from '@/modules/catalog/domain/categoryTree'
+
+import { CATEGORY_TREE } from './categories'
 
 import type { Catalog } from '@/modules/catalog/domain/catalog'
 
-const leafSlugs = (node: Catalog.Category): string[] =>
-  node.children.length ? node.children.flatMap(leafSlugs) : [node.slug]
-
 const inBranch = (products: Catalog.Product[], node?: Catalog.Category) => {
   if (!node) return products
-  const slugs = leafSlugs(node)
+  const slugs = collectLeafSlugs(node)
   return products.filter((product) => slugs.includes(product.categorySlug))
 }
 
@@ -28,7 +28,7 @@ export const buildCatalogPage = (
   slugs: string[],
   query: Catalog.Query,
 ): Catalog.Page => {
-  const path = findCategoryPath(slugs) ?? []
+  const path = findCategoryChain(CATEGORY_TREE, slugs) ?? []
   const current = path.at(-1)
   const branch = inBranch(products, current)
   const filtered = filterProducts(branch, query)

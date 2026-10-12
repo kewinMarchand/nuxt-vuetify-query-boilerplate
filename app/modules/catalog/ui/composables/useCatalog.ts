@@ -4,13 +4,14 @@ import { computed, onServerPrefetch, watch } from 'vue'
 import { createError, showError, useRoute, useRouter } from '#imports'
 
 import { parseCatalogQuery, serializeCatalogQuery } from '@/modules/catalog/domain/catalogQuery'
+import { resolveCategoryPath } from '@/modules/catalog/domain/categoryPath'
 import { CatalogLoadError } from '@/modules/catalog/infrastructure/CatalogLoadError'
-import { findCatalogPage } from '@/modules/catalog/infrastructure/catalogRepository'
-import { findCategoryPath } from '@/shared/config'
+import {
+  findCatalogPage,
+  findCategoryTree,
+} from '@/modules/catalog/infrastructure/catalogRepository'
 
 import type { Catalog } from '@/modules/catalog/domain/catalog'
-
-const MAX_DEPTH = 3
 
 const NOT_FOUND = { statusCode: 404, fatal: true }
 
@@ -22,9 +23,7 @@ export const useCatalog = () => {
   const router = useRouter()
 
   const slugs = computed(() => toSlugs(route.params.slug))
-  const categoryPath = computed(() =>
-    slugs.value.length > MAX_DEPTH ? null : findCategoryPath(slugs.value),
-  )
+  const categoryPath = computed(() => resolveCategoryPath(findCategoryTree(), slugs.value))
   if (!categoryPath.value) throw createError(NOT_FOUND)
   watch(categoryPath, (path) => {
     if (!path) showError(NOT_FOUND)

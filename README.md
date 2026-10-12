@@ -137,7 +137,7 @@ Importer l'icône `@mdi/js` dans `app/shared/ui/kit/Icon.vue` et l'ajouter à `I
 
 ### Ajouter une catégorie au catalogue
 
-Modifier l'arbre `CATEGORY_TREE` de `app/shared/config/categories.ts`. Menu, fil d'Ariane, plan du site et sitemap en découlent.
+Modifier l'arbre `CATEGORY_TREE` de `app/modules/catalog/infrastructure/in-memory/categories.ts` (au branchement de l'API, il viendra du fournisseur). Menu, fil d'Ariane, plan du site et sitemap en découlent, par le value object `CategoryPath` du domaine.
 
 ## Tests
 

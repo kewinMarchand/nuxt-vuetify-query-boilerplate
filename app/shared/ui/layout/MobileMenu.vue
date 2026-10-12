@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { ref, useId, useTemplateRef, watch } from 'vue'
 
-import { CATALOG_ROOT, MAIN_NAVIGATION } from '@/shared/config'
+import { MAIN_NAVIGATION } from '@/shared/config'
 import { Icon } from '@/shared/ui/kit'
 
 import { useMenuDrillDown } from './composables/useMenuDrillDown'
+
+import type { NavigationNode } from '@/shared/config'
+
+const { menu } = defineProps<{ menu: NavigationNode }>()
 
 const isOpen = ref(false)
 const titleId = useId()
@@ -17,12 +21,14 @@ const {
   title: levelTitle,
   parentTitle,
   currentHref,
-  openCatalog,
+  openRoot,
   descend,
   back,
   reset,
-  childHref,
-} = useMenuDrillDown(() => title.value?.focus())
+} = useMenuDrillDown(
+  () => menu,
+  () => title.value?.focus(),
+)
 
 const close = () => {
   isOpen.value = false
@@ -88,9 +94,9 @@ watch(isOpen, (open) => {
               type="button"
               class="side-panel-link"
               data-testid="layout-mobile-menu-catalog"
-              @click="openCatalog"
+              @click="openRoot"
             >
-              {{ CATALOG_ROOT.label }}
+              {{ menu.label }}
               <Icon name="chevron-right" />
             </button>
           </li>
@@ -116,20 +122,20 @@ watch(isOpen, (open) => {
           {{ level.length ? 'Voir toute la catégorie' : 'Tout le catalogue' }}
         </NuxtLink>
         <ul class="side-panel-list">
-          <li v-for="node in nodes" :key="node.slug">
+          <li v-for="node in nodes" :key="node.id">
             <button
               v-if="node.children.length"
               type="button"
               class="side-panel-link"
-              :data-testid="`layout-mobile-menu-category-${node.slug}`"
-              @click="descend(node.slug)"
+              :data-testid="`layout-mobile-menu-category-${node.id}`"
+              @click="descend(node.id)"
             >
               {{ node.label }}
               <Icon name="chevron-right" />
             </button>
             <NuxtLink
               v-else
-              :to="childHref(node.slug)"
+              :to="node.href"
               class="side-panel-link"
               data-testid="layout-category-link"
               @click="close"

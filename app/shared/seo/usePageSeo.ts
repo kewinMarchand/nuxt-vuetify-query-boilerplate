@@ -6,6 +6,7 @@ import { SITE } from '@/shared/config'
 
 import { buildBreadcrumb, toBreadcrumbJsonLd } from './breadcrumb'
 
+import type { Breadcrumb } from './breadcrumb'
 import type { MaybeRefOrGetter } from 'vue'
 
 export interface SeoImage {
@@ -22,6 +23,7 @@ export interface PageSeoInput {
   noindex?: MaybeRefOrGetter<boolean>
   canonicalPath?: MaybeRefOrGetter<string>
   breadcrumbLabel?: string
+  breadcrumbTrail?: MaybeRefOrGetter<Breadcrumb.Item[] | null>
   jsonLd?: MaybeRefOrGetter<Record<string, unknown>[]>
   pagination?: MaybeRefOrGetter<{ prev?: string; next?: string }>
 }
@@ -42,7 +44,9 @@ export const usePageSeo = (input: PageSeoInput) => {
   const image = computed(() => toValue(input.image) ?? DEFAULT_IMAGE)
   const prevHref = computed(() => toValue(input.pagination)?.prev)
   const nextHref = computed(() => toValue(input.pagination)?.next)
-  const breadcrumb = computed(() => buildBreadcrumb(route.path, input.breadcrumbLabel))
+  const breadcrumb = computed(() =>
+    buildBreadcrumb(route.path, input.breadcrumbLabel, toValue(input.breadcrumbTrail)),
+  )
   const jsonLd = computed(() => [
     ...(breadcrumb.value.length ? [toBreadcrumbJsonLd(breadcrumb.value, siteUrl)] : []),
     ...(toValue(input.jsonLd) ?? []),

@@ -1,11 +1,23 @@
-import type { CategoryNode } from '@/shared/config'
-
 export declare namespace Catalog {
   type Exposure = 'soleil' | 'mi-ombre' | 'ombre'
   type Size = 'S' | 'M' | 'L'
   type Sort = 'pertinence' | 'prix-asc' | 'prix-desc' | 'nom'
   type View = 'grille' | 'liste'
-  type Category = CategoryNode
+
+  interface Category {
+    slug: string
+    label: string
+    children: Category[]
+  }
+
+  interface CategoryLink {
+    slug: string
+    label: string
+    href: string
+  }
+
+  /** Chaîne des catégories de la racine à la catégorie courante, validée contre l'arbre. */
+  type CategoryPath = CategoryLink[]
 
   interface Product {
     id: string

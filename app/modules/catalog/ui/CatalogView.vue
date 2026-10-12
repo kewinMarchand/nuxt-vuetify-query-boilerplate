@@ -3,7 +3,6 @@ import { computed, nextTick, useTemplateRef, watch } from 'vue'
 
 import { useRoute } from '#imports'
 
-import { CATALOG_ROOT } from '@/shared/config'
 import { useMediaQuery } from '@/shared/ui/composables'
 
 import ActiveFilters from './ActiveFilters.vue'
@@ -21,6 +20,7 @@ import {
   hasActiveFilters,
   withFilters,
 } from '../domain/catalogQuery'
+import { CATALOG_ROOT } from '../domain/categoryPath'
 
 const route = useRoute()
 const { categoryPath, query, catalog, hrefFor, navigate } = useCatalog()
@@ -40,7 +40,7 @@ const activeFilters = computed(() =>
 const clearHref = computed(() => hrefFor(clearFilters(query.value)))
 const hrefForPage = (page: number) => hrefFor({ ...query.value, page })
 
-useCatalogSeo(path, title, query, data, hrefForPage)
+useCatalogSeo(path, title, categoryPath, query, data, hrefForPage)
 
 watch(query, async (next, previous) => {
   const pageChanged =

@@ -7,9 +7,13 @@ import { buildBreadcrumb } from '@/shared/seo'
 
 import type { Breadcrumb } from '@/shared/seo'
 
-const { currentLabel, trail } = defineProps<{ currentLabel?: string; trail?: Breadcrumb.Item[] }>()
+const { currentLabel, trail, pageTrail } = defineProps<{
+  currentLabel?: string
+  trail?: Breadcrumb.Item[]
+  pageTrail?: Breadcrumb.Item[] | null
+}>()
 const route = useRoute()
-const items = computed(() => trail ?? buildBreadcrumb(route.path, currentLabel))
+const items = computed(() => trail ?? buildBreadcrumb(route.path, currentLabel, pageTrail))
 </script>
 
 <template>

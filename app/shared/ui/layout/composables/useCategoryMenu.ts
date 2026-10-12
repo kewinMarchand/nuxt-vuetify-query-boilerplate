@@ -1,37 +1,38 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
-import { CATEGORY_TREE } from '@/shared/config'
-
-import type { CategoryNode } from '@/shared/config'
+import type { NavigationNode } from '@/shared/config'
 import type { Ref } from 'vue'
 
 export interface MenuColumn {
   depth: number
-  parents: string[]
-  nodes: CategoryNode[]
+  nodes: NavigationNode[]
 }
 
-export const useCategoryMenu = (root: Ref<HTMLElement | null>, onEscape: () => void) => {
+export const useCategoryMenu = (
+  root: Ref<HTMLElement | null>,
+  menu: () => NavigationNode,
+  onEscape: () => void,
+) => {
   const isOpen = ref(false)
   const openPath = ref<string[]>([])
 
   const columns = computed<MenuColumn[]>(() => {
-    const result: MenuColumn[] = [{ depth: 0, parents: [], nodes: CATEGORY_TREE }]
-    let nodes = CATEGORY_TREE
-    openPath.value.forEach((slug, depth) => {
-      const node = nodes.find((candidate) => candidate.slug === slug)
+    let nodes = menu().children
+    const result: MenuColumn[] = [{ depth: 0, nodes }]
+    openPath.value.forEach((id, depth) => {
+      const node = nodes.find((candidate) => candidate.id === id)
       if (!node?.children.length) return
       nodes = node.children
-      result.push({ depth: depth + 1, parents: openPath.value.slice(0, depth + 1), nodes })
+      result.push({ depth: depth + 1, nodes })
     })
     return result
   })
 
-  const isExpanded = (depth: number, slug: string) => openPath.value[depth] === slug
+  const isExpanded = (depth: number, id: string) => openPath.value[depth] === id
 
-  const reveal = (depth: number, node: CategoryNode) => {
+  const reveal = (depth: number, node: NavigationNode) => {
     const parents = openPath.value.slice(0, depth)
-    openPath.value = node.children.length ? [...parents, node.slug] : parents
+    openPath.value = node.children.length ? [...parents, node.id] : parents
   }
 
   const close = () => {

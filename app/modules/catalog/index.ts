@@ -1,5 +1,7 @@
 export type { Catalog } from './domain/catalog'
-export { default as CatalogView } from './ui/CatalogView.vue'
+export { CATALOG_ROOT } from './domain/categoryPath'
+export { catalogTrailFor, getCategoryMenu, listCatalogLinks } from './ui/catalogNavigation'
 export { default as ActiveFilters } from './ui/ActiveFilters.vue'
 export { default as CatalogPagination } from './ui/CatalogPagination.vue'
+export { default as CatalogView } from './ui/CatalogView.vue'
 export { default as ProductCard } from './ui/ProductCard.vue'

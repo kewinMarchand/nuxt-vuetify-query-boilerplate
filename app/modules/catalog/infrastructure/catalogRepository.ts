@@ -1,4 +1,5 @@
 import { buildCatalogPage } from './in-memory/catalogPage'
+import { CATEGORY_TREE } from './in-memory/categories'
 import { PRODUCTS } from './in-memory/products'
 
 import type { Catalog } from '../domain/catalog'
@@ -9,3 +10,5 @@ export const findCatalogPage = (slugs: string[], query: Catalog.Query): Promise<
   new Promise((resolve) =>
     setTimeout(() => resolve(buildCatalogPage(PRODUCTS, slugs, query)), LATENCY_MS),
   )
+
+export const findCategoryTree = (): Catalog.Category[] => CATEGORY_TREE
