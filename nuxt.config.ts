@@ -62,6 +62,7 @@ export default defineNuxtConfig({
     glitchtipDsn: '',
     public: {
       siteUrl: 'http://localhost:3010',
+      apiUrl: 'http://localhost:8090',
       devTools: process.env.NODE_ENV !== 'production',
       glitchtipDsn: '',
       glitchtipEnvironment: '',

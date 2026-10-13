@@ -17,13 +17,13 @@ install: ## Construit l'image de dev (Node, Chromium) et installe les dépendanc
 	$(RUN) yarn install --frozen-lockfile
 
 up: ## Lance le serveur de développement en conteneur (http://localhost:$(DEV_PORT), DEV_PORT=3010 par défaut)
-	docker compose run --rm --service-ports node yarn dev --host 0.0.0.0
+	$(RUN) yarn nuxt dev --port $(DEV_PORT)
 
 build: ## Build de production
 	$(RUN) yarn build
 
 start: ## Sert le build de production (http://localhost:$(DEV_PORT))
-	docker compose run --rm --service-ports -e PORT=3010 node yarn start
+	docker compose run --rm -e PORT=$(DEV_PORT) node yarn start
 
 api-types: ## Génère les types TypeScript depuis le schéma OpenAPI (API_SCHEMA_URL)
 	$(RUN) yarn api:types

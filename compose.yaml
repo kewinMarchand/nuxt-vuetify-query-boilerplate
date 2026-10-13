@@ -5,6 +5,7 @@ services:
       - '${PORT:-3010}:3000'
     environment:
       NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL:-http://localhost:3010}
+      NUXT_PUBLIC_API_URL: ${API_URL:-http://localhost:8090}
       NUXT_GLITCHTIP_DSN: ${NUXT_GLITCHTIP_DSN:-}
       NUXT_PUBLIC_GLITCHTIP_DSN: ${NUXT_PUBLIC_GLITCHTIP_DSN:-}
       NUXT_PUBLIC_GLITCHTIP_ENVIRONMENT: ${NUXT_PUBLIC_GLITCHTIP_ENVIRONMENT:-}
@@ -23,11 +24,12 @@ services:
     user: '${UID:-1000}:${GID:-1000}'
     init: true
     ipc: host
-    ports:
-      - '${DEV_PORT:-3010}:3010'
+    network_mode: host
     environment:
       HOME: /tmp
       CI: ${CI:-}
+      NUXT_PUBLIC_API_URL: ${API_URL:-http://localhost:8090}
+      API_SCHEMA_URL: ${API_SCHEMA_URL:-http://localhost:8090/api/docs.jsonopenapi}
     volumes:
       - .:/app
       - node_modules:/app/node_modules

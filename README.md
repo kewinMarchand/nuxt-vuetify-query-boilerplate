@@ -49,21 +49,22 @@ make install   # image de dev (Node, Chromium) et dépendances
 make up        # http://localhost:3010, rechargement à chaud
 ```
 
-Le port publié vient de `DEV_PORT` (3010 par défaut) : `DEV_PORT=3160 make up` sert l'application sur http://localhost:3160 si le 3010 est déjà pris. Il vaut aussi pour `make start`.
+Le port vient de `DEV_PORT` (3010 par défaut), pour `make up` comme pour `make start`. Le conteneur partage le réseau de la machine. Le navigateur appelle l'API directement : un autre port doit être autorisé par la configuration CORS de l'API.
 
 Variables d'environnement (`.env`) :
 
-| Variable                            | Rôle                                                                                         |
-| ----------------------------------- | -------------------------------------------------------------------------------------------- |
-| `NUXT_PUBLIC_SITE_URL`              | URL publique, utilisée pour les URL canoniques, Open Graph, le sitemap et le JSON-LD         |
-| `API_SCHEMA_URL`                    | Schéma OpenAPI de l'API consommée, lu par `make api-types`                                   |
-| `MAINTENANCE`                       | `1` pour servir la page de maintenance (503) sur toutes les routes                           |
-| `NUXT_GLITCHTIP_DSN`                | DSN GlitchTip du serveur. Vide : aucun SDK chargé, aucune requête                            |
-| `NUXT_PUBLIC_GLITCHTIP_DSN`         | DSN GlitchTip du navigateur, SDK chargé après l'affichage. Vide : rien                       |
-| `NUXT_PUBLIC_GLITCHTIP_ENVIRONMENT` | Environnement des erreurs (défaut : `development` en dev, `production` sinon)                |
-| `NUXT_PUBLIC_MATOMO_URL`            | URL de l'instance Matomo, mesure d'audience sans cookie. Vide : aucun script, aucune requête |
-| `NUXT_PUBLIC_MATOMO_SITE_ID`        | Identifiant du site dans Matomo                                                              |
-| `NUXT_PUBLIC_DEV_TOOLS`             | `true` pour ouvrir la charte graphique et la route de test de la 500 hors dev                |
+| Variable                            | Rôle                                                                                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `NUXT_PUBLIC_SITE_URL`              | URL publique, utilisée pour les URL canoniques, Open Graph, le sitemap et le JSON-LD                                                 |
+| `API_URL`                           | Origine de l'API : `http://localhost:8090` (API Platform, défaut) ou `http://localhost:8091` (Hono), même contrat. Lue à l'exécution |
+| `API_SCHEMA_URL`                    | Schéma OpenAPI de l'API consommée, lu par `make api-types`                                                                           |
+| `MAINTENANCE`                       | `1` pour servir la page de maintenance (503) sur toutes les routes                                                                   |
+| `NUXT_GLITCHTIP_DSN`                | DSN GlitchTip du serveur. Vide : aucun SDK chargé, aucune requête                                                                    |
+| `NUXT_PUBLIC_GLITCHTIP_DSN`         | DSN GlitchTip du navigateur, SDK chargé après l'affichage. Vide : rien                                                               |
+| `NUXT_PUBLIC_GLITCHTIP_ENVIRONMENT` | Environnement des erreurs (défaut : `development` en dev, `production` sinon)                                                        |
+| `NUXT_PUBLIC_MATOMO_URL`            | URL de l'instance Matomo, mesure d'audience sans cookie. Vide : aucun script, aucune requête                                         |
+| `NUXT_PUBLIC_MATOMO_SITE_ID`        | Identifiant du site dans Matomo                                                                                                      |
+| `NUXT_PUBLIC_DEV_TOOLS`             | `true` pour ouvrir la charte graphique et la route de test de la 500 hors dev                                                        |
 
 ## Commandes
 

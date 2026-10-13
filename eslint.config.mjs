@@ -25,6 +25,10 @@ const OBSERVABILITY_WRAPPER = {
   group: ['@sentry/*'],
   message: 'Le SDK GlitchTip passe par le wrapper @/shared/observability.',
 }
+const API_CLIENT_WRAPPER = {
+  group: ['openapi-fetch'],
+  message: 'L’API passe par le client typé @/shared/api/client.',
+}
 const FRAMEWORK_PACKAGES = [
   'vue',
   'vue-router',
@@ -136,7 +140,15 @@ export default withNuxt(
       ],
       'no-restricted-imports': [
         'error',
-        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, OBSERVABILITY_WRAPPER] },
+        {
+          patterns: [
+            RELATIVE_DEPTH,
+            ICONS_WRAPPER,
+            CAROUSEL_WRAPPER,
+            OBSERVABILITY_WRAPPER,
+            API_CLIENT_WRAPPER,
+          ],
+        },
       ],
     },
   },
@@ -202,6 +214,7 @@ export default withNuxt(
             ICONS_WRAPPER,
             CAROUSEL_WRAPPER,
             OBSERVABILITY_WRAPPER,
+            API_CLIENT_WRAPPER,
             FRAMEWORKS_IN_DOMAIN,
           ],
         },
@@ -219,6 +232,7 @@ export default withNuxt(
             ICONS_WRAPPER,
             CAROUSEL_WRAPPER,
             OBSERVABILITY_WRAPPER,
+            API_CLIENT_WRAPPER,
             FRAMEWORKS_IN_APPLICATION,
           ],
         },
@@ -235,14 +249,16 @@ export default withNuxt(
   },
   {
     files: ['tools/icons.ts'],
-    rules: { 'no-restricted-imports': ['error', { patterns: [RELATIVE_DEPTH] }] },
+    rules: {
+      'no-restricted-imports': ['error', { patterns: [RELATIVE_DEPTH, API_CLIENT_WRAPPER] }],
+    },
   },
   {
     files: ['app/shared/ui/carousel/**'],
     rules: {
       'no-restricted-imports': [
         'error',
-        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, OBSERVABILITY_WRAPPER] },
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, OBSERVABILITY_WRAPPER, API_CLIENT_WRAPPER] },
       ],
     },
   },
@@ -251,7 +267,16 @@ export default withNuxt(
     rules: {
       'no-restricted-imports': [
         'error',
-        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER] },
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, API_CLIENT_WRAPPER] },
+      ],
+    },
+  },
+  {
+    files: ['app/shared/api/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, OBSERVABILITY_WRAPPER] },
       ],
     },
   },
