@@ -163,7 +163,7 @@ L'arbre vient de l'API (`GET /api/categories`) : une catégorie s'ajoute côté 
 
 ## Intégration continue
 
-`.github/workflows/ci.yml` lance `make install`, `make qa`, puis les tests e2e, accessibilité et Lighthouse, à chaque push sur `main` et sur chaque pull request. En cas d'échec, le rapport Playwright est joint au run.
+`.github/workflows/ci.yml` lance `make install`, `make qa`, puis, contre l'API Hono clonée et lancée dans le job (`API_URL=http://localhost:8091`), les tests e2e, accessibilité et Lighthouse, à chaque push sur `main` et sur chaque pull request. En cas d'échec, le rapport Playwright est joint au run.
 
 ## Démarrer un projet à partir de ce dépôt
 
