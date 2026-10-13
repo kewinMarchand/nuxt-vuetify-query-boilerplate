@@ -20,7 +20,7 @@ const VIOLATIONS: readonly Violation[] = [
   {
     rule: 'domaine vers infrastructure, par chemin relatif',
     file: 'app/modules/catalog/domain/archSelftestViolation.ts',
-    source: "export { findCatalogPage } from '../infrastructure/catalogRepository'\n",
+    source: "export { createCatalogRepository } from '../infrastructure/catalogRepository'\n",
     expected: 'la couche « domain » ne peut pas importer « infrastructure »',
   },
   {
@@ -51,7 +51,7 @@ const VIOLATIONS: readonly Violation[] = [
     rule: 'interface vers infrastructure dans un module à couche application',
     file: 'app/modules/catalog/ui/archSelftestViolation.ts',
     source:
-      "export { findCatalogPage } from '@/modules/catalog/infrastructure/catalogRepository'\n",
+      "export { createCatalogRepository } from '@/modules/catalog/infrastructure/catalogRepository'\n",
     expected: 'la couche « ui » ne peut pas importer « infrastructure »',
   },
   {
@@ -70,20 +70,20 @@ const VIOLATIONS: readonly Violation[] = [
   {
     rule: 'vue vers intérieur de module',
     file: 'app/views/home/archSelftestViolation.ts',
-    source: "export { findAllTasks } from '@/modules/task/infrastructure/taskRepository'\n",
+    source: "export { useTaskRepository } from '@/modules/task/infrastructure/taskRepository'\n",
     expected: 'la couche « views » ne peut pas importer « infrastructure »',
   },
   {
     rule: 'routage vers intérieur de module',
     file: 'server/archSelftestViolation.ts',
-    source: "export { findAllTasks } from '@/modules/task/infrastructure/taskRepository'\n",
+    source: "export { useTaskRepository } from '@/modules/task/infrastructure/taskRepository'\n",
     expected: 'la couche « routes » ne peut pas importer « infrastructure »',
   },
   {
     rule: 'routage racine (app.vue, error.vue) vers intérieur de module',
     file: 'app/ArchSelftestViolation.vue',
     source:
-      '<script setup lang="ts">\nimport { findAllTasks } from \'@/modules/task/infrastructure/taskRepository\'\n\nvoid findAllTasks()\n</script>\n\n<template>\n  <div />\n</template>\n',
+      '<script setup lang="ts">\nimport { useTaskRepository } from \'@/modules/task/infrastructure/taskRepository\'\n\nvoid useTaskRepository()\n</script>\n\n<template>\n  <div />\n</template>\n',
     expected: 'la couche « routes » ne peut pas importer « infrastructure »',
   },
   {

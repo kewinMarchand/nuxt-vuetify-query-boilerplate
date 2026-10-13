@@ -4,12 +4,12 @@ import { computed } from 'vue'
 
 import { useRoute } from '#imports'
 
-import { catalogTrailFor, getCategoryMenu } from '@/modules/catalog'
+import { useCatalogNavigation } from '@/modules/catalog'
 import { AppShell } from '@/shared/ui/layout'
 
 const route = useRoute()
-const categoryMenu = getCategoryMenu()
-const breadcrumbTrail = computed(() => catalogTrailFor(route.path))
+const { categoryMenu, trailFor } = await useCatalogNavigation()
+const breadcrumbTrail = computed(() => trailFor(route.path))
 </script>
 
 <template>

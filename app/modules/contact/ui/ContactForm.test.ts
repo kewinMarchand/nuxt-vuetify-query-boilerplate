@@ -5,6 +5,14 @@ import { renderWithProviders } from '@/shared/testing/renderWithProviders'
 
 import ContactForm from './ContactForm.vue'
 
+import type { ContactSendResult } from '@/modules/contact/infrastructure/contactRepository'
+
+const send = vi.fn(async (): Promise<ContactSendResult> => ({ status: 'sent' }))
+
+vi.mock('@/modules/contact/infrastructure/contactRepository', () => ({
+  useContactRepository: () => ({ send }),
+}))
+
 const field = (testId: string) => within(screen.getByTestId(testId)).getByRole('textbox')
 
 describe('ContactForm', () => {
@@ -25,5 +33,22 @@ describe('ContactForm', () => {
     await userEvent.click(screen.getByTestId('contact-submit'))
 
     expect(await screen.findByTestId('contact-success')).toBeInTheDocument()
+  })
+
+  it('relaie sous le champ la violation 422 renvoyée par l’API', async () => {
+    send.mockResolvedValueOnce({
+      status: 'invalid',
+      fieldErrors: [{ field: 'name', message: 'Votre nom ne doit pas dépasser 255 caractères.' }],
+    })
+    renderWithProviders(ContactForm)
+    await userEvent.type(field('contact-name'), 'Ada')
+    await userEvent.type(field('contact-email'), 'ada@exemple.fr')
+    await userEvent.type(field('contact-message'), 'Bonjour, ceci est un message.')
+    await userEvent.click(screen.getByTestId('contact-submit'))
+
+    const name = field('contact-name')
+    await vi.waitFor(() => expect(name).toHaveAttribute('aria-invalid', 'true'))
+    expect(name).toHaveAccessibleDescription('Votre nom ne doit pas dépasser 255 caractères.')
+    expect(screen.queryByTestId('contact-success')).not.toBeInTheDocument()
   })
 })

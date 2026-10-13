@@ -1,2 +1,3 @@
+export { fetchCatalogLinks } from './application/catalogNavigation'
 export { CATALOG_ROOT } from './domain/categoryPath'
-export { listCatalogLinks } from './application/catalogNavigation'
+export { serverCatalogRepository } from './infrastructure/catalogRepository'

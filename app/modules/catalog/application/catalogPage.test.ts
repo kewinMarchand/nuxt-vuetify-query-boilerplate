@@ -1,18 +1,34 @@
 import { CatalogLoadError } from './CatalogLoadError'
 import { loadCatalogPage, resolveCatalogCategory } from './catalogPage'
 import { DEFAULT_QUERY } from '../domain/catalogQuery'
-import { findCatalogPage } from '../infrastructure/catalogRepository'
 
-import type * as CatalogRepository from '../infrastructure/catalogRepository'
+import type { Catalog } from '../domain/catalog'
+import type { CatalogRepository } from '../infrastructure/catalogRepository'
 
-vi.mock('../infrastructure/catalogRepository', async (importOriginal) => {
-  const original = await importOriginal<typeof CatalogRepository>()
-  return { ...original, findCatalogPage: vi.fn(original.findCatalogPage) }
+const TREE: Catalog.Category[] = [
+  {
+    slug: 'plantes-interieur',
+    label: "Plantes d'intérieur",
+    children: [{ slug: 'feuillages', label: 'Feuillages', children: [] }],
+  },
+]
+
+const PAGE: Catalog.Page = {
+  items: [],
+  total: 0,
+  page: 1,
+  pageCount: 1,
+  facets: { exposures: [], sizes: [], categories: [] },
+}
+
+const repository = (findCatalogPage: CatalogRepository['findCatalogPage']): CatalogRepository => ({
+  findCategoryTree: async () => TREE,
+  findCatalogPage,
 })
 
 describe('resolveCatalogCategory', () => {
   it('résout une catégorie connue en chemin de catégories', () => {
-    const resolution = resolveCatalogCategory(['plantes-interieur', 'feuillages'])
+    const resolution = resolveCatalogCategory(TREE, ['plantes-interieur', 'feuillages'])
 
     expect(resolution.status).toBe('ok')
     if (resolution.status !== 'ok') throw new Error('chemin attendu')
@@ -20,23 +36,32 @@ describe('resolveCatalogCategory', () => {
   })
 
   it('déclare introuvables une catégorie inconnue et un chemin trop profond', () => {
-    expect(resolveCatalogCategory(['inconnue'])).toEqual({ status: 'not-found' })
-    expect(resolveCatalogCategory(['a', 'b', 'c', 'd'])).toEqual({ status: 'not-found' })
+    expect(resolveCatalogCategory(TREE, ['inconnue'])).toEqual({ status: 'not-found' })
+    expect(resolveCatalogCategory(TREE, ['a', 'b', 'c', 'd'])).toEqual({ status: 'not-found' })
   })
 })
 
 describe('loadCatalogPage', () => {
   it('renvoie la page de résultats du dépôt', async () => {
-    const page = await loadCatalogPage(['plantes-aquatiques'], DEFAULT_QUERY)
-    expect(page.total).toBe(3)
+    const findCatalogPage = vi.fn(async () => PAGE)
+
+    expect(await loadCatalogPage(repository(findCatalogPage), ['feuillages'], DEFAULT_QUERY)).toBe(
+      PAGE,
+    )
+    expect(findCatalogPage).toHaveBeenCalledWith(['feuillages'], DEFAULT_QUERY)
   })
 
   it('traduit un échec du dépôt en erreur de chargement qui garde la cause', async () => {
     const failure = new Error('panne')
-    vi.mocked(findCatalogPage).mockRejectedValueOnce(failure)
     vi.spyOn(console, 'error').mockImplementationOnce(() => {})
 
-    const error = await loadCatalogPage([], DEFAULT_QUERY).catch((caught: unknown) => caught)
+    const error = await loadCatalogPage(
+      repository(async () => {
+        throw failure
+      }),
+      [],
+      DEFAULT_QUERY,
+    ).catch((caught: unknown) => caught)
 
     expect(error).toBeInstanceOf(CatalogLoadError)
     expect(error).toMatchObject({

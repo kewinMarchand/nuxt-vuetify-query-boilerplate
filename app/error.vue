@@ -3,13 +3,13 @@ import { computed } from 'vue'
 
 import type { NuxtError } from '#app'
 
-import { getCategoryMenu } from '@/modules/catalog'
+import { useCatalogNavigation } from '@/modules/catalog'
 import { usePageSeo } from '@/shared/seo'
 import { AppShell } from '@/shared/ui/layout'
 import { ErrorView } from '@/views/errors'
 
 const { error } = defineProps<{ error: NuxtError }>()
-const categoryMenu = getCategoryMenu()
+const { categoryMenu } = await useCatalogNavigation()
 const isNotFound = computed(() => error.status === 404)
 const title = computed(() => (isNotFound.value ? 'Page introuvable' : 'Une erreur est survenue'))
 

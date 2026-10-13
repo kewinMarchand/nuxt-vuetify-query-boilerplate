@@ -1,32 +1,16 @@
-import type { Article } from '../domain/article'
+import { ApiError } from '@/shared/api/client'
+import { useApiClient } from '@/shared/api/useApiClient'
 
-const ARTICLES: Article.Entity[] = [
-  {
-    id: '1',
-    title: 'Structurer un projet Nuxt par domaines',
-    excerpt:
-      'Routage pur, domaines métier et socle transverse : une page, une vue, un seul export public.',
-    publishedAt: '2026-09-28',
-    illustration: 'blog-1',
-  },
-  {
-    id: '2',
-    title: 'Rendre un carrousel accessible sans dépendance',
-    excerpt: 'Scroll snap, boutons explicites, rôles ARIA et aucun défilement automatique.',
-    publishedAt: '2026-09-14',
-    illustration: 'blog-2',
-  },
-  {
-    id: '3',
-    title: 'TanStack Query et le rendu serveur',
-    excerpt:
-      'Préchargement côté serveur, état déshydraté dans la page et réhydratation au démarrage.',
-    publishedAt: '2026-09-02',
-    illustration: 'blog-3',
-  },
-]
+import { toArticle } from './http/articleTranslation'
 
-const LATENCY_MS = import.meta.client ? 300 : 0
-
-export const findLatestArticles = (): Promise<Article.Entity[]> =>
-  new Promise((resolve) => setTimeout(() => resolve(ARTICLES), LATENCY_MS))
+/** Dépôt de la requête en cours, à créer dans un `setup`. */
+export const useArticleRepository = () => {
+  const api = useApiClient()
+  return {
+    findLatest: async () => {
+      const { data, response } = await api.GET('/api/articles')
+      if (!data) throw new ApiError(response)
+      return data.map(toArticle)
+    },
+  }
+}

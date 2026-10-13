@@ -1,21 +1,24 @@
 <script setup lang="ts">
-import { CATALOG_ROOT, listCatalogLinks } from '@/modules/catalog'
+import { computed } from 'vue'
+
+import { CATALOG_ROOT, useCatalogNavigation } from '@/modules/catalog'
 import { LEGAL_NAVIGATION, MAIN_NAVIGATION } from '@/shared/config'
 
-const SECTIONS = [
+const { catalogLinks } = await useCatalogNavigation()
+const sections = computed(() => [
   { id: 'plan-du-site-principal', title: 'Pages principales', items: MAIN_NAVIGATION },
   {
     id: 'plan-du-site-catalogue',
     title: 'Catalogue',
-    items: [CATALOG_ROOT, ...listCatalogLinks()],
+    items: [CATALOG_ROOT, ...catalogLinks.value],
   },
   { id: 'plan-du-site-legal', title: 'Informations légales', items: LEGAL_NAVIGATION },
-]
+])
 </script>
 
 <template>
   <h1>Plan du site</h1>
-  <section v-for="section in SECTIONS" :key="section.id" :aria-labelledby="section.id">
+  <section v-for="section in sections" :key="section.id" :aria-labelledby="section.id">
     <h2 :id="section.id">{{ section.title }}</h2>
     <ul class="sitemap-list">
       <li v-for="item in section.items" :key="item.href" data-testid="legal-sitemap-item">

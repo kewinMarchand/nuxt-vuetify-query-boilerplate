@@ -1,12 +1,16 @@
-import type { Task } from '../domain/task'
+import { ApiError } from '@/shared/api/client'
+import { useApiClient } from '@/shared/api/useApiClient'
 
-const TASKS: Task.Entity[] = [
-  { id: '1', title: 'Brancher la vraie API', done: false },
-  { id: '2', title: 'Générer les types OpenAPI', done: false },
-  { id: '3', title: 'Lancer make qa', done: true },
-]
+import { toTask } from './http/taskTranslation'
 
-const LATENCY_MS = import.meta.client ? 300 : 0
-
-export const findAllTasks = (): Promise<Task.Entity[]> =>
-  new Promise((resolve) => setTimeout(() => resolve(TASKS), LATENCY_MS))
+/** Dépôt de la requête en cours, à créer dans un `setup`. Les tâches se chargent dans le navigateur. */
+export const useTaskRepository = () => {
+  const api = useApiClient()
+  return {
+    findAll: async () => {
+      const { data, response } = await api.GET('/api/tasks')
+      if (!data) throw new ApiError(response)
+      return data.map(toTask)
+    },
+  }
+}

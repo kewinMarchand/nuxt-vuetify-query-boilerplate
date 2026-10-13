@@ -1,8 +1,9 @@
 import { useMutation } from '@tanstack/vue-query'
 import { useForm } from 'vee-validate'
+import { computed } from 'vue'
 
 import { contactSchema } from '@/modules/contact/domain/contactSchema'
-import { sendContactMessage } from '@/modules/contact/infrastructure/sendContactMessage'
+import { useContactRepository } from '@/modules/contact/infrastructure/contactRepository'
 import { toTypedSchema } from '@/shared/forms'
 
 import type { Contact } from '@/modules/contact/domain/contactSchema'
@@ -19,7 +20,8 @@ const FIELD_CONFIG = {
 }
 
 export const useContactForm = () => {
-  const { defineField, handleSubmit, resetForm } = useForm({
+  const repository = useContactRepository()
+  const { defineField, handleSubmit, resetForm, setFieldError } = useForm({
     validationSchema: toTypedSchema(contactSchema),
     initialValues: DEFAULT_VALUES,
   })
@@ -28,10 +30,14 @@ export const useContactForm = () => {
   const [email, emailProps] = defineField('email', FIELD_CONFIG)
   const [message, messageProps] = defineField('message', FIELD_CONFIG)
 
-  const { mutate, isPending, isSuccess, isError } = useMutation({
-    mutationFn: sendContactMessage,
-    onSuccess: () => resetForm({ values: DEFAULT_VALUES }),
+  const { mutate, isPending, isError, data } = useMutation({
+    mutationFn: repository.send,
+    onSuccess: (result) => {
+      if (result.status === 'sent') return resetForm({ values: DEFAULT_VALUES })
+      for (const { field, message } of result.fieldErrors) setFieldError(field, message)
+    },
   })
+  const isSuccess = computed(() => data.value?.status === 'sent')
 
   const onSubmit = handleSubmit((values) => mutate(values))
 

@@ -103,7 +103,7 @@ app/
     catalog/
       domain/            types (namespace Catalog), état de recherche dans l'URL, chemin de catégories, prix
       application/       cas d'utilisation sans framework : ouvrir une catégorie, charger une page
-      infrastructure/    accès aux données, simulateur de l'API dans in-memory/ (recherche, jeu de données)
+      infrastructure/    dépôt (client typé de l'API) et traduction dans http/ (couche anti-corruption)
       ui/                composants, composables, vue rendue par la page
       index.ts           seul export public du module
     blog/, contact/, task/   même découpage, sans application/
@@ -134,7 +134,7 @@ Les conventions de code viennent du `CLAUDE.md` global de l'auteur. Le `CLAUDE.m
 
 Le pattern est dans `app/modules/task/` :
 
-- `infrastructure/taskRepository.ts` fournit la donnée. Pour brancher une vraie API, remplacer son contenu par un appel typé, sans toucher à l'UI.
+- `infrastructure/taskRepository.ts` appelle l'API par le client typé et `infrastructure/http/taskTranslation.ts` traduit la réponse vers le domaine. L'interface ne connaît pas le contrat.
 - `ui/composables/useTasks.ts` encapsule `useQuery`, avec une clé de cache exportée et une erreur métier (`TasksLoadError`).
 - `ui/TaskList.vue` affiche les trois états à partir de props, ce qui le rend testable sans réseau.
 - `ui/TasksPanel.vue` relie le composable au composant d'affichage.
@@ -152,7 +152,7 @@ Ajouter son nom Lucide dans `icons.json`, puis lancer `make icons` : le sprite `
 
 ### Ajouter une catégorie au catalogue
 
-Modifier l'arbre `CATEGORY_TREE` de `app/modules/catalog/infrastructure/in-memory/categories.ts` (au branchement de l'API, il viendra du fournisseur). Menu, fil d'Ariane, plan du site et sitemap en découlent, par le value object `CategoryPath` du domaine.
+L'arbre vient de l'API (`GET /api/categories`) : une catégorie s'ajoute côté API. Menu, fil d'Ariane, plan du site et sitemap en découlent, par le value object `CategoryPath` du domaine.
 
 ## Tests
 

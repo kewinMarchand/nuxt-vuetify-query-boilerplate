@@ -3,8 +3,11 @@ import { computed, onServerPrefetch, watch } from 'vue'
 
 import { createError, showError, useRoute, useRouter } from '#imports'
 
-import { loadCatalogPage, resolveCatalogCategory } from '@/modules/catalog/application/catalogPage'
+import { resolveCatalogCategory } from '@/modules/catalog/application/catalogPage'
+import { useCatalogUseCases } from '@/modules/catalog/application/useCatalogUseCases'
 import { parseCatalogQuery, serializeCatalogQuery } from '@/modules/catalog/domain/catalogQuery'
+
+import { useCategoryTree } from './useCategoryTree'
 
 import type { Catalog } from '@/modules/catalog/domain/catalog'
 
@@ -17,15 +20,28 @@ export const useCatalog = () => {
   const route = useRoute()
   const router = useRouter()
 
+  const { loadCatalogPage } = useCatalogUseCases()
+  const tree = useCategoryTree()
+
   const slugs = computed(() => toSlugs(route.params.slug))
-  const resolution = computed(() => resolveCatalogCategory(slugs.value))
-  const categoryPath = computed(() =>
-    resolution.value.status === 'ok' ? resolution.value.path : null,
+  // Arbre illisible (API en erreur) : pas de 404, la page affiche l'erreur du chargement.
+  const resolution = computed(() =>
+    tree.data.value ? resolveCatalogCategory(tree.data.value, slugs.value) : null,
   )
-  if (resolution.value.status === 'not-found') throw createError(NOT_FOUND)
-  watch(resolution, ({ status }) => {
-    if (status === 'not-found') showError(NOT_FOUND)
+  const categoryPath = computed(() =>
+    resolution.value?.status === 'ok' ? resolution.value.path : null,
+  )
+  onServerPrefetch(async () => {
+    await tree.suspense()
+    if (resolution.value?.status === 'not-found') throw createError(NOT_FOUND)
   })
+  watch(
+    resolution,
+    (next) => {
+      if (import.meta.client && next?.status === 'not-found') showError(NOT_FOUND)
+    },
+    { immediate: true },
+  )
 
   const query = computed(() => parseCatalogQuery(route.query))
 

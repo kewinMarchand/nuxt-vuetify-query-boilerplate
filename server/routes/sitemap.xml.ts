@@ -1,9 +1,16 @@
-import { CATALOG_ROOT, listCatalogLinks } from '@/modules/catalog/index.server'
+import {
+  CATALOG_ROOT,
+  fetchCatalogLinks,
+  serverCatalogRepository,
+} from '@/modules/catalog/index.server'
 import { LEGAL_NAVIGATION, MAIN_NAVIGATION } from '@/shared/config'
 
-export default defineEventHandler((event) => {
-  const { siteUrl } = useRuntimeConfig(event).public
-  const pages = [...MAIN_NAVIGATION, CATALOG_ROOT, ...listCatalogLinks(), ...LEGAL_NAVIGATION]
+export default defineEventHandler(async (event) => {
+  const { siteUrl, apiUrl } = useRuntimeConfig(event).public
+  const catalogLinks = await fetchCatalogLinks(
+    serverCatalogRepository(apiUrl, getHeader(event, 'x-scenario')),
+  )
+  const pages = [...MAIN_NAVIGATION, CATALOG_ROOT, ...catalogLinks, ...LEGAL_NAVIGATION]
   const urls = pages
     .map(({ href }) => `  <url><loc>${new URL(href, siteUrl).href}</loc></url>`)
     .join('\n')

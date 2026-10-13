@@ -26,7 +26,7 @@ test.describe('Catalogue', () => {
     await checkbox.check()
 
     await expect(page).toHaveURL(/exposition=mi-ombre/)
-    await expect(page.getByTestId('catalog-results-count')).toHaveText('8 produits')
+    await expect(page.getByTestId('catalog-results-count')).toHaveText('7 produits')
     if (!isMobile(testInfo)) await expect(checkbox).toBeFocused()
     if (isMobile(testInfo)) await page.keyboard.press('Escape')
     await expect(page.getByTestId('catalog-active-filter')).toHaveText(/Mi-ombre/)
@@ -51,7 +51,7 @@ test.describe('Catalogue', () => {
     await page.getByTestId('catalog-sort').selectOption('prix-asc')
 
     await expect(page).toHaveURL(/tri=prix-asc/)
-    await expect.poll(async () => (await prices(page)).slice(0, 2)).toEqual([18.9, 19.9])
+    await expect.poll(async () => (await prices(page)).slice(0, 2)).toEqual([12.9, 14.9])
   })
 
   test('paginer vers la page 2 puis revenir', async ({ page }) => {
@@ -122,6 +122,29 @@ test.describe('Catalogue sans JavaScript', () => {
 
     await expect(page).toHaveURL(/taille=L/)
     await expect(page).toHaveURL(/vue=liste/)
-    await expect(page.getByTestId('catalog-results-count')).toHaveText('7 produits')
+    await expect(page.getByTestId('catalog-results-count')).toHaveText('9 produits')
+  })
+})
+
+test.describe('Catalogue, API en erreur (X-Scenario: error)', () => {
+  test.use({ extraHTTPHeaders: { 'X-Scenario': 'error' } })
+
+  test('affiche l’erreur et la relance', async ({ page }) => {
+    await page.goto('/catalogue')
+
+    await expect(page.getByTestId('catalog-error')).toBeVisible()
+    await expect(page.getByTestId('catalog-retry')).toBeVisible()
+    await expect(page.getByTestId('catalog-product')).toHaveCount(0)
+  })
+})
+
+test.describe('Catalogue, API sans données (X-Scenario: empty)', () => {
+  test.use({ extraHTTPHeaders: { 'X-Scenario': 'empty' } })
+
+  test('affiche le message de liste vide', async ({ page }) => {
+    await page.goto('/catalogue')
+
+    await expect(page.getByTestId('catalog-empty')).toBeVisible()
+    await expect(page.getByTestId('catalog-error')).toHaveCount(0)
   })
 })
