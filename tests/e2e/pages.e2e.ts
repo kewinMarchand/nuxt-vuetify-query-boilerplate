@@ -21,7 +21,7 @@ for (const route of [...ROUTES, ...DEV_ROUTES]) {
   })
 }
 
-for (const route of ['/route-inexistante', '/catalogue/categorie-inconnue']) {
+for (const route of ['/route-inexistante', '/catalogue/categorie-inconnue', '/catalogue?page=99']) {
   test(`${route} affiche la page 404 avec ses liens`, async ({ page }) => {
     const response = await page.goto(route)
 

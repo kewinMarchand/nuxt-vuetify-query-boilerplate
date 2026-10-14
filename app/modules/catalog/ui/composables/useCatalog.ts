@@ -3,7 +3,7 @@ import { computed, onServerPrefetch, watch } from 'vue'
 
 import { createError, showError, useRoute, useRouter } from '#imports'
 
-import { resolveCatalogCategory } from '@/modules/catalog/application/catalogPage'
+import { isBeyondLastPage, resolveCatalogCategory } from '@/modules/catalog/application/catalogPage'
 import { useCatalogUseCases } from '@/modules/catalog/application/useCatalogUseCases'
 import { parseCatalogQuery, serializeCatalogQuery } from '@/modules/catalog/domain/catalogQuery'
 
@@ -50,7 +50,24 @@ export const useCatalog = () => {
     queryFn: () => loadCatalogPage(slugs.value, query.value),
     placeholderData: keepPreviousData,
   })
-  onServerPrefetch(() => catalog.suspense())
+  // Données affichées pendant le chargement (keepPreviousData) : elles décrivent l'URL précédente
+  const beyondLastPage = computed(
+    () =>
+      !!catalog.data.value &&
+      !catalog.isPlaceholderData.value &&
+      isBeyondLastPage(catalog.data.value, query.value),
+  )
+  onServerPrefetch(async () => {
+    await catalog.suspense()
+    if (beyondLastPage.value) throw createError(NOT_FOUND)
+  })
+  watch(
+    beyondLastPage,
+    (beyond) => {
+      if (import.meta.client && beyond) showError(NOT_FOUND)
+    },
+    { immediate: true },
+  )
 
   const hrefFor = (next: Catalog.Query) =>
     router.resolve({ path: route.path, query: serializeCatalogQuery(next) }).fullPath

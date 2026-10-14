@@ -35,3 +35,7 @@ export const loadCatalogPage = async (
     throw new CatalogLoadError({ cause: error })
   }
 }
+
+/** Page demandée au-delà de la dernière : la couche de routage en fait un 404, comme une catégorie inconnue. */
+export const isBeyondLastPage = (page: Catalog.Page, query: Catalog.Query) =>
+  query.page > page.pageCount

@@ -1,5 +1,5 @@
 import { CatalogLoadError } from './CatalogLoadError'
-import { loadCatalogPage, resolveCatalogCategory } from './catalogPage'
+import { isBeyondLastPage, loadCatalogPage, resolveCatalogCategory } from './catalogPage'
 import { DEFAULT_QUERY } from '../domain/catalogQuery'
 
 import type { Catalog } from '../domain/catalog'
@@ -68,5 +68,13 @@ describe('loadCatalogPage', () => {
       message: 'Impossible de charger les produits pour le moment.',
       cause: failure,
     })
+  })
+})
+
+describe('isBeyondLastPage', () => {
+  it('déclare introuvable une page au-delà de la dernière, pas la dernière', () => {
+    const page = { ...PAGE, pageCount: 2 }
+    expect(isBeyondLastPage(page, { ...DEFAULT_QUERY, page: 3 })).toBe(true)
+    expect(isBeyondLastPage(page, { ...DEFAULT_QUERY, page: 2 })).toBe(false)
   })
 })
