@@ -97,7 +97,7 @@ test.describe('Menu mobile', () => {
 
     await page.getByTestId('layout-mobile-menu-category-plantes-interieur').click()
     await expect(title).toBeFocused()
-    await expect(title).toHaveText("Plantes d'intérieur")
+    await expect(title).toHaveText('Plantes d’intérieur')
     await expect(page.getByTestId('layout-mobile-menu-back')).toHaveText(/Retour à Catalogue/)
 
     await page.getByTestId('layout-mobile-menu-back').click()

@@ -8,7 +8,7 @@ import type { CatalogRepository } from '../infrastructure/catalogRepository'
 const TREE: Catalog.Category[] = [
   {
     slug: 'plantes-interieur',
-    label: "Plantes d'intérieur",
+    label: 'Plantes d’intérieur',
     children: [{ slug: 'feuillages', label: 'Feuillages', children: [] }],
   },
 ]
