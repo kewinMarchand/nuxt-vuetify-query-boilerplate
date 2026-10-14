@@ -15,7 +15,7 @@ test.describe('CSP en mode Report-Only', () => {
 
     expect(csp).toContain("default-src 'self'")
     expect(csp).toContain(
-      `connect-src 'self' ${new URL(process.env.API_URL ?? 'http://localhost:8090').origin}`,
+      `connect-src 'self' ${new URL(process.env.NUXT_PUBLIC_API_URL ?? 'http://localhost:8090').origin}`,
     )
     expect(csp).toContain('report-uri /api/csp-report')
     expect(response.headers()['content-security-policy']).toBeUndefined()
