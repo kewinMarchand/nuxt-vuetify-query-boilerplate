@@ -28,6 +28,7 @@
   "license": "MIT",
   "description": "Boilerplate Nuxt 4, Vuetify, TanStack Query, vee-validate et zod, avec lint, tests unitaires, e2e, accessibilité et Lighthouse",
   "dependencies": {
+    "@kewinmarchand/csp": "github:kewinMarchand/csp#v0.1.1",
     "@sentry/nuxt": "^11.6.0",
     "@tanstack/vue-query": "^5.104.1",
     "embla-carousel": "^8.6.0",

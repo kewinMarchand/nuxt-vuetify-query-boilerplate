@@ -29,6 +29,10 @@ const API_CLIENT_WRAPPER = {
   group: ['openapi-fetch'],
   message: 'L’API passe par le client typé @/shared/api/client.',
 }
+const CSP_WRAPPER = {
+  group: ['@kewinmarchand/csp'],
+  message: 'La CSP passe par le wrapper @/shared/security.',
+}
 const FRAMEWORK_PACKAGES = [
   'vue',
   'vue-router',
@@ -147,6 +151,7 @@ export default withNuxt(
             CAROUSEL_WRAPPER,
             OBSERVABILITY_WRAPPER,
             API_CLIENT_WRAPPER,
+            CSP_WRAPPER,
           ],
         },
       ],
@@ -215,6 +220,7 @@ export default withNuxt(
             CAROUSEL_WRAPPER,
             OBSERVABILITY_WRAPPER,
             API_CLIENT_WRAPPER,
+            CSP_WRAPPER,
             FRAMEWORKS_IN_DOMAIN,
           ],
         },
@@ -233,6 +239,7 @@ export default withNuxt(
             CAROUSEL_WRAPPER,
             OBSERVABILITY_WRAPPER,
             API_CLIENT_WRAPPER,
+            CSP_WRAPPER,
             FRAMEWORKS_IN_APPLICATION,
           ],
         },
@@ -268,6 +275,23 @@ export default withNuxt(
       'no-restricted-imports': [
         'error',
         { patterns: [RELATIVE_DEPTH, ICONS_WRAPPER, CAROUSEL_WRAPPER, API_CLIENT_WRAPPER] },
+      ],
+    },
+  },
+  {
+    files: ['app/shared/security/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            RELATIVE_DEPTH,
+            ICONS_WRAPPER,
+            CAROUSEL_WRAPPER,
+            OBSERVABILITY_WRAPPER,
+            API_CLIENT_WRAPPER,
+          ],
+        },
       ],
     },
   },
