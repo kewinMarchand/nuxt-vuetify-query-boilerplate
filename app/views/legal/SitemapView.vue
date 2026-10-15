@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { CATALOG_ROOT, useCatalogNavigation } from '@/modules/catalog'
 import { LEGAL_NAVIGATION, MAIN_NAVIGATION } from '@/shared/config'
+
+import { CATALOG_ROOT, useCatalogNavigation } from '@/modules/catalog'
 
 const { catalogLinks } = await useCatalogNavigation()
 const sections = computed(() => [

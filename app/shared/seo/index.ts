@@ -1,5 +1,5 @@
-export { buildBreadcrumb, toBreadcrumbJsonLd } from './breadcrumb'
 export type { Breadcrumb } from './breadcrumb'
+export { buildBreadcrumb, toBreadcrumbJsonLd } from './breadcrumb'
 export { organizationJsonLd, websiteJsonLd } from './jsonLd'
-export { usePageSeo } from './usePageSeo'
 export type { PageSeoInput, SeoImage } from './usePageSeo'
+export { usePageSeo } from './usePageSeo'

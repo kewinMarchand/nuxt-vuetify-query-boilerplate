@@ -1,5 +1,5 @@
-import { EXPOSURE_LABELS, SIZE_LABELS } from './labels'
 import { withFilters } from '../domain/catalogQuery'
+import { EXPOSURE_LABELS, SIZE_LABELS } from './labels'
 
 import type { Catalog } from '../domain/catalog'
 

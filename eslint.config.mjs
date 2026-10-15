@@ -1,6 +1,6 @@
 import { existsSync, readdirSync } from 'node:fs'
-
 import boundaries from '@boundaries/eslint-plugin'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
 
 import withNuxt from './.nuxt/eslint.config.mjs'
 
@@ -131,17 +131,36 @@ export default withNuxt(
   },
   {
     settings: { 'import-x/internal-regex': '^[@~]/' },
+    plugins: { 'simple-import-sort': simpleImportSort },
     rules: {
       'no-console': ['error', { allow: ['warn', 'error'] }],
-      'import/order': [
+      'import/order': 'off',
+      'simple-import-sort/imports': [
         'error',
         {
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index'], 'type'],
-          pathGroups: [{ pattern: '#*', group: 'external', position: 'after' }],
-          'newlines-between': 'always',
-          alphabetize: { order: 'asc', caseInsensitive: true },
+          // Ordre de standards-front : 1 tiers (framework et alias de Nuxt `#…` compris), 2 bibliothèque commune,
+          // 3 socle, 4 modules (index public, puis couches domain, application, infrastructure, ui), 5 vues,
+          // 6 relatifs, 7 types, 8 effets de bord (styles) en dernier, leur ordre ayant un effet. Le motif de
+          // l'index d'un module exclut \u0000, que le plugin ajoute aux imports de type.
+          groups: [
+            ['^node:', '^(?!@kewinmarchand/)@?\\w', '^#'],
+            ['^@kewinmarchand/'],
+            ['^@/shared/'],
+            [
+              '^@/modules/[^/\\u0000]+(/index)?$',
+              '^@/modules/[^/]+/domain/',
+              '^@/modules/[^/]+/application/',
+              '^@/modules/[^/]+/infrastructure/',
+              '^@/modules/[^/]+/ui/',
+            ],
+            ['^@/views/'],
+            ['^\\.'],
+            ['^.+\\u0000$'],
+            ['^\\u0000'],
+          ],
         },
       ],
+      'simple-import-sort/exports': 'error',
       'no-restricted-imports': [
         'error',
         {

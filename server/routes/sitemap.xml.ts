@@ -1,9 +1,10 @@
+import { LEGAL_NAVIGATION, MAIN_NAVIGATION } from '@/shared/config'
+
 import {
   CATALOG_ROOT,
   fetchCatalogLinks,
   serverCatalogRepository,
 } from '@/modules/catalog/index.server'
-import { LEGAL_NAVIGATION, MAIN_NAVIGATION } from '@/shared/config'
 
 export default defineEventHandler(async (event) => {
   const { siteUrl, apiUrl } = useRuntimeConfig(event).public

@@ -1,7 +1,6 @@
 import { spawn } from 'node:child_process'
 import { createServer } from 'node:http'
 import { gunzipSync } from 'node:zlib'
-
 import { expect, test } from '@playwright/test'
 
 import { FAKE_GLITCHTIP_PORT, OBSERVABILITY_PORT } from '../support/ports'

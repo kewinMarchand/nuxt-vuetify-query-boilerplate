@@ -1,5 +1,4 @@
 import { computed, toValue } from 'vue'
-
 import { useHead, useRoute, useRuntimeConfig, useSeoMeta } from '#imports'
 
 import { SITE } from '@/shared/config'

@@ -63,6 +63,7 @@
     "@vitejs/plugin-vue": "^6.0.9",
     "eslint": "^10",
     "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
     "husky": "^9.1.7",
     "jsdom": "^29",
     "lint-staged": "^17.6.0",

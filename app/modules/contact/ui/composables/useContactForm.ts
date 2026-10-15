@@ -2,9 +2,10 @@ import { useMutation } from '@tanstack/vue-query'
 import { useForm } from 'vee-validate'
 import { computed } from 'vue'
 
+import { toTypedSchema } from '@/shared/forms'
+
 import { contactSchema } from '@/modules/contact/domain/contactSchema'
 import { useContactRepository } from '@/modules/contact/infrastructure/contactRepository'
-import { toTypedSchema } from '@/shared/forms'
 
 import type { Contact } from '@/modules/contact/domain/contactSchema'
 import type { PublicPathState } from 'vee-validate'

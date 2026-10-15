@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { TasksView } from '@/modules/task'
 import { usePageSeo } from '@/shared/seo'
+
+import { TasksView } from '@/modules/task'
 
 usePageSeo({
   title: 'Tâches',

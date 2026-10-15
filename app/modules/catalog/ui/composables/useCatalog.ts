@@ -1,11 +1,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { computed, onServerPrefetch, watch } from 'vue'
-
 import { createError, showError, useRoute, useRouter } from '#imports'
 
+import { parseCatalogQuery, serializeCatalogQuery } from '@/modules/catalog/domain/catalogQuery'
 import { isBeyondLastPage, resolveCatalogCategory } from '@/modules/catalog/application/catalogPage'
 import { useCatalogUseCases } from '@/modules/catalog/application/useCatalogUseCases'
-import { parseCatalogQuery, serializeCatalogQuery } from '@/modules/catalog/domain/catalogQuery'
 
 import { useCategoryTree } from './useCategoryTree'
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useHead } from '#imports'
 
-import { EXPOSURE_LABELS, SIZE_LABELS } from './labels'
 import { formatPrice } from '../domain/price'
+import { EXPOSURE_LABELS, SIZE_LABELS } from './labels'
 
 import type { Catalog } from '../domain/catalog'
 

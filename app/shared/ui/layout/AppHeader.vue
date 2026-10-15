@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { MAIN_NAVIGATION, SITE } from '@/shared/config'
 
+import A11yModeToggle from '../a11y-mode/A11yModeToggle.vue'
 import CategoryMenu from './CategoryMenu.vue'
 import MobileMenu from './MobileMenu.vue'
 import NavLink from './NavLink.vue'
-import A11yModeToggle from '../a11y-mode/A11yModeToggle.vue'
 
 import type { NavigationNode } from '@/shared/config'
 

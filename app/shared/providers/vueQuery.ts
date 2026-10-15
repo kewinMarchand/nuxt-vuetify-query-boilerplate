@@ -1,5 +1,4 @@
 import { dehydrate, hydrate, VueQueryPlugin } from '@tanstack/vue-query'
-
 import { defineNuxtPlugin, useState } from '#imports'
 
 import { makeQueryClient } from './makeQueryClient'

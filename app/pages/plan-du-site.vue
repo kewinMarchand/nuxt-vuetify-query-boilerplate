@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usePageSeo } from '@/shared/seo'
+
 import { SitemapView } from '@/views/legal'
 
 usePageSeo({

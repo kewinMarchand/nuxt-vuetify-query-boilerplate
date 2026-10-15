@@ -1,5 +1,5 @@
-import { describeActiveFilters } from './activeFilters'
 import { DEFAULT_QUERY } from '../domain/catalogQuery'
+import { describeActiveFilters } from './activeFilters'
 
 describe('describeActiveFilters', () => {
   it('décrit chaque filtre avec son libellé et la requête qui le retire, page remise à 1', () => {

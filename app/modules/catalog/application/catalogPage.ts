@@ -1,5 +1,5 @@
-import { CatalogLoadError } from './CatalogLoadError'
 import { resolveCategoryPath } from '../domain/categoryPath'
+import { CatalogLoadError } from './CatalogLoadError'
 
 import type { Catalog } from '../domain/catalog'
 import type { CatalogRepository } from '../infrastructure/catalogRepository'

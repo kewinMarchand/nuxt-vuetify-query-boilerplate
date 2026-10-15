@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import { computed } from 'vue'
-
 import { useRoute } from '#imports'
 
-import { useCatalogNavigation } from '@/modules/catalog'
 import { AppShell } from '@/shared/ui/layout'
+
+import { useCatalogNavigation } from '@/modules/catalog'
 
 const route = useRoute()
 const { categoryMenu, trailFor } = await useCatalogNavigation()

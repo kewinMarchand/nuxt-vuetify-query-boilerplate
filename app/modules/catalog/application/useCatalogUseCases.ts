@@ -1,5 +1,5 @@
-import { loadCatalogPage } from './catalogPage'
 import { useCatalogRepository } from '../infrastructure/useCatalogRepository'
+import { loadCatalogPage } from './catalogPage'
 
 import type { Catalog } from '../domain/catalog'
 

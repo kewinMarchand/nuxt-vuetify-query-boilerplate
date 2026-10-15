@@ -2,6 +2,7 @@
 import { createError, useRuntimeConfig } from '#imports'
 
 import { usePageSeo } from '@/shared/seo'
+
 import { StyleguideView } from '@/views/styleguide'
 
 if (!useRuntimeConfig().public.devTools) {

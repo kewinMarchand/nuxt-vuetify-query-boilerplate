@@ -3,8 +3,8 @@ import { useApiClient } from '@/shared/api/useApiClient'
 
 import { toFieldErrors } from './http/contactTranslation'
 
-import type { FieldError } from './http/contactTranslation'
 import type { Contact } from '../domain/contactSchema'
+import type { FieldError } from './http/contactTranslation'
 
 export type ContactSendResult =
   { status: 'sent' } | { status: 'invalid'; fieldErrors: FieldError[] }

@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { computed, nextTick, useTemplateRef, watch } from 'vue'
-
 import { useRoute } from '#imports'
 
 import { useMediaQuery } from '@/shared/ui/composables'
 
+import {
+  activeFilterCount,
+  clearFilters,
+  hasActiveFilters,
+  withFilters,
+} from '../domain/catalogQuery'
+import { CATALOG_ROOT } from '../domain/categoryPath'
 import { describeActiveFilters } from './activeFilters'
 import ActiveFilters from './ActiveFilters.vue'
 import CatalogFilters from './CatalogFilters.vue'
@@ -14,13 +20,6 @@ import { useCatalog } from './composables/useCatalog'
 import { useCatalogSeo } from './composables/useCatalogSeo'
 import FiltersDialog from './FiltersDialog.vue'
 import ProductList from './ProductList.vue'
-import {
-  activeFilterCount,
-  clearFilters,
-  hasActiveFilters,
-  withFilters,
-} from '../domain/catalogQuery'
-import { CATALOG_ROOT } from '../domain/categoryPath'
 
 const route = useRoute()
 const { categoryPath, query, catalog, hrefFor, navigate } = useCatalog()

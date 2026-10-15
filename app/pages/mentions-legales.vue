@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usePageSeo } from '@/shared/seo'
+
 import { LegalNoticeView } from '@/views/legal'
 
 usePageSeo({

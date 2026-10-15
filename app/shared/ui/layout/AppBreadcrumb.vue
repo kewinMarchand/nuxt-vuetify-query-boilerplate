@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-
 import { useRoute } from '#imports'
 
 import { buildBreadcrumb } from '@/shared/seo'

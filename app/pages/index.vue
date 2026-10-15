@@ -3,6 +3,7 @@ import { definePageMeta, useRuntimeConfig } from '#imports'
 
 import { SITE } from '@/shared/config'
 import { organizationJsonLd, usePageSeo, websiteJsonLd } from '@/shared/seo'
+
 import { HomeView } from '@/views/home'
 
 definePageMeta({ fullBleed: true })

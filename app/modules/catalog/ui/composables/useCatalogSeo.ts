@@ -1,11 +1,11 @@
 import { computed } from 'vue'
-
 import { useRuntimeConfig } from '#imports'
+
+import { usePageSeo } from '@/shared/seo'
 
 import { PAGE_SIZE } from '@/modules/catalog/domain/catalog'
 import { isRefined } from '@/modules/catalog/domain/catalogQuery'
 import { categoryTrail } from '@/modules/catalog/domain/categoryPath'
-import { usePageSeo } from '@/shared/seo'
 
 import type { Catalog } from '@/modules/catalog/domain/catalog'
 import type { ComputedRef, Ref } from 'vue'

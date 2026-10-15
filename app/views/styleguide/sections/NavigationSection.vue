@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ActiveFilters, CatalogPagination } from '@/modules/catalog'
 import { AppBreadcrumb } from '@/shared/ui/layout'
+
+import { ActiveFilters, CatalogPagination } from '@/modules/catalog'
 
 const TRAIL = [
   { label: 'Accueil', href: '/' },

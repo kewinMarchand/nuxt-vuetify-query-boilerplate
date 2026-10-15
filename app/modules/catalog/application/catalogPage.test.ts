@@ -1,6 +1,6 @@
+import { DEFAULT_QUERY } from '../domain/catalogQuery'
 import { CatalogLoadError } from './CatalogLoadError'
 import { isBeyondLastPage, loadCatalogPage, resolveCatalogCategory } from './catalogPage'
-import { DEFAULT_QUERY } from '../domain/catalogQuery'
 
 import type { Catalog } from '../domain/catalog'
 import type { CatalogRepository } from '../infrastructure/catalogRepository'

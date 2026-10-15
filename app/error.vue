@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import type { NuxtError } from '#app'
-
-import { useCatalogNavigation } from '@/modules/catalog'
 import { usePageSeo } from '@/shared/seo'
 import { AppShell } from '@/shared/ui/layout'
+
+import { useCatalogNavigation } from '@/modules/catalog'
+
 import { ErrorView } from '@/views/errors'
+
+import type { NuxtError } from '#app'
 
 const { error } = defineProps<{ error: NuxtError }>()
 const { categoryMenu } = await useCatalogNavigation()

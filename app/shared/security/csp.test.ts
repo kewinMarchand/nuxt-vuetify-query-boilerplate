@@ -1,5 +1,6 @@
-import { cspReportRoute } from '@kewinmarchand/csp'
 import { describe, expect, it, vi } from 'vitest'
+
+import { cspReportRoute } from '@kewinmarchand/csp'
 
 import { siteCsp } from './csp'
 

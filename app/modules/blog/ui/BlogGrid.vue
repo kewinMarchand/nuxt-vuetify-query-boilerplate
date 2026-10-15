@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { formatPublishedAt } from '@/modules/blog/domain/formatPublishedAt'
 import { Icon } from '@/shared/ui/kit'
 import { buildSources } from '@/shared/ui/kit/imageSources'
+
+import { formatPublishedAt } from '@/modules/blog/domain/formatPublishedAt'
 
 import type { Article } from '../domain/article'
 

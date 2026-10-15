@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 
-import { EXPOSURE_LABELS, SIZE_LABELS } from './labels'
 import { formDataToQuery, toFormFields } from '../domain/catalogQuery'
+import { EXPOSURE_LABELS, SIZE_LABELS } from './labels'
 
 import type { Catalog } from '../domain/catalog'
 
