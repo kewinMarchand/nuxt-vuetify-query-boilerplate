@@ -56,7 +56,7 @@ import { Icon, ICON_NAMES } from '@/shared/ui/kit'
 }
 
 .logo-name {
-  font-size: calc(20px * var(--app-font-scale));
+  font-size: var(--bui-font-size-title);
   font-weight: 600;
 }
 </style>

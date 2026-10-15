@@ -104,10 +104,10 @@ useHead({
 
 .hero-text {
   max-width: 640px;
-  font-size: calc(18px * var(--app-font-scale));
+  font-size: var(--bui-font-size-lead);
 }
 
-@media (min-width: 960px) {
+@media (min-width: 1024px) {
   .hero {
     min-height: min(80vh, 720px);
   }

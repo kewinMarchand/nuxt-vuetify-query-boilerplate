@@ -218,22 +218,22 @@ git cherry-pick <sha>
 
 ### Personnaliser
 
-| Quoi                             | Fichiers                                                                                                                                                         |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Nom du paquet et titre           | `package.json` (`name`), titre de ce README et du `CLAUDE.md`, titulaire dans `LICENSE`                                                                          |
-| Identité du site                 | `app/shared/config/site.ts` : nom, description, langue, éditeur, hébergeur, résultat d'audit d'accessibilité. Les valeurs fournies sont fictives                 |
-| Nom affiché dans les tests       | `tests/e2e/home.e2e.ts` (h1 du hero) et `tests/e2e/layout.e2e.ts` (nom accessible du logo), à aligner sur `SITE.name`                                            |
-| Couleur principale               | `app/shared/theme/colors.ts` (`PRIMARY_COLOR`), reprise par le thème Vuetify et la balise `theme-color`. Reporter la valeur dans `theme_color` du manifeste      |
-| Manifeste                        | `public/manifest.webmanifest` : `name`, `short_name`, `theme_color`                                                                                              |
-| URL publique                     | `NUXT_PUBLIC_SITE_URL` dans `.env.example`, `compose.yaml` et la valeur par défaut de `nuxt.config.ts`                                                           |
-| Port de développement (3010)     | script `dev` de `package.json`, `.env.example`, `compose.yaml`, `nuxt.config.ts`, aides de `make up` et `make docker-up` dans le `Makefile`                      |
-| Ports de test (3110, 3111, 3210) | `tests/support/ports.ts` pour Playwright, `.lighthouserc.json` pour Lighthouse. À changer seulement s'ils entrent en conflit avec un autre projet                |
-| Logo                             | `public/images/logo-mark.svg`, affiché par le header, le footer et la charte graphique                                                                           |
-| Favicons et partage              | `public/favicon.ico`, `public/favicon.svg`, `public/apple-touch-icon.png`, `public/icon-192.png`, `public/icon-512.png`, `public/og-image.jpg`                   |
-| Accueil                          | `app/views/home/` : hero (`HomeHero.vue`) et carrousel (`homeSlides.ts`), images `public/images/hero-*` et `slide-*`                                             |
-| Pages légales                    | `app/views/legal/` : `LegalNoticeView.vue`, `PersonalDataView.vue`, `AccessibilityStatementView.vue`. Les données viennent de `site.ts`, le texte reste à relire |
-| URL Lighthouse                   | `ci.url` de `.lighthouserc.json`, une entrée par route à mesurer                                                                                                 |
-| Intégration continue             | `.github/workflows/ci.yml` : branche surveillée (`main`), puis `make qa`, `make test-e2e test-a11y` et `make metrics`                                            |
+| Quoi                             | Fichiers                                                                                                                                                                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nom du paquet et titre           | `package.json` (`name`), titre de ce README et du `CLAUDE.md`, titulaire dans `LICENSE`                                                                                                                                         |
+| Identité du site                 | `app/shared/config/site.ts` : nom, description, langue, éditeur, hébergeur, résultat d'audit d'accessibilité. Les valeurs fournies sont fictives                                                                                |
+| Nom affiché dans les tests       | `tests/e2e/home.e2e.ts` (h1 du hero) et `tests/e2e/layout.e2e.ts` (nom accessible du logo), à aligner sur `SITE.name`                                                                                                           |
+| Couleur principale               | tokens de `@kewinmarchand/boilerplates-ui` (`vuetify.json`), lus par `app/shared/theme/tokens.ts` (`PRIMARY_COLOR`), repris par le thème Vuetify et la balise `theme-color`. Reporter la valeur dans `theme_color` du manifeste |
+| Manifeste                        | `public/manifest.webmanifest` : `name`, `short_name`, `theme_color`                                                                                                                                                             |
+| URL publique                     | `NUXT_PUBLIC_SITE_URL` dans `.env.example`, `compose.yaml` et la valeur par défaut de `nuxt.config.ts`                                                                                                                          |
+| Port de développement (3010)     | script `dev` de `package.json`, `.env.example`, `compose.yaml`, `nuxt.config.ts`, aides de `make up` et `make docker-up` dans le `Makefile`                                                                                     |
+| Ports de test (3110, 3111, 3210) | `tests/support/ports.ts` pour Playwright, `.lighthouserc.json` pour Lighthouse. À changer seulement s'ils entrent en conflit avec un autre projet                                                                               |
+| Logo                             | `public/images/logo-mark.svg`, affiché par le header, le footer et la charte graphique                                                                                                                                          |
+| Favicons et partage              | `public/favicon.ico`, `public/favicon.svg`, `public/apple-touch-icon.png`, `public/icon-192.png`, `public/icon-512.png`, `public/og-image.jpg`                                                                                  |
+| Accueil                          | `app/views/home/` : hero (`HomeHero.vue`) et carrousel (`homeSlides.ts`), images `public/images/hero-*` et `slide-*`                                                                                                            |
+| Pages légales                    | `app/views/legal/` : `LegalNoticeView.vue`, `PersonalDataView.vue`, `AccessibilityStatementView.vue`. Les données viennent de `site.ts`, le texte reste à relire                                                                |
+| URL Lighthouse                   | `ci.url` de `.lighthouserc.json`, une entrée par route à mesurer                                                                                                                                                                |
+| Intégration continue             | `.github/workflows/ci.yml` : branche surveillée (`main`), puis `make qa`, `make test-e2e test-a11y` et `make metrics`                                                                                                           |
 
 ### Retirer les modules d'exemple
 

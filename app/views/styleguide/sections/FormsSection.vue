@@ -34,7 +34,7 @@ const SELECT_ITEMS = ['Soleil', 'Mi-ombre', 'Ombre']
   gap: 16px;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 1024px) {
   .form-grid {
     grid-template-columns: repeat(2, 1fr);
   }

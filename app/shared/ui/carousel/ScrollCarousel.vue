@@ -13,7 +13,7 @@ const { slides, labelledby } = defineProps<{
 }>()
 
 const SLIDE_SIZES =
-  '(min-width: 960px) calc((min(100vw, 1440px) - 64px) / 3), (min-width: 600px) calc(50vw - 40px), calc(100vw - 32px)'
+  '(min-width: 1024px) calc((min(100vw, 1440px) - 64px) / 3), (min-width: 640px) calc(50vw - 40px), calc(100vw - 32px)'
 
 const trackId = useId()
 const { viewport, isReady, snapCount, selectedIndex, canPrev, canNext, prev, next, goTo } =
@@ -193,13 +193,13 @@ html:not([data-js]) .carousel-placeholder {
   outline: 3px solid rgb(var(--v-theme-primary));
 }
 
-@media (min-width: 600px) {
+@media (min-width: 640px) {
   .carousel-slide {
     flex-basis: 50%;
   }
 }
 
-@media (min-width: 960px) {
+@media (min-width: 1024px) {
   .carousel-slide {
     flex-basis: calc(100% / 3);
   }

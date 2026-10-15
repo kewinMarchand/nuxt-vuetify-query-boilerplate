@@ -40,7 +40,7 @@ const items = computed(() => trail ?? buildBreadcrumb(route.path, currentLabel, 
   padding: 0;
   list-style: none;
   margin-bottom: 16px;
-  font-size: calc(14px * var(--app-font-scale));
+  font-size: var(--bui-font-size-body-sm);
 }
 
 .breadcrumb li {

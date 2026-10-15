@@ -1,7 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
-import { PRIMARY_COLOR } from './app/shared/theme/colors'
+import { PRIMARY_COLOR } from './app/shared/theme/tokens'
 import { A11Y_MODE_BOOT_SCRIPT, JS_FLAG_SCRIPT } from './app/shared/ui/a11y-mode/a11yModeBootScript'
 
 export default defineNuxtConfig({
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     { src: '@/shared/providers/errorReporting', mode: 'client' },
     { src: '@/shared/providers/matomo', mode: 'client' },
   ],
-  css: ['@/shared/theme/global.css'],
+  css: ['@kewinmarchand/boilerplates-ui/tokens/tokens.css', '@/shared/theme/global.css'],
   build: { transpile: ['vuetify'] },
   vite: { vue: { template: { transformAssetUrls } } },
   app: {

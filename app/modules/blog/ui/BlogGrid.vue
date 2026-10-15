@@ -14,7 +14,7 @@ defineProps<{
 const emit = defineEmits<{ retry: [] }>()
 
 const BLOG_WIDTHS = [480, 960]
-const BLOG_SIZES = '(min-width: 960px) 33vw, (min-width: 600px) 50vw, 100vw'
+const BLOG_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
 </script>
 
 <template>
@@ -113,13 +113,13 @@ const BLOG_SIZES = '(min-width: 960px) 33vw, (min-width: 600px) 50vw, 100vw'
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 640px) {
   .blog-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 960px) {
+@media (min-width: 1024px) {
   .blog-grid {
     grid-template-columns: repeat(3, 1fr);
   }

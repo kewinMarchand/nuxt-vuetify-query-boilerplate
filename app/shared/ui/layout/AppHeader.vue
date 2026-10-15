@@ -52,7 +52,7 @@ const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
   min-width: 0;
   min-height: 44px;
   color: inherit;
-  font-size: calc(16px * var(--app-font-scale));
+  font-size: var(--bui-font-size-body);
   font-weight: 600;
   line-height: 1.25;
   text-decoration: none;
@@ -100,7 +100,7 @@ html[data-js] .header-nav {
   .header-logo {
     flex: 0 0 auto;
     margin-right: auto;
-    font-size: calc(20px * var(--app-font-scale));
+    font-size: var(--bui-font-size-title);
     line-height: inherit;
   }
 

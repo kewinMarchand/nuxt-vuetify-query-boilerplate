@@ -135,7 +135,7 @@ watch(query, async (next, previous) => {
 }
 
 .catalog-aside-title {
-  font-size: calc(20px * var(--app-font-scale));
+  font-size: var(--bui-font-size-title);
 }
 
 html[data-js] .catalog-aside {

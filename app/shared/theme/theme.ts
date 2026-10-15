@@ -1,4 +1,4 @@
-import { PRIMARY_COLOR } from './colors'
+import { LIGHT_COLORS } from './tokens'
 
 import type { VuetifyOptions } from 'vuetify'
 
@@ -9,13 +9,7 @@ export const theme: VuetifyOptions = {
       light: {
         dark: false,
         variables: { 'medium-emphasis-opacity': 0.74 },
-        colors: {
-          primary: PRIMARY_COLOR,
-          secondary: '#7c3aed',
-          error: '#b3261e',
-          info: '#1d4ed8',
-          success: '#1b5e20',
-        },
+        colors: LIGHT_COLORS,
       },
     },
   },

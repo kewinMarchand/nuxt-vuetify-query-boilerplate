@@ -101,7 +101,7 @@ if (priority) {
 }
 
 .product-name {
-  font-size: calc(18px * var(--app-font-scale));
+  font-size: var(--bui-font-size-h4);
   margin-bottom: 4px;
 }
 
@@ -115,7 +115,7 @@ if (priority) {
   flex-wrap: wrap;
   gap: 4px 16px;
   margin-bottom: 8px;
-  font-size: calc(14px * var(--app-font-scale));
+  font-size: var(--bui-font-size-body-sm);
 }
 
 .product-specs div {
