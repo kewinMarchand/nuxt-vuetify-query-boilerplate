@@ -18,14 +18,11 @@ const {
 </script>
 
 <template>
-  <p class="text-body-medium" data-testid="contact-required-notice">
-    Tous les champs sont obligatoires.
-  </p>
   <form novalidate class="contact-form d-flex flex-column ga-4" @submit="onSubmit">
     <v-text-field
       v-model="name"
       v-bind="nameProps"
-      label="Nom"
+      label="Nom (obligatoire)"
       autocomplete="name"
       required
       data-testid="contact-name"
@@ -33,7 +30,7 @@ const {
     <v-text-field
       v-model="email"
       v-bind="emailProps"
-      label="E-mail"
+      label="E-mail (obligatoire)"
       type="email"
       autocomplete="email"
       required
@@ -42,7 +39,7 @@ const {
     <v-textarea
       v-model="message"
       v-bind="messageProps"
-      label="Message"
+      label="Message (obligatoire)"
       rows="4"
       required
       data-testid="contact-message"
