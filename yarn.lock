@@ -1038,9 +1038,9 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@kewinmarchand/boilerplates-ui@github:kewinMarchand/boilerplates-ui#v0.3.0":
-  version "0.3.0"
-  resolved "https://codeload.github.com/kewinMarchand/boilerplates-ui/tar.gz/cf248d0d67746e2c57ee95f05bb98f6d768559e5"
+"@kewinmarchand/boilerplates-ui@github:kewinMarchand/boilerplates-ui#v0.5.0":
+  version "0.5.0"
+  resolved "https://codeload.github.com/kewinMarchand/boilerplates-ui/tar.gz/e4908582c1d5230bebb0654936312242f391c0d0"
 
 "@kewinmarchand/csp@github:kewinMarchand/csp#v0.1.1":
   version "0.1.1"
@@ -4795,7 +4795,7 @@ eslint-plugin-regexp@3.1.1, eslint-plugin-regexp@^3.1.1:
     regexp-ast-analysis "^0.7.1"
     scslre "^0.3.0"
 
-eslint-plugin-simple-import-sort@^14:
+eslint-plugin-simple-import-sort@^14.0.0:
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-simple-import-sort/-/eslint-plugin-simple-import-sort-14.0.0.tgz#a07d4aa63ebf043e8d55497b4e2a3035bf800849"
   integrity sha512-NUJO0+XFCkk+o5EsAJruTgnfMEpeWrPWeJS15UVF60GgXmqz1BJ9/3hzlvG7lkL8Bubzos5cCLptThbFfPnSMQ==

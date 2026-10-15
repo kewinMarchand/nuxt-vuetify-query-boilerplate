@@ -68,7 +68,7 @@ Node imposé : 24.14 (`.nvmrc`). Plusieurs paquets récents exigent 24.15.
 
 ## Dépendances ajoutées par rapport au modèle
 
-- `@kewinmarchand/boilerplates-ui` (dépendance git sur l'étiquette `v0.3.0`, livrée en sources) : tokens communs aux boilerplates (section 19 de la spec commune). Nuxt garde Vuetify comme kit : seuls `vuetify.json` et `tokens.css` sont lus.
+- `@kewinmarchand/boilerplates-ui` (dépendance git sur l'étiquette `v0.5.0`, livrée en sources) : tokens communs aux boilerplates (section 19 de la spec commune). Nuxt garde Vuetify comme kit : seuls `vuetify.json` et `tokens.css` sont lus.
 - `@boundaries/eslint-plugin` 7.2 (dev, aucun effet sur le bundle) : vérifie les règles de dépendance entre couches et modules (D6). Contrairement à `no-restricted-imports`, qui compare la chaîne d'import, il résout le chemin réel : un import relatif `../infrastructure/x` ne le contourne pas. Nouveau nom de `eslint-plugin-boundaries`. Même choix que la référence SvelteKit.
 - `eslint-plugin-simple-import-sort` 14 (dev, aucun effet sur le bundle) : trie les imports par groupes de motifs, ce que `import/order` ne sait pas faire par couche d'architecture (domain, application, infrastructure, ui). Même version que les dépôts Next et SvelteKit.
 - `eslint-import-resolver-typescript` 4.4 (dev) : résolveur demandé par le plugin pour suivre l'alias `@/` via les tsconfig générés par Nuxt.
