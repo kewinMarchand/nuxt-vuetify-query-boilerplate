@@ -4,6 +4,8 @@ import { useRuntimeConfig } from '#imports'
 import { SITE } from '@/shared/config'
 import { matomoConfig } from '@/shared/observability'
 
+import OppositionMesure from './OppositionMesure.vue'
+
 const { matomoUrl, matomoSiteId } = useRuntimeConfig().public
 const isAudienceMeasured = matomoConfig(matomoUrl, matomoSiteId) !== null
 </script>
@@ -55,5 +57,10 @@ const isAudienceMeasured = matomoConfig(matomoUrl, matomoSiteId) !== null
       statistiques produites sont anonymes et servent uniquement à améliorer le site. Les données
       brutes sont conservées 25 mois au plus.
     </p>
+    <p>
+      Vous pouvez vous opposer à cette mesure : votre choix est gardé dans ce navigateur, sans
+      cookie.
+    </p>
+    <OppositionMesure />
   </section>
 </template>

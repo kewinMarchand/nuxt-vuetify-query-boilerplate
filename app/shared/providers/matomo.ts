@@ -1,6 +1,6 @@
 import { defineNuxtPlugin, injectHead, useRuntimeConfig } from '#imports'
 
-import { matomoConfig, startMatomo } from '@/shared/observability'
+import { matomoConfig, mesureRefusee, startMatomo } from '@/shared/observability'
 
 /**
  * Une page vue par navigation, avec le titre à jour. La première page part à
@@ -11,7 +11,8 @@ import { matomoConfig, startMatomo } from '@/shared/observability'
 export default defineNuxtPlugin((nuxtApp) => {
   const { matomoUrl, matomoSiteId } = useRuntimeConfig().public
   const config = matomoConfig(matomoUrl, matomoSiteId)
-  if (!config) return
+  // Refus lu avant la première commande (section 16 de la spec) : ni file, ni script, ni requête.
+  if (!config || mesureRefusee()) return
   const tracker = startMatomo(config)
 
   let firstPageTracked = false

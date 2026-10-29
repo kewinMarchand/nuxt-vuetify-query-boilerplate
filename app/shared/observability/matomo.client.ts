@@ -1,4 +1,5 @@
 import { pageViewCommands, setupCommands } from './matomo'
+import { mesureRefusee } from './oppositionMesure'
 
 import type { MatomoCommand, MatomoConfig } from './matomo'
 
@@ -25,6 +26,7 @@ export const startMatomo = (config: MatomoConfig) => {
   let previousUrl: string | undefined
   return {
     trackPageView: () => {
+      if (mesureRefusee()) return
       const url = window.location.href
       push(pageViewCommands({ url, title: document.title, referrer: previousUrl }))
       previousUrl = url
