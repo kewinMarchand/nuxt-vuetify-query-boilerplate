@@ -8,6 +8,4 @@ export const cspReportHandler = cspReportRoute()
 
 /** Ligne de démarrage, pour retrouver le bon fichier de log chez l'hébergeur. */
 export const announceStartup = () =>
-  process.stdout.write(
-    `${startupLine('nuxt-vuetify-query-boilerplate', process.env.NODE_ENV ?? 'production')}\n`,
-  )
+  process.stdout.write(`${startupLine('boilerplate-nuxt', process.env.NODE_ENV ?? 'production')}\n`)

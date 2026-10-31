@@ -1,4 +1,4 @@
-# nuxt-vuetify-query-boilerplate
+# boilerplate-nuxt
 
 Point de départ pour une application **Nuxt 4** en rendu serveur avec les composants de **boilerplates-ui**, **TanStack Query**, **vee-validate + zod**, et toute la chaîne qualité : lint, format, types, tests unitaires, end-to-end, accessibilité et Lighthouse.
 
@@ -42,8 +42,8 @@ Rien d'autre : ni Node, ni Yarn, ni navigateur sur la machine. Chaque commande `
 ## Démarrage
 
 ```sh
-git clone https://github.com/kewinMarchand/nuxt-vuetify-query-boilerplate.git
-cd nuxt-vuetify-query-boilerplate
+git clone https://github.com/kewinMarchand/boilerplate-nuxt.git
+cd boilerplate-nuxt
 cp .env.example .env
 make install   # image de dev (Node, Chromium) et dépendances
 make up        # http://localhost:3010, rechargement à chaud
@@ -154,7 +154,7 @@ Chaque réponse porte un en-tête `Content-Security-Policy-Report-Only` construi
 [csp-report] https://cdn.exemple.com a besoin d'une autorisation de type script (script-src) — bloqué sur /contact
 ```
 
-- **Lire les logs** : `docker compose logs -f web` pour l'image de production, la sortie de `make up` en développement, la console de l'hébergeur en production. Au démarrage, `[nuxt-vuetify-query-boilerplate] serveur démarré (production)` permet de retrouver le bon fichier.
+- **Lire les logs** : `docker compose logs -f web` pour l'image de production, la sortie de `make up` en développement, la console de l'hébergeur en production. Au démarrage, `[boilerplate-nuxt] serveur démarré (production)` permet de retrouver le bon fichier.
 - **Autoriser une origine** : l'ajouter à sa directive (le nom est entre parenthèses dans la ligne) dans `siteCsp()` de `app/shared/security/csp.ts`. L'API (`NUXT_PUBLIC_API_URL`), Matomo et GlitchTip y sont déjà, quand leur variable est renseignée. L'en-tête est calculé à l'exécution, comme le reste de `runtimeConfig`.
 - **Pourquoi Report-Only et `'unsafe-inline'`** : on collecte d'abord ce que le site charge vraiment avant de bloquer quoi que ce soit ; l'hydratation de Nuxt et les attributs `style` écrivent du code en ligne, et un nonce par réponse rendrait toutes les pages dynamiques.
 
@@ -184,7 +184,7 @@ L'arbre vient de l'API (`GET /api/categories`) : une catégorie s'ajoute côté 
 Le dépôt est un template GitHub. Voie recommandée : le bouton « Use this template », ou en ligne de commande :
 
 ```sh
-gh repo create mon-projet --template kewinMarchand/nuxt-vuetify-query-boilerplate --private --clone
+gh repo create mon-projet --template kewinMarchand/boilerplate-nuxt --private --clone
 cd mon-projet
 ```
 
@@ -193,7 +193,7 @@ Le nouveau dépôt part d'un historique neuf, sans lien avec celui-ci.
 Pour suivre les évolutions du boilerplate ou y contribuer, passer plutôt par un fork. `gh repo fork` le clone, le déclare en `origin` et ajoute ce dépôt en `upstream`. Un fork d'un dépôt public reste public.
 
 ```sh
-gh repo fork kewinMarchand/nuxt-vuetify-query-boilerplate --clone --fork-name mon-projet
+gh repo fork kewinMarchand/boilerplate-nuxt --clone --fork-name mon-projet
 ```
 
 Ensuite, suivre [Démarrage](#démarrage).
@@ -210,7 +210,7 @@ git merge upstream/main
 Depuis un template, l'historique n'est pas commun. Une fusion rejouerait tout le dépôt. Il faut prendre les commits utiles un par un :
 
 ```sh
-git remote add boilerplate https://github.com/kewinMarchand/nuxt-vuetify-query-boilerplate.git
+git remote add boilerplate https://github.com/kewinMarchand/boilerplate-nuxt.git
 git fetch boilerplate
 git log --oneline boilerplate/main   # repérer les commits à reprendre
 git cherry-pick <sha>
