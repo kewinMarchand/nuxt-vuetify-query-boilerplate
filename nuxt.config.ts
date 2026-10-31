@@ -40,6 +40,7 @@ export default defineNuxtConfig({
     { src: '@/shared/providers/matomo', mode: 'client' },
   ],
   css: [
+    '@/shared/theme/layers.css',
     '@kewinmarchand/boilerplates-ui/tokens/tokens.css',
     '@kewinmarchand/boilerplates-ui/css/index.css',
     '@/shared/theme/global.css',

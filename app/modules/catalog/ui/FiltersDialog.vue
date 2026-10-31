@@ -1,49 +1,44 @@
 <script setup lang="ts">
 import { ref, useId } from 'vue'
 
+import { Button, Drawer } from '@kewinmarchand/boilerplates-ui/vue'
+
 import { Icon } from '@/shared/ui/kit'
 
 defineProps<{ activeCount: number; total: number }>()
 
 const isOpen = ref(false)
-const titleId = useId()
+const drawerId = useId()
 </script>
 
 <template>
-  <v-dialog
-    v-model="isOpen"
-    :aria-labelledby="titleId"
-    content-class="side-panel"
-    transition="slide-x-transition"
+  <button
+    type="button"
+    class="bui-button bui-button--outline filters-open requires-js"
+    aria-haspopup="dialog"
+    :aria-expanded="isOpen ? 'true' : 'false'"
+    :aria-controls="drawerId"
+    data-testid="catalog-filters-open"
+    @click="isOpen = true"
   >
-    <template #activator="{ props: activatorProps }">
-      <v-btn
-        v-bind="activatorProps"
-        variant="outlined"
-        color="primary"
-        class="filters-open requires-js"
-        :aria-expanded="isOpen ? 'true' : 'false'"
-        data-testid="catalog-filters-open"
-      >
-        <template #prepend>
-          <Icon name="list-filter" />
-        </template>
-        Filtrer
-        <span v-if="activeCount">&nbsp;({{ activeCount }})</span>
-      </v-btn>
-    </template>
+    <Icon name="list-filter" />
+    Filtrer
+    <span v-if="activeCount">&nbsp;({{ activeCount }})</span>
+  </button>
 
-    <div class="side-panel-body" data-testid="catalog-filters">
-      <div class="d-flex align-center justify-space-between ga-2 mb-2">
-        <h2 :id="titleId" class="side-panel-title">Filtres</h2>
-        <v-btn icon variant="text" aria-label="Fermer les filtres" @click="isOpen = false">
-          <Icon name="x" />
-        </v-btn>
-      </div>
+  <Drawer
+    :id="drawerId"
+    title="Filtres"
+    :open="isOpen"
+    side="start"
+    close-label="Fermer les filtres"
+    @close="isOpen = false"
+  >
+    <div v-if="isOpen" data-testid="catalog-filters">
       <slot />
-      <v-btn color="primary" block class="mt-4" @click="isOpen = false">
-        Voir les {{ total }} produits
-      </v-btn>
     </div>
-  </v-dialog>
+    <template #footer>
+      <Button full-width @click="isOpen = false">Voir les {{ total }} produits</Button>
+    </template>
+  </Drawer>
 </template>

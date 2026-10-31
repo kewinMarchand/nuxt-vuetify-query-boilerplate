@@ -102,10 +102,10 @@ watch([isOpen, columns], async () => {
   inset-inline-start: 0;
   z-index: var(--app-z-menu);
   padding: 8px;
-  background: rgb(var(--v-theme-surface));
-  color: rgb(var(--v-theme-on-surface));
+  background: var(--bui-color-surface);
+  color: var(--bui-color-text);
   border-radius: 8px;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+  box-shadow: var(--bui-shadow-lg);
 }
 
 .category-panel.is-end-aligned {
@@ -124,7 +124,7 @@ watch([isOpen, columns], async () => {
 }
 
 .category-column + .category-column {
-  border-left: 1px solid rgb(0 0 0 / 0.12);
+  border-left: 1px solid var(--bui-color-border-subtle);
 }
 
 .category-link {
@@ -140,11 +140,11 @@ watch([isOpen, columns], async () => {
 
 .category-link:hover,
 .category-link[aria-expanded='true'] {
-  background: rgba(var(--v-theme-primary), 0.08);
+  background: var(--bui-color-primary-surface-subtle);
 }
 
 .category-all {
   font-weight: 600;
-  color: rgb(var(--v-theme-primary));
+  color: var(--bui-color-primary);
 }
 </style>

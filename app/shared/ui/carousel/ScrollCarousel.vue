@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useId } from 'vue'
 
-import { Icon } from '@/shared/ui/kit'
+import { Button } from '@kewinmarchand/boilerplates-ui/vue'
 
 import { useCarousel } from './useCarousel'
 
@@ -59,12 +59,12 @@ const setViewport = (element: unknown) => {
               loading="lazy"
               decoding="async"
               draggable="false"
-              class="carousel-image rounded"
+              class="carousel-image"
             />
           </picture>
           <template v-else>
             <div
-              class="carousel-placeholder rounded"
+              class="carousel-placeholder"
               :style="{ aspectRatio: `${slide.image.width} / ${slide.image.height}` }"
             />
             <noscript data-allow-mismatch="children">
@@ -74,17 +74,17 @@ const setViewport = (element: unknown) => {
                 :width="slide.image.width"
                 :height="slide.image.height"
                 loading="lazy"
-                class="carousel-image rounded"
+                class="carousel-image"
               />
             </noscript>
           </template>
-          <h3 class="mt-4">{{ slide.title }}</h3>
+          <h3 class="carousel-title">{{ slide.title }}</h3>
           <p>{{ slide.text }}</p>
         </div>
       </div>
     </div>
-    <div class="carousel-controls d-flex flex-wrap align-center ga-2">
-      <div class="d-flex flex-wrap ga-1 flex-grow-1">
+    <div class="carousel-controls">
+      <div class="carousel-dots">
         <button
           v-for="index in snapCount"
           :key="index"
@@ -97,32 +97,27 @@ const setViewport = (element: unknown) => {
           @click="goTo(index - 1)"
         />
       </div>
-      <v-btn
-        variant="outlined"
-        color="primary"
+      <Button
+        variant="outline"
+        icon="chevron-left"
         :aria-controls="trackId"
         :disabled="!canPrev"
         data-testid="carousel-prev"
         @click="prev"
       >
-        <template #prepend>
-          <Icon name="chevron-left" />
-        </template>
         Précédent
-      </v-btn>
-      <v-btn
-        variant="outlined"
-        color="primary"
+      </Button>
+      <Button
+        variant="outline"
+        icon="chevron-right"
+        icon-position="end"
         :aria-controls="trackId"
         :disabled="!canNext"
         data-testid="carousel-next"
         @click="next"
       >
         Suivant
-        <template #append>
-          <Icon name="chevron-right" />
-        </template>
-      </v-btn>
+      </Button>
     </div>
   </section>
 </template>
@@ -151,6 +146,11 @@ const setViewport = (element: unknown) => {
   scroll-snap-align: start;
 }
 
+.carousel-image,
+.carousel-placeholder {
+  border-radius: var(--bui-radius-md);
+}
+
 .carousel-image {
   display: block;
   width: 100%;
@@ -159,15 +159,30 @@ const setViewport = (element: unknown) => {
 }
 
 .carousel-placeholder {
-  background: rgba(var(--v-theme-on-surface), 0.06);
+  background: var(--bui-color-surface-muted);
 }
 
 html:not([data-js]) .carousel-placeholder {
   display: none;
 }
 
+.carousel-title {
+  margin-top: var(--bui-space-4);
+}
+
 .carousel-controls {
-  min-height: 44px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bui-space-2);
+  min-height: var(--bui-size-touch);
+}
+
+.carousel-dots {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  gap: var(--bui-space-1);
 }
 
 .carousel-dot {
@@ -182,15 +197,15 @@ html:not([data-js]) .carousel-placeholder {
   position: absolute;
   inset: 14px;
   border-radius: 50%;
-  border: 2px solid rgb(var(--v-theme-primary));
+  border: 2px solid var(--bui-color-primary);
 }
 
 .carousel-dot[aria-current='true']::after {
-  background: rgb(var(--v-theme-primary));
+  background: var(--bui-color-primary);
 }
 
 .carousel-dot:focus-visible {
-  outline: 3px solid rgb(var(--v-theme-primary));
+  outline: 3px solid var(--bui-color-primary);
 }
 
 @media (min-width: 640px) {

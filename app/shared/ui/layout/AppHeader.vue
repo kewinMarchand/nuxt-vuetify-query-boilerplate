@@ -14,7 +14,7 @@ const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
 </script>
 
 <template>
-  <header class="app-header bg-primary">
+  <header class="app-header">
     <div class="app-container header-bar">
       <NuxtLink to="/" class="header-logo" data-testid="layout-logo">
         <img src="/images/logo-mark.svg" alt="" width="40" height="40" />
@@ -36,6 +36,11 @@ const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
 </template>
 
 <style scoped>
+.app-header {
+  background: var(--bui-color-primary);
+  color: var(--bui-color-on-primary);
+}
+
 .header-bar {
   display: flex;
   flex-wrap: wrap;
@@ -81,15 +86,6 @@ const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
 
 .header-actions {
   flex-wrap: nowrap;
-}
-
-.header-actions :deep(.v-btn) {
-  color: inherit;
-}
-
-.header-actions :deep(.v-btn:focus-visible) {
-  outline: 3px solid currentColor;
-  outline-offset: 2px;
 }
 
 html[data-js] .header-nav {

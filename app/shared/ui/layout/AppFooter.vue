@@ -7,23 +7,19 @@ const { devTools } = useRuntimeConfig().public
 </script>
 
 <template>
-  <v-sheet tag="footer" color="grey-lighten-4" class="py-6">
+  <footer class="app-footer">
     <div class="app-container">
       <nav aria-label="Liens légaux">
-        <ul class="footer-links d-flex flex-wrap ga-4 mb-4">
+        <ul class="footer-links">
           <li v-for="item in LEGAL_NAVIGATION" :key="item.href">
-            <NuxtLink
-              :to="item.href"
-              class="footer-link text-body-medium"
-              data-testid="layout-footer-link"
-            >
+            <NuxtLink :to="item.href" class="footer-link" data-testid="layout-footer-link">
               {{ item.footerLabel ?? item.label }}
             </NuxtLink>
           </li>
           <li v-if="devTools">
             <NuxtLink
               to="/charte-graphique"
-              class="footer-link text-body-medium"
+              class="footer-link"
               data-testid="layout-styleguide-link"
             >
               Charte graphique (dev)
@@ -31,16 +27,26 @@ const { devTools } = useRuntimeConfig().public
           </li>
         </ul>
       </nav>
-      <p class="footer-brand text-body-medium text-medium-emphasis mb-0">
+      <p class="footer-brand">
         <img src="/images/logo-mark.svg" alt="" width="24" height="24" />
         {{ SITE.name }}
       </p>
     </div>
-  </v-sheet>
+  </footer>
 </template>
 
 <style scoped>
+.app-footer {
+  padding-block: var(--bui-space-6);
+  background: var(--bui-color-surface-muted);
+  font-size: var(--bui-font-size-body-sm);
+}
+
 .footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bui-space-4);
+  margin: 0 0 var(--bui-space-4);
   padding: 0;
   list-style: none;
 }
@@ -48,7 +54,9 @@ const { devTools } = useRuntimeConfig().public
 .footer-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--bui-space-2);
+  margin: 0;
+  color: var(--bui-color-text-muted);
 }
 
 .footer-link {

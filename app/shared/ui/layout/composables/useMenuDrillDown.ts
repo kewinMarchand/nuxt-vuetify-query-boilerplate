@@ -1,4 +1,4 @@
-import { computed, nextTick, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import type { NavigationNode } from '@/shared/config'
 
@@ -16,7 +16,7 @@ const findChain = (root: NavigationNode, ids: string[]): NavigationNode[] => {
   return chain
 }
 
-export const useMenuDrillDown = (menu: () => NavigationNode, focusTitle: () => void) => {
+export const useMenuDrillDown = (menu: () => NavigationNode) => {
   const level = ref<string[] | null>(null)
 
   const trail = computed(() => (level.value ? findChain(menu(), level.value) : []))
@@ -33,10 +33,8 @@ export const useMenuDrillDown = (menu: () => NavigationNode, focusTitle: () => v
   })
   const currentHref = computed(() => trail.value.at(-1)?.href ?? menu().href)
 
-  const goTo = async (next: string[] | null) => {
+  const goTo = (next: string[] | null) => {
     level.value = next
-    await nextTick()
-    focusTitle()
   }
 
   return {

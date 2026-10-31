@@ -90,7 +90,8 @@ test.describe('Menu mobile', () => {
     const menu = page.getByTestId('layout-mobile-menu')
     await expect(toggle).toHaveAttribute('aria-expanded', 'true')
 
-    const title = page.getByTestId('layout-mobile-menu-title')
+    // Le titre du tiroir est rendu par la bibliothèque : ciblé par son rôle dans le panneau.
+    const title = menu.getByRole('heading', { level: 2 })
     await page.getByTestId('layout-mobile-menu-catalog').click()
     await expect(title).toBeFocused()
     await expect(title).toHaveText('Catalogue')
@@ -105,7 +106,7 @@ test.describe('Menu mobile', () => {
     await expect(title).toHaveText('Catalogue')
 
     await page.keyboard.press('Escape')
-    await expect(menu).toHaveCount(0)
+    await expect(menu).toBeHidden()
     await expect(toggle).toBeFocused()
   })
 
@@ -118,6 +119,6 @@ test.describe('Menu mobile', () => {
     await category(menu, 'plantes-aquatiques/nenuphars').click()
 
     await expect(page).toHaveURL(/\/catalogue\/plantes-aquatiques\/nenuphars$/)
-    await expect(menu).toHaveCount(0)
+    await expect(menu).toBeHidden()
   })
 })

@@ -50,13 +50,13 @@ const items = computed(() => trail ?? buildBreadcrumb(route.path, currentLabel, 
 .breadcrumb li + li::before {
   content: '›';
   margin-inline: 8px;
-  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  color: var(--bui-color-text-muted);
 }
 
 .breadcrumb a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: rgb(var(--v-theme-primary));
+  color: var(--bui-color-primary);
 }
 </style>

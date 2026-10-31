@@ -21,12 +21,12 @@ const isFullBleed = computed(() => route.meta.fullBleed === true && !currentLabe
 </script>
 
 <template>
-  <v-app>
+  <div class="app-shell">
     <SkipLink />
     <AppHeader :category-menu="categoryMenu" />
-    <main id="main" tabindex="-1" class="flex-grow-1">
+    <main id="main" tabindex="-1" class="app-main">
       <slot v-if="isFullBleed" />
-      <div v-else class="app-container py-8">
+      <div v-else class="app-container app-page">
         <AppBreadcrumb
           v-bind="currentLabel ? { currentLabel } : {}"
           :page-trail="breadcrumbTrail ?? null"
@@ -35,5 +35,21 @@ const isFullBleed = computed(() => route.meta.fullBleed === true && !currentLabe
       </div>
     </main>
     <AppFooter />
-  </v-app>
+  </div>
 </template>
+
+<style scoped>
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex-grow: 1;
+}
+
+.app-page {
+  padding-block: var(--bui-space-8);
+}
+</style>
