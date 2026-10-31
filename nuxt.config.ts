@@ -39,7 +39,11 @@ export default defineNuxtConfig({
     { src: '@/shared/providers/errorReporting', mode: 'client' },
     { src: '@/shared/providers/matomo', mode: 'client' },
   ],
-  css: ['@kewinmarchand/boilerplates-ui/tokens/tokens.css', '@/shared/theme/global.css'],
+  css: [
+    '@kewinmarchand/boilerplates-ui/tokens/tokens.css',
+    '@kewinmarchand/boilerplates-ui/css/index.css',
+    '@/shared/theme/global.css',
+  ],
   build: { transpile: ['vuetify'] },
   vite: { vue: { template: { transformAssetUrls } } },
   app: {
