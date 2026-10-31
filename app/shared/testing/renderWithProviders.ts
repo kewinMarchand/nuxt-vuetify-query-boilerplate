@@ -1,7 +1,7 @@
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { render } from '@testing-library/vue'
 
-import { makeQueryClient, makeVuetify } from '@/shared/providers'
+import { makeQueryClient } from '@/shared/providers'
 
 type RenderParameters = Parameters<typeof render>
 
@@ -12,6 +12,6 @@ export const renderWithProviders = (
   render(component, {
     ...options,
     global: {
-      plugins: [makeVuetify(), [VueQueryPlugin, { queryClient: makeQueryClient() }]],
+      plugins: [[VueQueryPlugin, { queryClient: makeQueryClient() }]],
     },
   })

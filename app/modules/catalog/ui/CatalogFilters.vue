@@ -53,7 +53,7 @@ const onChange = (event: Event) => {
     <details open class="facet">
       <summary>Exposition</summary>
       <fieldset>
-        <legend class="d-sr-only">Exposition</legend>
+        <legend class="bui-visually-hidden">Exposition</legend>
         <label v-for="option in facets.exposures" :key="option.value" class="facet-option">
           <input
             type="checkbox"
@@ -71,7 +71,7 @@ const onChange = (event: Event) => {
     <details open class="facet">
       <summary>Taille</summary>
       <fieldset>
-        <legend class="d-sr-only">Taille</legend>
+        <legend class="bui-visually-hidden">Taille</legend>
         <label v-for="option in facets.sizes" :key="option.value" class="facet-option">
           <input
             type="checkbox"
@@ -89,7 +89,7 @@ const onChange = (event: Event) => {
     <details open class="facet">
       <summary>Prix</summary>
       <fieldset class="facet-price">
-        <legend class="d-sr-only">Prix</legend>
+        <legend class="bui-visually-hidden">Prix</legend>
         <label :for="`${prefix}-min`">Minimum (€)</label>
         <input
           :id="`${prefix}-min`"
@@ -118,7 +118,7 @@ const onChange = (event: Event) => {
     <details open class="facet">
       <summary>Disponibilité</summary>
       <fieldset>
-        <legend class="d-sr-only">Disponibilité</legend>
+        <legend class="bui-visually-hidden">Disponibilité</legend>
         <label class="facet-option">
           <input
             type="checkbox"
@@ -156,6 +156,8 @@ const onChange = (event: Event) => {
 
 .facet fieldset {
   min-width: 0;
+  margin: 0;
+  padding: 0;
   border: 0;
 }
 

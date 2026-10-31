@@ -41,7 +41,7 @@ const entries = computed(() => paginationWindow(page, pageCount))
       <li v-for="(entry, index) in entries" :key="`${entry}-${index}`">
         <span v-if="entry === 'ellipsis'" class="page-link">…</span>
         <span v-else-if="entry === page" class="page-link is-current" aria-current="page">
-          <span class="d-sr-only">Page </span>{{ entry }}
+          <span class="bui-visually-hidden">Page </span>{{ entry }}
         </span>
         <NuxtLink
           v-else
@@ -49,7 +49,7 @@ const entries = computed(() => paginationWindow(page, pageCount))
           class="page-link"
           :data-testid="`catalog-pagination-page-${entry}`"
         >
-          <span class="d-sr-only">Page </span>{{ entry }}
+          <span class="bui-visually-hidden">Page </span>{{ entry }}
         </NuxtLink>
       </li>
       <li>

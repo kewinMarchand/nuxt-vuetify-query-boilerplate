@@ -1,5 +1,4 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 import { PRIMARY_COLOR } from './app/shared/theme/tokens'
 import { A11Y_MODE_BOOT_SCRIPT, JS_FLAG_SCRIPT } from './app/shared/ui/a11y-mode/a11yModeBootScript'
@@ -15,15 +14,7 @@ export default defineNuxtConfig({
       }
     },
   },
-  modules: [
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
-        config.plugins?.push(vuetify({ autoImport: true }))
-      })
-    },
-  ],
+  modules: ['@nuxt/eslint', '@nuxt/fonts'],
   imports: { autoImport: false },
   experimental: {
     defaults: { nuxtLink: { prefetchOn: { visibility: false, interaction: true } } },
@@ -33,7 +24,6 @@ export default defineNuxtConfig({
     compressPublicAssets: { gzip: true, brotli: true },
   },
   plugins: [
-    '@/shared/providers/vuetify',
     '@/shared/providers/vueQuery',
     { src: '@/shared/providers/hydrated', mode: 'client' },
     { src: '@/shared/providers/errorReporting', mode: 'client' },
@@ -45,8 +35,6 @@ export default defineNuxtConfig({
     '@kewinmarchand/boilerplates-ui/css/index.css',
     '@/shared/theme/global.css',
   ],
-  build: { transpile: ['vuetify'] },
-  vite: { vue: { template: { transformAssetUrls } } },
   app: {
     head: {
       htmlAttrs: { lang: 'fr' },

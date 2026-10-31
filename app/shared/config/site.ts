@@ -21,7 +21,7 @@ export interface SiteConfig {
 export const SITE: SiteConfig = {
   name: 'Nuxt Vuetify Query Boilerplate',
   description:
-    'Boilerplate Nuxt 4 avec Vuetify, TanStack Query, vee-validate et zod, outillé pour la QA, l’accessibilité et les tests end-to-end.',
+    'Boilerplate Nuxt 4 avec boilerplates-ui, TanStack Query, vee-validate et zod, outillé pour la QA, l’accessibilité et les tests end-to-end.',
   locale: 'fr_FR',
   publisher: {
     companyName: 'Exemple SAS (société fictive)',

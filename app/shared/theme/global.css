@@ -11,13 +11,28 @@
   --app-z-skip-link: 2400;
   --app-z-menu: 1500;
   --app-gutter: 16px;
-  --v-font-body: 'Inter', 'Inter Fallback', system-ui, sans-serif;
 }
 
 /* Styles des éléments en couche « base » (ordre posé par layers.css) : les classes bui-* de la couche « components » les surchargent. */
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   html {
     font-size: var(--bui-font-size-body);
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bui-color-surface);
+    color: var(--bui-color-text);
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+    line-height: var(--bui-font-line-height-normal);
   }
 
   h1,
@@ -184,24 +199,7 @@ html[data-js] .no-js-only {
   scroll-behavior: auto;
 }
 
-/* Couleurs du thème « enhanced » de vuetify.json, en composantes r, g, b comme Vuetify les attend (vérifié par theme.test.ts).
-   Les tailles du mode renforcé viennent de tokens.css. */
-[data-a11y-mode='enhanced'] .v-theme--light {
-  --v-theme-primary: 30, 58, 138;
-  --v-theme-secondary: 100, 47, 192;
-  --v-theme-error: 127, 29, 29;
-  --v-theme-info: 23, 37, 84;
-  --v-theme-success: 20, 83, 45;
-  --v-theme-warning: 120, 53, 15;
-  --v-theme-background: 255, 255, 255;
-  --v-theme-surface: 255, 255, 255;
-  --v-theme-on-background: 0, 0, 0;
-  --v-theme-on-surface: 0, 0, 0;
-  --v-theme-on-primary: 255, 255, 255;
-  --v-high-emphasis-opacity: 1;
-  --v-medium-emphasis-opacity: 1;
-}
-
+/* Couleurs, tailles et focus du mode renforcé : jetons redéfinis par tokens.css sous le même attribut. */
 [data-a11y-mode='enhanced'] main :is(p, li, dd, dt, td, th):not(nav *, .a11y-chrome *) {
   line-height: 1.8;
   letter-spacing: 0.12em;
@@ -223,16 +221,6 @@ html[data-js] .no-js-only {
 [data-a11y-mode='enhanced'] :focus-visible {
   outline: 4px solid currentColor;
   outline-offset: 2px;
-}
-
-[data-a11y-mode='enhanced'] .v-btn {
-  height: auto;
-  max-width: 100%;
-  white-space: normal;
-}
-
-[data-a11y-mode='enhanced'] .v-btn__content {
-  white-space: normal;
 }
 
 [data-a11y-mode='enhanced'] *,

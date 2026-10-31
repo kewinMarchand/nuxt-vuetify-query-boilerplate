@@ -1,6 +1,6 @@
 # nuxt-vuetify-query-boilerplate
 
-Point de départ pour une application **Nuxt 4** en rendu serveur avec **Vuetify**, **TanStack Query**, **vee-validate + zod**, et toute la chaîne qualité : lint, format, types, tests unitaires, end-to-end, accessibilité et Lighthouse.
+Point de départ pour une application **Nuxt 4** en rendu serveur avec les composants de **boilerplates-ui**, **TanStack Query**, **vee-validate + zod**, et toute la chaîne qualité : lint, format, types, tests unitaires, end-to-end, accessibilité et Lighthouse.
 
 Les pages de démonstration montrent chaque brique en situation :
 
@@ -19,7 +19,7 @@ Les pages de démonstration montrent chaque brique en situation :
 | ----------------------------------------- | ---------------------------------------------------------------- |
 | Nuxt 4 (SSR), Vue 3                       | Routage, rendu serveur, SEO, routes serveur                      |
 | TypeScript 6 (strict), vue-tsc            | Typage                                                           |
-| Vuetify 4                                 | Design system, thème dans `app/shared/theme/theme.ts`            |
+| boilerplates-ui                           | Jetons, CSS et composants Vue communs ; styles du site scoped    |
 | TanStack Vue Query 5                      | Cache et synchronisation des données, compatible SSR             |
 | vee-validate + zod 4                      | Formulaires, validation et types dérivés du même schéma          |
 | Embla Carousel 8                          | Carrousel (glisser, swipe, molette), via `shared/ui/`            |
@@ -144,7 +144,7 @@ Pour un contenu à indexer, ajouter `onServerPrefetch(() => query.suspense())` d
 ### Ajouter un champ de formulaire
 
 1. Ajouter le champ et son message d'erreur dans `app/modules/contact/domain/contactSchema.ts`. Le type du formulaire en découle.
-2. Ajouter `defineField('champ', FIELD_CONFIG)` dans `useContactForm.ts`, puis le `v-text-field` dans `ContactForm.vue` avec `v-model` et `v-bind`. Vuetify relie le message au champ par `aria-describedby`.
+2. Ajouter `defineField('champ', FIELD_CONFIG)` dans `useContactForm.ts`, puis le `TextField` de la bibliothèque dans `ContactForm.vue` avec un `id`, `v-model` et `v-bind`. Le composant relie le message au champ par `aria-describedby`.
 
 ### CSP et rapports de violation
 
@@ -156,7 +156,7 @@ Chaque réponse porte un en-tête `Content-Security-Policy-Report-Only` construi
 
 - **Lire les logs** : `docker compose logs -f web` pour l'image de production, la sortie de `make up` en développement, la console de l'hébergeur en production. Au démarrage, `[nuxt-vuetify-query-boilerplate] serveur démarré (production)` permet de retrouver le bon fichier.
 - **Autoriser une origine** : l'ajouter à sa directive (le nom est entre parenthèses dans la ligne) dans `siteCsp()` de `app/shared/security/csp.ts`. L'API (`NUXT_PUBLIC_API_URL`), Matomo et GlitchTip y sont déjà, quand leur variable est renseignée. L'en-tête est calculé à l'exécution, comme le reste de `runtimeConfig`.
-- **Pourquoi Report-Only et `'unsafe-inline'`** : on collecte d'abord ce que le site charge vraiment avant de bloquer quoi que ce soit ; l'hydratation de Nuxt et les styles de Vuetify écrivent du code en ligne, et un nonce par réponse rendrait toutes les pages dynamiques.
+- **Pourquoi Report-Only et `'unsafe-inline'`** : on collecte d'abord ce que le site charge vraiment avant de bloquer quoi que ce soit ; l'hydratation de Nuxt et les attributs `style` écrivent du code en ligne, et un nonce par réponse rendrait toutes les pages dynamiques.
 
 ### Ajouter une icône
 
@@ -218,22 +218,22 @@ git cherry-pick <sha>
 
 ### Personnaliser
 
-| Quoi                             | Fichiers                                                                                                                                                                                                                        |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Nom du paquet et titre           | `package.json` (`name`), titre de ce README et du `CLAUDE.md`, titulaire dans `LICENSE`                                                                                                                                         |
-| Identité du site                 | `app/shared/config/site.ts` : nom, description, langue, éditeur, hébergeur, résultat d'audit d'accessibilité. Les valeurs fournies sont fictives                                                                                |
-| Nom affiché dans les tests       | `tests/e2e/home.e2e.ts` (h1 du hero) et `tests/e2e/layout.e2e.ts` (nom accessible du logo), à aligner sur `SITE.name`                                                                                                           |
-| Couleur principale               | tokens de `@kewinmarchand/boilerplates-ui` (`vuetify.json`), lus par `app/shared/theme/tokens.ts` (`PRIMARY_COLOR`), repris par le thème Vuetify et la balise `theme-color`. Reporter la valeur dans `theme_color` du manifeste |
-| Manifeste                        | `public/manifest.webmanifest` : `name`, `short_name`, `theme_color`                                                                                                                                                             |
-| URL publique                     | `NUXT_PUBLIC_SITE_URL` dans `.env.example`, `compose.yaml` et la valeur par défaut de `nuxt.config.ts`                                                                                                                          |
-| Port de développement (3010)     | script `dev` de `package.json`, `.env.example`, `compose.yaml`, `nuxt.config.ts`, aides de `make up` et `make docker-up` dans le `Makefile`                                                                                     |
-| Ports de test (3110, 3111, 3210) | `tests/support/ports.ts` pour Playwright, `.lighthouserc.json` pour Lighthouse. À changer seulement s'ils entrent en conflit avec un autre projet                                                                               |
-| Logo                             | `public/images/logo-mark.svg`, affiché par le header, le footer et la charte graphique                                                                                                                                          |
-| Favicons et partage              | `public/favicon.ico`, `public/favicon.svg`, `public/apple-touch-icon.png`, `public/icon-192.png`, `public/icon-512.png`, `public/og-image.jpg`                                                                                  |
-| Accueil                          | `app/views/home/` : hero (`HomeHero.vue`) et carrousel (`homeSlides.ts`), images `public/images/hero-*` et `slide-*`                                                                                                            |
-| Pages légales                    | `app/views/legal/` : `LegalNoticeView.vue`, `PersonalDataView.vue`, `AccessibilityStatementView.vue`. Les données viennent de `site.ts`, le texte reste à relire                                                                |
-| URL Lighthouse                   | `ci.url` de `.lighthouserc.json`, une entrée par route à mesurer                                                                                                                                                                |
-| Intégration continue             | `.github/workflows/ci.yml` : branche surveillée (`main`), puis `make qa`, `make test-e2e test-a11y` et `make metrics`                                                                                                           |
+| Quoi                             | Fichiers                                                                                                                                                                                                   |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nom du paquet et titre           | `package.json` (`name`), titre de ce README et du `CLAUDE.md`, titulaire dans `LICENSE`                                                                                                                    |
+| Identité du site                 | `app/shared/config/site.ts` : nom, description, langue, éditeur, hébergeur, résultat d'audit d'accessibilité. Les valeurs fournies sont fictives                                                           |
+| Nom affiché dans les tests       | `tests/e2e/home.e2e.ts` (h1 du hero) et `tests/e2e/layout.e2e.ts` (nom accessible du logo), à aligner sur `SITE.name`                                                                                      |
+| Couleur principale               | jetons de `@kewinmarchand/boilerplates-ui` (`tokens.json`), lus par `app/shared/theme/tokens.ts` (`PRIMARY_COLOR`), repris par la balise `theme-color`. Reporter la valeur dans `theme_color` du manifeste |
+| Manifeste                        | `public/manifest.webmanifest` : `name`, `short_name`, `theme_color`                                                                                                                                        |
+| URL publique                     | `NUXT_PUBLIC_SITE_URL` dans `.env.example`, `compose.yaml` et la valeur par défaut de `nuxt.config.ts`                                                                                                     |
+| Port de développement (3010)     | script `dev` de `package.json`, `.env.example`, `compose.yaml`, `nuxt.config.ts`, aides de `make up` et `make docker-up` dans le `Makefile`                                                                |
+| Ports de test (3110, 3111, 3210) | `tests/support/ports.ts` pour Playwright, `.lighthouserc.json` pour Lighthouse. À changer seulement s'ils entrent en conflit avec un autre projet                                                          |
+| Logo                             | `public/images/logo-mark.svg`, affiché par le header, le footer et la charte graphique                                                                                                                     |
+| Favicons et partage              | `public/favicon.ico`, `public/favicon.svg`, `public/apple-touch-icon.png`, `public/icon-192.png`, `public/icon-512.png`, `public/og-image.jpg`                                                             |
+| Accueil                          | `app/views/home/` : hero (`HomeHero.vue`) et carrousel (`homeSlides.ts`), images `public/images/hero-*` et `slide-*`                                                                                       |
+| Pages légales                    | `app/views/legal/` : `LegalNoticeView.vue`, `PersonalDataView.vue`, `AccessibilityStatementView.vue`. Les données viennent de `site.ts`, le texte reste à relire                                           |
+| URL Lighthouse                   | `ci.url` de `.lighthouserc.json`, une entrée par route à mesurer                                                                                                                                           |
+| Intégration continue             | `.github/workflows/ci.yml` : branche surveillée (`main`), puis `make qa`, `make test-e2e test-a11y` et `make metrics`                                                                                      |
 
 ### Retirer les modules d'exemple
 

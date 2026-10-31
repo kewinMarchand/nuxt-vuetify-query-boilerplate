@@ -42,8 +42,8 @@ const FRAMEWORK_PACKAGES = [
   '\\#imports',
   '\\#components',
   '@tanstack/*',
-  'vuetify',
-  'vuetify/*',
+  '@kewinmarchand/boilerplates-ui',
+  '@kewinmarchand/boilerplates-ui/*',
   'vee-validate',
 ]
 const FRAMEWORKS_IN_DOMAIN = {
