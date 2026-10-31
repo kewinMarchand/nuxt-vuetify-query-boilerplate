@@ -186,10 +186,14 @@ html:not([data-js]) .carousel-placeholder {
 }
 
 .carousel-dot {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
   position: relative;
+  width: var(--bui-size-touch);
+  height: var(--bui-size-touch);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
 }
 
 .carousel-dot::after {

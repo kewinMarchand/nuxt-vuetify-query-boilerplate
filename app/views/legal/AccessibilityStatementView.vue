@@ -49,7 +49,7 @@ const COMPLIANCE_LEVEL = getComplianceLevel(AUDIT)
   <h2>Retour d’information et contact</h2>
   <p>
     Si vous ne pouvez pas accéder à un contenu ou à un service, contactez
-    <a :href="`mailto:${SITE.publisher.email}`" class="text-primary">{{ SITE.publisher.email }}</a>
+    <a :href="`mailto:${SITE.publisher.email}`" class="bui-link">{{ SITE.publisher.email }}</a>
     pour être orienté vers une alternative accessible.
   </p>
 
@@ -58,8 +58,8 @@ const COMPLIANCE_LEVEL = getComplianceLevel(AUDIT)
     Si vous constatez un défaut d’accessibilité qui vous empêche d’accéder à un contenu, que vous
     nous l’avez signalé et que vous n’avez pas obtenu de réponse satisfaisante, vous pouvez saisir
     le Défenseur des droits : par le
-    <a href="https://formulaire.defenseurdesdroits.fr/" class="text-primary">formulaire en ligne</a
-    >, auprès d’un délégué de votre région, ou par courrier gratuit, sans timbre, à Défenseur des
+    <a href="https://formulaire.defenseurdesdroits.fr/" class="bui-link">formulaire en ligne</a>,
+    auprès d’un délégué de votre région, ou par courrier gratuit, sans timbre, à Défenseur des
     droits, Libre réponse 71120, 75342 Paris CEDEX 07.
   </p>
 </template>

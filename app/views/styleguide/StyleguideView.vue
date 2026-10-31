@@ -16,7 +16,7 @@ import TypographySection from './sections/TypographySection.vue'
     Composants et tokens réels du projet. Page disponible en développement uniquement. Le bouton «
     Accessibilité renforcée » de l'en-tête permet de comparer les deux modes.
   </p>
-  <div class="d-flex flex-column ga-12">
+  <div class="styleguide-sections">
     <ColorsSection />
     <TypographySection />
     <SpacingSection />
@@ -28,3 +28,11 @@ import TypographySection from './sections/TypographySection.vue'
     <BrandSection />
   </div>
 </template>
+
+<style scoped>
+.styleguide-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bui-space-12);
+}
+</style>

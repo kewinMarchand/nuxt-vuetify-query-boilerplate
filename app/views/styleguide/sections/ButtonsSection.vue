@@ -1,40 +1,48 @@
 <script setup lang="ts">
-const VARIANTS = ['flat', 'tonal', 'outlined', 'text'] as const
+import { Button } from '@kewinmarchand/boilerplates-ui/vue'
+
+const VARIANTS = ['primary', 'secondary', 'outline', 'ghost'] as const
 const STATES = [
-  { label: 'Défaut', props: {} },
-  { label: 'Actif', props: { active: true } },
-  { label: 'Désactivé', props: { disabled: true } },
-  { label: 'Chargement', props: { loading: true } },
-]
+  { label: 'Défaut', className: '' },
+  { label: 'Survol', className: 'bui-is-hover' },
+  { label: 'Focus', className: 'bui-is-focus' },
+  { label: 'Actif', className: 'bui-is-active' },
+] as const
 </script>
 
 <template>
   <section aria-labelledby="charte-boutons" data-testid="styleguide-buttons">
     <h2 id="charte-boutons">Boutons</h2>
     <p>
-      Survol et focus se vérifient en interagissant : le focus clavier affiche un contour visible.
+      Survol, focus et actif sont simulés par les classes d'état de la bibliothèque. Les vrais états
+      se testent au pointeur et au clavier sur la ligne « Défaut ».
     </p>
-    <div v-for="variant in VARIANTS" :key="variant" class="mb-4">
+    <div v-for="variant in VARIANTS" :key="variant" class="button-group">
       <h3>Variante {{ variant }}</h3>
-      <div class="d-flex flex-wrap ga-2">
-        <v-btn
+      <div class="button-row">
+        <Button
           v-for="state in STATES"
           :key="state.label"
           :variant="variant"
-          color="primary"
-          v-bind="state.props"
+          :class="state.className"
         >
           {{ state.label }}
-          <template #loader>
-            <v-progress-circular
-              indeterminate
-              size="20"
-              width="2"
-              aria-label="Chargement en cours"
-            />
-          </template>
-        </v-btn>
+        </Button>
+        <Button :variant="variant" disabled>Désactivé</Button>
+        <Button :variant="variant" loading>Chargement</Button>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.button-group {
+  margin-block-end: var(--bui-space-4);
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bui-space-2);
+}
+</style>

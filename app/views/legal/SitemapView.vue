@@ -23,7 +23,7 @@ const sections = computed(() => [
     <h2 :id="section.id">{{ section.title }}</h2>
     <ul class="sitemap-list">
       <li v-for="item in section.items" :key="item.href" data-testid="legal-sitemap-item">
-        <NuxtLink :to="item.href" class="sitemap-link text-primary">{{ item.label }}</NuxtLink>
+        <NuxtLink :to="item.href" class="sitemap-link bui-link">{{ item.label }}</NuxtLink>
       </li>
     </ul>
   </section>

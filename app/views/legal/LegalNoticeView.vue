@@ -9,7 +9,7 @@ import { SITE } from '@/shared/config'
   <p>
     {{ SITE.name }} est édité par {{ SITE.publisher.companyName }}, {{ SITE.publisher.address }},
     SIRET {{ SITE.publisher.siret }}. Contact :
-    <a :href="`mailto:${SITE.publisher.email}`" class="text-primary">{{ SITE.publisher.email }}</a
+    <a :href="`mailto:${SITE.publisher.email}`" class="bui-link">{{ SITE.publisher.email }}</a
     >.
   </p>
 

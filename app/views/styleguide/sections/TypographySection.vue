@@ -8,8 +8,8 @@ const SAMPLES = [
   { id: 'h4', className: 'type-h4', label: 'Titre de niveau 4' },
   { id: 'h5', className: 'type-h5', label: 'Titre de niveau 5' },
   { id: 'h6', className: 'type-h6', label: 'Titre de niveau 6' },
-  { id: 'corps', className: 'text-body-large', label: 'Corps de texte' },
-  { id: 'petit', className: 'text-body-medium', label: 'Petit texte' },
+  { id: 'corps', className: 'bui-text bui-text--lead', label: 'Texte d’accroche' },
+  { id: 'petit', className: 'bui-text bui-text--body-sm', label: 'Petit texte' },
 ]
 
 const list = useTemplateRef<HTMLElement>('list')
@@ -28,12 +28,23 @@ onMounted(() => {
   <section aria-labelledby="charte-typo" data-testid="styleguide-typography">
     <h2 id="charte-typo">Typographie</h2>
     <dl ref="list">
-      <div v-for="sample in SAMPLES" :key="sample.id" class="mb-4">
+      <div v-for="sample in SAMPLES" :key="sample.id" class="sample">
         <dt :class="sample.className" :data-sample="sample.id">{{ sample.label }}</dt>
-        <dd class="text-body-medium">
+        <dd class="sample-metrics">
           {{ sample.id }} : {{ metrics[sample.id] ?? 'mesuré au montage' }}
         </dd>
       </div>
     </dl>
   </section>
 </template>
+
+<style scoped>
+.sample {
+  margin-block-end: var(--bui-space-4);
+}
+
+.sample-metrics {
+  margin: 0;
+  font-size: var(--bui-font-size-body-sm);
+}
+</style>

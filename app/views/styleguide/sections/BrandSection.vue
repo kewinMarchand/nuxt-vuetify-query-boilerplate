@@ -7,7 +7,7 @@ import { Icon, ICON_NAMES } from '@/shared/ui/kit'
   <section aria-labelledby="charte-icones" data-testid="styleguide-icons">
     <h2 id="charte-icones">Icônes</h2>
     <ul class="icons">
-      <li v-for="name in ICON_NAMES" :key="name" class="d-flex align-center ga-2">
+      <li v-for="name in ICON_NAMES" :key="name" class="icon-row">
         <Icon :name="name" :size="24" />
         <code>{{ name }}</code>
       </li>
@@ -23,7 +23,7 @@ import { Icon, ICON_NAMES } from '@/shared/ui/kit'
         <img src="/images/logo-mark.svg" alt="" width="40" height="40" />
         <span class="logo-name">{{ SITE.name }}</span>
       </div>
-      <div class="logo-sample bg-primary">
+      <div class="logo-sample logo-sample--primary">
         <img src="/images/logo-mark.svg" alt="" width="40" height="40" />
         <span class="logo-name">{{ SITE.name }}</span>
       </div>
@@ -32,6 +32,12 @@ import { Icon, ICON_NAMES } from '@/shared/ui/kit'
 </template>
 
 <style scoped>
+.icon-row {
+  display: flex;
+  align-items: center;
+  gap: var(--bui-space-2);
+}
+
 .icons {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -51,8 +57,13 @@ import { Icon, ICON_NAMES } from '@/shared/ui/kit'
   align-items: center;
   gap: 12px;
   padding: 16px;
-  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border: 1px solid var(--bui-color-border-subtle);
   border-radius: 8px;
+}
+
+.logo-sample--primary {
+  background: var(--bui-color-primary);
+  color: var(--bui-color-on-primary);
 }
 
 .logo-name {

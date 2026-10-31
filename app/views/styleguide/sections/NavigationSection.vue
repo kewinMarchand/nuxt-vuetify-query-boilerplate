@@ -22,9 +22,8 @@ const hrefFor = (page: number) => `/catalogue?page=${page}`
     <CatalogPagination :page="5" :page-count="10" :href-for="hrefFor" />
     <ActiveFilters :filters="FILTERS" clear-href="/catalogue" />
     <p>
-      Lien interne : <NuxtLink to="/contact" class="text-primary">page de contact</NuxtLink>. Lien
-      externe :
-      <a href="https://www.w3.org/WAI/" class="text-primary" rel="noopener">WAI du W3C</a>.
+      Lien interne : <NuxtLink to="/contact" class="bui-link">page de contact</NuxtLink>. Lien
+      externe : <a href="https://www.w3.org/WAI/" class="bui-link" rel="noopener">WAI du W3C</a>.
     </p>
   </section>
 </template>

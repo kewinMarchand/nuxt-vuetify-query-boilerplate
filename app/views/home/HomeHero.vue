@@ -43,22 +43,20 @@ useHead({
     </picture>
     <div class="hero-veil" />
     <div class="hero-content app-container">
-      <p class="hero-eyebrow text-label-large">Boilerplate Nuxt 4 · Vuetify · TanStack Query</p>
+      <p class="hero-eyebrow">Boilerplate Nuxt 4 · boilerplates-ui · TanStack Query</p>
       <h1>{{ SITE.name }}</h1>
       <p class="hero-text">{{ SITE.description }}</p>
-      <div class="d-flex flex-wrap ga-4">
-        <v-btn to="/taches" color="primary" size="large" data-testid="home-tasks-link">
+      <div class="hero-actions">
+        <NuxtLink to="/taches" class="bui-button bui-button--lg" data-testid="home-tasks-link">
           Voir la démo TanStack Query
-        </v-btn>
-        <v-btn
+        </NuxtLink>
+        <NuxtLink
           to="/contact"
-          variant="outlined"
-          color="white"
-          size="large"
+          class="bui-button bui-button--outline-light bui-button--lg"
           data-testid="home-contact-link"
         >
           Voir le formulaire
-        </v-btn>
+        </NuxtLink>
       </div>
     </div>
   </section>
@@ -70,7 +68,7 @@ useHead({
   display: flex;
   align-items: center;
   min-height: 520px;
-  color: #fff;
+  color: var(--bui-color-on-image);
   overflow: hidden;
 }
 
@@ -98,8 +96,16 @@ useHead({
 }
 
 .hero-eyebrow {
+  font-size: var(--bui-font-size-body-sm);
+  font-weight: var(--bui-font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bui-space-4);
 }
 
 .hero-text {

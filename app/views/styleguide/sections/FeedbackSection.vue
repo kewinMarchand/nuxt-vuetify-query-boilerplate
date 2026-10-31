@@ -1,36 +1,50 @@
 <script setup lang="ts">
+import { Alert, Button, Skeleton } from '@kewinmarchand/boilerplates-ui/vue'
+
 import { Icon } from '@/shared/ui/kit'
 
-const SEVERITIES = [
-  { type: 'success', text: 'Opération réussie.' },
-  { type: 'info', text: 'Information utile.' },
-  { type: 'warning', text: 'Attention, vérifiez ce point.' },
-  { type: 'error', text: 'Une erreur est survenue.' },
+const VARIANTS = [
+  { variant: 'success', text: 'Opération réussie.' },
+  { variant: 'info', text: 'Information utile.' },
+  { variant: 'warning', text: 'Attention, vérifiez ce point.' },
+  { variant: 'error', text: 'Une erreur est survenue.' },
 ] as const
 </script>
 
 <template>
   <section aria-labelledby="charte-retours" data-testid="styleguide-feedback">
     <h2 id="charte-retours">Retours</h2>
-    <div class="d-flex flex-column ga-4">
-      <v-alert v-for="alert in SEVERITIES" :key="alert.type" :type="alert.type" variant="tonal">
+    <div class="feedback-list">
+      <Alert v-for="alert in VARIANTS" :key="alert.variant" :variant="alert.variant">
         {{ alert.text }}
-      </v-alert>
-      <div role="status" aria-label="Chargement d’exemple">
-        <v-skeleton-loader type="list-item-two-line" aria-hidden="true" />
+      </Alert>
+      <div role="status" aria-label="Chargement d’exemple" class="feedback-loading">
+        <Skeleton height="48px" />
+        <Skeleton height="48px" />
       </div>
-      <v-alert type="info" variant="tonal">Aucun élément pour l'instant. Revenez bientôt.</v-alert>
-      <v-alert type="error" variant="tonal">
+      <Alert>Aucun élément pour l'instant. Revenez bientôt.</Alert>
+      <Alert variant="error">
         Impossible de charger les données.
-        <template #append>
-          <v-btn variant="text">
-            <template #prepend>
-              <Icon name="rotate-cw" />
-            </template>
+        <template #action>
+          <Button variant="ghost">
+            <Icon name="rotate-cw" />
             Réessayer
-          </v-btn>
+          </Button>
         </template>
-      </v-alert>
+      </Alert>
     </div>
   </section>
 </template>
+
+<style scoped>
+.feedback-list,
+.feedback-loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bui-space-4);
+}
+
+.feedback-loading {
+  gap: var(--bui-space-2);
+}
+</style>

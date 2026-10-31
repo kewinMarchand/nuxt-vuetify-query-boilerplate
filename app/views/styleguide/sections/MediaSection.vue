@@ -29,24 +29,28 @@ const PRODUCT: Catalog.Product = {
     <h2 id="charte-medias">Médias et cartes</h2>
     <h3>Carte de blog</h3>
     <BlogGrid status="success" :articles="[ARTICLE]" />
-    <h3 class="mt-6">Carte produit, grille puis liste</h3>
+    <h3 class="media-title">Carte produit, grille puis liste</h3>
     <div class="product-samples">
       <div class="grid-sample"><ProductCard :product="PRODUCT" /></div>
       <ProductCard :product="{ ...PRODUCT, id: 'exemple-liste', slug: 'exemple-liste' }" />
     </div>
-    <h3 class="mt-6">Image au ratio 16:9</h3>
+    <h3 class="media-title">Image au ratio 16:9</h3>
     <img
       src="/images/slide-2-640.webp"
       alt=""
       width="640"
       height="360"
       loading="lazy"
-      class="ratio-sample rounded"
+      class="ratio-sample"
     />
   </section>
 </template>
 
 <style scoped>
+.media-title {
+  margin-block-start: var(--bui-space-6);
+}
+
 .product-samples {
   display: grid;
   gap: 16px;
@@ -58,6 +62,7 @@ const PRODUCT: Catalog.Product = {
 
 .ratio-sample {
   display: block;
+  border-radius: var(--bui-radius-md);
   width: 100%;
   max-width: 640px;
   height: auto;

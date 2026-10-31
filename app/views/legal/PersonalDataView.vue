@@ -32,14 +32,14 @@ const isAudienceMeasured = matomoConfig(matomoUrl, matomoSiteId) !== null
   <p>
     Vous disposez d’un droit d’accès, de rectification, d’effacement et d’opposition sur vos
     données. Pour l’exercer, écrivez à
-    <a :href="`mailto:${SITE.publisher.email}`" class="text-primary">{{ SITE.publisher.email }}</a
+    <a :href="`mailto:${SITE.publisher.email}`" class="bui-link">{{ SITE.publisher.email }}</a
     >.
   </p>
 
   <h2>Réclamation</h2>
   <p>
     Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la
-    CNIL (<a href="https://www.cnil.fr/fr/plaintes" class="text-primary">cnil.fr/fr/plaintes</a>).
+    CNIL (<a href="https://www.cnil.fr/fr/plaintes" class="bui-link">cnil.fr/fr/plaintes</a>).
   </p>
 
   <h2>Cookies</h2>

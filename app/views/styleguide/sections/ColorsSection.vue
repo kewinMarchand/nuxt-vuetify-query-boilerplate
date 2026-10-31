@@ -1,44 +1,47 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useTheme } from 'vuetify'
+import { TOKENS } from '@/shared/theme/tokens'
 
 import { contrastLevel, contrastRatio } from '@/views/styleguide/contrast'
 
-const TOKENS = [
+const SHOWN = [
   'primary',
+  'primary-dark',
   'secondary',
+  'text',
+  'text-muted',
+  'surface',
+  'surface-muted',
+  'success',
   'error',
   'info',
-  'success',
   'warning',
-  'background',
-  'surface',
-  'on-surface',
-  'on-background',
-]
+] as const
 
-const theme = useTheme()
-const colors = computed(() => {
-  const palette = theme.current.value.colors
-  const background = typeof palette.background === 'string' ? palette.background : '#ffffff'
-  return TOKENS.flatMap((token) => {
-    const value = palette[token]
-    if (typeof value !== 'string') return []
-    const ratio = contrastRatio(value, background)
-    return [{ token, value, ratio: ratio.toFixed(2), level: contrastLevel(ratio) }]
-  })
+const { color } = TOKENS
+
+const colors = SHOWN.map((token) => {
+  const value = color[token]
+  const isBackground = token.startsWith('surface')
+  const ratio = isBackground
+    ? contrastRatio(color.text, value)
+    : contrastRatio(value, color.surface)
+  return { token, value, isBackground, ratio: ratio.toFixed(2), level: contrastLevel(ratio) }
 })
 </script>
 
 <template>
   <section aria-labelledby="charte-couleurs" data-testid="styleguide-colors">
     <h2 id="charte-couleurs">Couleurs</h2>
+    <p>Valeurs du mode clair.</p>
     <ul class="swatches">
-      <li v-for="color in colors" :key="color.token" class="swatch">
-        <span class="swatch-sample" :style="{ background: color.value }" />
-        <code>{{ color.token }}</code>
-        <span>{{ color.value }}</span>
-        <span>{{ color.ratio }}:1 sur le fond, {{ color.level }}</span>
+      <li v-for="sample in colors" :key="sample.token" class="swatch">
+        <span class="swatch-sample" :style="{ background: `var(--bui-color-${sample.token})` }" />
+        <code>--bui-color-{{ sample.token }}</code>
+        <span>{{ sample.value }}</span>
+        <span
+          >{{ sample.isBackground ? 'Texte sur ce fond' : 'Sur le fond' }} : {{ sample.ratio }}:1,
+          {{ sample.level }}</span
+        >
       </li>
     </ul>
   </section>
@@ -48,20 +51,20 @@ const colors = computed(() => {
 .swatches {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  gap: var(--bui-space-4);
   padding: 0;
   list-style: none;
 }
 
 .swatch {
   display: grid;
-  gap: 4px;
+  gap: var(--bui-space-1);
 }
 
 .swatch-sample {
   display: block;
   height: 64px;
-  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
-  border-radius: 8px;
+  border: 1px solid var(--bui-color-border-subtle);
+  border-radius: var(--bui-radius-md);
 }
 </style>

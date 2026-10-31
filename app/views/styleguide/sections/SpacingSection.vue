@@ -1,20 +1,27 @@
 <script setup lang="ts">
-const SPACING_STEPS = [1, 2, 3, 4, 6, 8, 12, 16]
-const RADII = ['rounded-sm', 'rounded', 'rounded-lg', 'rounded-xl', 'rounded-pill']
+import { TOKENS } from '@/shared/theme/tokens'
+
+const SPACING_STEPS = Object.entries(TOKENS.space)
+const RADII = Object.entries(TOKENS.radius)
 </script>
 
 <template>
   <section aria-labelledby="charte-espacements" data-testid="styleguide-spacing">
     <h2 id="charte-espacements">Espacements et rayons</h2>
     <ul class="bars">
-      <li v-for="step in SPACING_STEPS" :key="step" class="d-flex align-center ga-4">
-        <code class="bar-label">pa-{{ step }}</code>
-        <span class="bar bg-primary" :class="`pl-${step}`" />
+      <li v-for="[step, value] in SPACING_STEPS" :key="step" class="bar-row">
+        <code class="bar-label">--bui-space-{{ step }} ({{ value }})</code>
+        <span class="bar" :style="{ width: `var(--bui-space-${step})` }" />
       </li>
     </ul>
     <ul class="radii">
-      <li v-for="radius in RADII" :key="radius" class="radius bg-secondary" :class="radius">
-        <code>{{ radius }}</code>
+      <li
+        v-for="[name, value] in RADII"
+        :key="name"
+        class="radius"
+        :style="{ borderRadius: `var(--bui-radius-${name})` }"
+      >
+        <code>--bui-radius-{{ name }} ({{ value }})</code>
       </li>
     </ul>
   </section>
@@ -27,12 +34,19 @@ const RADII = ['rounded-sm', 'rounded', 'rounded-lg', 'rounded-xl', 'rounded-pil
   list-style: none;
 }
 
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--bui-space-4);
+}
+
 .bar-label {
-  min-width: 64px;
+  min-width: 200px;
 }
 
 .bar {
   height: 16px;
+  background: var(--bui-color-primary);
 }
 
 .radii {
@@ -44,7 +58,10 @@ const RADII = ['rounded-sm', 'rounded', 'rounded-lg', 'rounded-xl', 'rounded-pil
 .radius {
   display: grid;
   place-items: center;
-  width: 120px;
+  min-width: 120px;
   height: 64px;
+  padding-inline: var(--bui-space-4);
+  background: var(--bui-color-secondary);
+  color: var(--bui-color-on-secondary);
 }
 </style>

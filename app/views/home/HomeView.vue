@@ -13,7 +13,7 @@ const ScrollCarousel = defineLazyHydrationComponent('visible', () =>
 
 <template>
   <HomeHero />
-  <div class="app-container d-flex flex-column ga-12 py-12">
+  <div class="app-container home-sections">
     <ScrollCarousel
       :slides="HOME_SLIDES"
       labelledby="home-carousel-title"
@@ -24,3 +24,12 @@ const ScrollCarousel = defineLazyHydrationComponent('visible', () =>
     <BlogSection />
   </div>
 </template>
+
+<style scoped>
+.home-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bui-space-12);
+  padding-block: var(--bui-space-12);
+}
+</style>

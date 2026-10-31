@@ -22,11 +22,13 @@ const reload = () => window.location.reload()
   </template>
   <template v-else>
     <p>Le service a rencontré un problème inattendu. Réessayez dans quelques instants.</p>
-    <div class="d-flex flex-wrap ga-4">
-      <v-btn color="primary" data-testid="error-retry" @click="reload">Réessayer</v-btn>
-      <v-btn to="/" variant="outlined" color="primary" data-testid="error-home-link">
+    <div class="error-actions">
+      <button type="button" class="bui-button" data-testid="error-retry" @click="reload">
+        Réessayer
+      </button>
+      <NuxtLink to="/" class="bui-button bui-button--outline" data-testid="error-home-link">
         Retour à l'accueil
-      </v-btn>
+      </NuxtLink>
     </div>
   </template>
 </template>
@@ -36,6 +38,11 @@ const reload = () => window.location.reload()
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: rgb(var(--v-theme-primary));
+  color: var(--bui-color-primary);
+}
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bui-space-4);
 }
 </style>
