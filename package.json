@@ -18,6 +18,7 @@
     "test:e2e": "playwright test tests/e2e",
     "test:a11y": "playwright test tests/a11y",
     "lhci": "lhci autorun",
+    "lhci:sombre": "lhci autorun --collect.settings.chromeFlags=\"--headless=new --no-sandbox --blink-settings=preferredColorScheme=0\" --upload.outputDir=.lighthouseci/reports-sombre",
     "api:types": "openapi-typescript $API_SCHEMA_URL --output app/shared/api/schema.d.ts",
     "prepare": "husky"
   },

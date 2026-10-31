@@ -34,7 +34,7 @@ test-e2e: ## Tests end-to-end desktop et mobile (Playwright)
 test-a11y: ## Tests d'accessibilité WCAG 2.1 AA (axe-core + Playwright)
 	$(RUN) yarn test:a11y
 
-metrics: build ## Métriques Lighthouse CI (perf ≥ 90, a11y et SEO = 100)
-	$(RUN) sh -c 'CHROME_PATH=$$(node -e "console.log(require(\"@playwright/test\").chromium.executablePath())") yarn lhci'
+metrics: build ## Métriques Lighthouse CI en clair puis en sombre (perf ≥ 90, a11y et SEO = 100)
+	$(RUN) sh -c 'export CHROME_PATH=$$(node -e "console.log(require(\"@playwright/test\").chromium.executablePath())") && yarn lhci && yarn lhci:sombre'
 
 .PHONY: qa qa-full lint arch-selftest icons-check lint-fix format format-check typecheck test test-unit test-e2e test-a11y metrics

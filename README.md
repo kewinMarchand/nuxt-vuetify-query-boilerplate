@@ -81,7 +81,7 @@ Variables d'environnement (`.env`) :
 | `make test-unit`                       | Vitest                                                                                                       |
 | `make test-e2e`                        | Playwright, desktop et mobile                                                                                |
 | `make test-a11y`                       | axe-core, WCAG 2.1 AA, sur chaque page, en mode normal et renforcé                                           |
-| `make metrics`                         | Lighthouse CI : échoue sous 90 en performance ou sous 100 en accessibilité et SEO                            |
+| `make metrics`                         | Lighthouse CI en clair puis en sombre : échoue sous 90 en performance ou sous 100 en accessibilité et SEO    |
 | `make icons` / `make icons-check`      | Génère le sprite `public/icons.svg` et le type `IconName` depuis `icons.json`, ou vérifie qu'ils sont à jour |
 | `make api-types`                       | Génère `app/shared/api/schema.d.ts` depuis `API_SCHEMA_URL`                                                  |
 | `make docker-build` / `make docker-up` | Image de production, sur le port `PORT` (3010 par défaut)                                                    |
