@@ -157,7 +157,7 @@ html[data-js] .catalog-aside {
   padding-inline: 16px;
   border: 1px solid currentColor;
   border-radius: 22px;
-  color: rgb(var(--v-theme-primary));
+  color: var(--bui-color-primary);
   text-decoration: none;
 }
 

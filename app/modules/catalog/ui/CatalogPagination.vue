@@ -92,16 +92,16 @@ const entries = computed(() => paginationWindow(page, pageCount))
   min-height: 44px;
   padding-inline: 8px;
   border-radius: 4px;
-  color: rgb(var(--v-theme-primary));
+  color: var(--bui-color-primary);
 }
 
 .is-current {
-  background: rgb(var(--v-theme-primary));
-  color: rgb(var(--v-theme-on-primary));
+  background: var(--bui-color-primary);
+  color: var(--bui-color-on-primary);
   font-weight: 700;
 }
 
 .is-disabled {
-  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  color: var(--bui-color-text-muted);
 }
 </style>

@@ -14,10 +14,8 @@ const DEFAULT_VALUES: Contact.FormValues = { name: '', email: '', message: '' }
 
 const FIELD_CONFIG = {
   validateOnModelUpdate: false,
-  props: (state: PublicPathState) => ({
-    'error-messages': state.errors,
-    'aria-invalid': state.errors.length > 0 ? 'true' : 'false',
-  }),
+  // Premier message d'erreur, relié au champ par le composant de la bibliothèque (aria-invalid, aria-describedby)
+  props: (state: PublicPathState<string>) => ({ error: state.errors[0] }),
 }
 
 export const useContactForm = () => {

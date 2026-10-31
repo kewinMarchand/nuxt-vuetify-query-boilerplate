@@ -143,7 +143,7 @@ const onChange = (event: Event) => {
 <style scoped>
 .facet {
   padding-block: 8px;
-  border-bottom: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-bottom: 1px solid var(--bui-color-border-subtle);
 }
 
 .facet summary {
@@ -170,7 +170,7 @@ const onChange = (event: Event) => {
 .facet-option input {
   width: 20px;
   height: 20px;
-  accent-color: rgb(var(--v-theme-primary));
+  accent-color: var(--bui-color-primary);
 }
 
 .facet-links {
@@ -179,7 +179,7 @@ const onChange = (event: Event) => {
 }
 
 .facet-links a {
-  color: rgb(var(--v-theme-primary));
+  color: var(--bui-color-primary);
 }
 
 .facet-price {

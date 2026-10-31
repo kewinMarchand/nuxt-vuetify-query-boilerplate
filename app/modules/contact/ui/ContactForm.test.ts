@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import { screen, within } from '@testing-library/vue'
+import { screen } from '@testing-library/vue'
 
 import { renderWithProviders } from '@/shared/testing/renderWithProviders'
 
@@ -13,7 +13,7 @@ vi.mock('@/modules/contact/infrastructure/contactRepository', () => ({
   useContactRepository: () => ({ send }),
 }))
 
-const field = (testId: string) => within(screen.getByTestId(testId)).getByRole('textbox')
+const field = (testId: string) => screen.getByTestId(testId)
 
 describe('ContactForm', () => {
   it('lie le message d’erreur au champ invalide', async () => {

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Alert, Button, Skeleton } from '@kewinmarchand/boilerplates-ui/vue'
+
 import { Icon } from '@/shared/ui/kit'
 
 import ProductCard from './ProductCard.vue'
@@ -26,24 +28,22 @@ const emit = defineEmits<{ retry: [] }>()
     aria-label="Chargement des produits"
     class="product-grid"
   >
-    <v-skeleton-loader v-for="key in 4" :key="key" type="image, article" aria-hidden="true" />
+    <Skeleton v-for="key in 4" :key="key" height="320px" />
   </div>
 
-  <v-alert v-else-if="status === 'error'" type="error" variant="tonal" data-testid="catalog-error">
+  <Alert v-else-if="status === 'error'" variant="error" data-testid="catalog-error">
     {{ errorMessage }}
-    <template #append>
-      <v-btn variant="text" data-testid="catalog-retry" @click="emit('retry')">
-        <template #prepend>
-          <Icon name="rotate-cw" />
-        </template>
+    <template #action>
+      <Button variant="ghost" data-testid="catalog-retry" @click="emit('retry')">
+        <Icon name="rotate-cw" />
         Réessayer
-      </v-btn>
+      </Button>
     </template>
-  </v-alert>
+  </Alert>
 
   <div v-else-if="!products?.length" class="catalog-empty" data-testid="catalog-empty">
     <p>Aucun produit ne correspond à ces filtres.</p>
-    <v-btn :to="clearHref" color="primary" variant="outlined">Tout effacer</v-btn>
+    <NuxtLink :to="clearHref" class="bui-button bui-button--outline">Tout effacer</NuxtLink>
   </div>
 
   <div v-else class="product-grid" :class="{ 'is-list': view === 'liste' }">
@@ -66,7 +66,7 @@ const emit = defineEmits<{ retry: [] }>()
 
 .catalog-empty {
   padding: 24px;
-  border: 1px dashed rgba(var(--v-border-color), var(--v-border-opacity));
+  border: 1px dashed var(--bui-color-border-subtle);
   border-radius: 8px;
 }
 

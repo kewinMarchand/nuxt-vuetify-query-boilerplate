@@ -109,12 +109,12 @@ const onSortChange = (event: Event) => {
   min-height: 44px;
   padding-inline: 12px;
   border-radius: 4px;
-  color: rgb(var(--v-theme-primary));
+  color: var(--bui-color-primary);
   text-decoration: none;
 }
 
 .view-link[aria-current='page'] {
-  background: rgb(var(--v-theme-primary));
-  color: rgb(var(--v-theme-on-primary));
+  background: var(--bui-color-primary);
+  color: var(--bui-color-on-primary);
 }
 </style>

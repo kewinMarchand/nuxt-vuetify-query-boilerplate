@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Alert, Button, Skeleton } from '@kewinmarchand/boilerplates-ui/vue'
+
 import { Icon } from '@/shared/ui/kit'
 
 import type { Task } from '../domain/task'
@@ -18,39 +20,64 @@ const emit = defineEmits<{ retry: [] }>()
     role="status"
     aria-busy="true"
     aria-label="Chargement des tâches"
-    class="d-flex flex-column ga-2"
+    class="tasks-loading"
     data-testid="tasks-loading"
   >
-    <v-skeleton-loader v-for="key in 3" :key="key" type="list-item" aria-hidden="true" />
+    <Skeleton v-for="key in 3" :key="key" height="48px" />
   </div>
 
-  <v-alert v-else-if="status === 'error'" type="error" variant="tonal" data-testid="tasks-error">
+  <Alert v-else-if="status === 'error'" variant="error" data-testid="tasks-error">
     {{ errorMessage }}
-    <template #append>
-      <v-btn variant="text" data-testid="tasks-retry" @click="emit('retry')">
-        <template #prepend>
-          <Icon name="rotate-cw" />
-        </template>
+    <template #action>
+      <Button variant="ghost" data-testid="tasks-retry" @click="emit('retry')">
+        <Icon name="rotate-cw" />
         Réessayer
-      </v-btn>
+      </Button>
     </template>
-  </v-alert>
+  </Alert>
 
-  <v-alert v-else-if="!tasks?.length" type="info" variant="tonal" data-testid="tasks-empty">
+  <Alert v-else-if="!tasks?.length" data-testid="tasks-empty">
     Aucune tâche pour l'instant. Tout est à jour.
-  </v-alert>
+  </Alert>
 
-  <v-list v-else data-testid="tasks-list">
-    <v-list-item
-      v-for="task in tasks"
-      :key="task.id"
-      :title="task.title"
-      :subtitle="task.done ? 'Terminée' : 'À faire'"
-      data-testid="tasks-item"
-    >
-      <template #prepend>
-        <Icon :name="task.done ? 'circle-check' : 'circle'" class="mr-4" />
-      </template>
-    </v-list-item>
-  </v-list>
+  <ul v-else class="tasks-list" data-testid="tasks-list">
+    <li v-for="task in tasks" :key="task.id" class="tasks-item" data-testid="tasks-item">
+      <Icon :name="task.done ? 'circle-check' : 'circle'" />
+      <div>
+        <p class="tasks-title">{{ task.title }}</p>
+        <p class="tasks-status">{{ task.done ? 'Terminée' : 'À faire' }}</p>
+      </div>
+    </li>
+  </ul>
 </template>
+
+<style scoped>
+.tasks-loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bui-space-2);
+}
+
+.tasks-list {
+  margin: 0;
+  padding: var(--bui-space-2) 0;
+  list-style: none;
+}
+
+.tasks-item {
+  display: flex;
+  align-items: center;
+  gap: var(--bui-space-4);
+  padding: var(--bui-space-2) var(--bui-space-4);
+}
+
+.tasks-title,
+.tasks-status {
+  margin: 0;
+}
+
+.tasks-status {
+  color: var(--bui-color-text-muted);
+  font-size: var(--bui-font-size-body-sm);
+}
+</style>

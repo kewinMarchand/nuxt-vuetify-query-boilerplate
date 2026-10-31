@@ -1,2 +1,3 @@
 /* Ordre des couches, chargé en premier : les styles d'éléments du site (base) cèdent aux composants de boilerplates-ui. */
-@layer base, components;
+/* vuetify-core (reset de Vuetify) passe dessous le temps du retrait de Vuetify (lot B2), À RETIRER avec lui. */
+@layer vuetify-core, base, components;

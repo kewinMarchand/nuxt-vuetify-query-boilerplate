@@ -13,7 +13,5 @@ export const enableEnhancedMode = (context: BrowserContext) =>
 
 export const isMobile = (testInfo: TestInfo) => testInfo.project.name === 'mobile'
 
-export const field = (page: Page, testId: string) => page.getByTestId(testId).getByRole('textbox')
-
 export const linkTo = (scope: Page | Locator, testId: string, href: string) =>
   scope.getByTestId(testId).and(scope.locator(`[href="${href}"]`))

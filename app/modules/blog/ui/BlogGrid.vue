@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Alert, Button, Skeleton } from '@kewinmarchand/boilerplates-ui/vue'
+
 import { Icon } from '@/shared/ui/kit'
 import { buildSources } from '@/shared/ui/kit/imageSources'
 
@@ -24,41 +26,34 @@ const BLOG_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
     role="status"
     aria-busy="true"
     aria-label="Chargement des articles"
-    class="blog-grid ga-6"
+    class="blog-grid"
     data-testid="home-blog-loading"
   >
-    <v-skeleton-loader v-for="key in 3" :key="key" type="article" aria-hidden="true" />
+    <Skeleton v-for="key in 3" :key="key" height="320px" />
   </div>
 
-  <v-alert
-    v-else-if="status === 'error'"
-    type="error"
-    variant="tonal"
-    data-testid="home-blog-error"
-  >
+  <Alert v-else-if="status === 'error'" variant="error" data-testid="home-blog-error">
     {{ errorMessage }}
-    <template #append>
-      <v-btn variant="text" data-testid="home-blog-retry" @click="emit('retry')">
-        <template #prepend>
-          <Icon name="rotate-cw" />
-        </template>
+    <template #action>
+      <Button variant="ghost" data-testid="home-blog-retry" @click="emit('retry')">
+        <Icon name="rotate-cw" />
         Réessayer
-      </v-btn>
+      </Button>
     </template>
-  </v-alert>
+  </Alert>
 
-  <v-alert v-else-if="!articles?.length" type="info" variant="tonal" data-testid="home-blog-empty">
+  <Alert v-else-if="!articles?.length" data-testid="home-blog-empty">
     Aucun article pour l'instant. Revenez bientôt.
-  </v-alert>
+  </Alert>
 
-  <div v-else class="blog-grid ga-6">
+  <div v-else class="blog-grid">
     <article
       v-for="article in articles"
       :key="article.id"
       class="blog-card"
       data-testid="home-blog-card"
     >
-      <v-card variant="outlined" class="h-100">
+      <div class="bui-card blog-card-frame">
         <picture>
           <source
             v-for="source in buildSources(article.illustration, BLOG_WIDTHS)"
@@ -80,11 +75,11 @@ const BLOG_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
         <div class="blog-card-body">
           <h3>{{ article.title }}</h3>
           <p>{{ article.excerpt }}</p>
-          <time :datetime="article.publishedAt" class="text-body-medium text-medium-emphasis">
+          <time :datetime="article.publishedAt" class="blog-card-date">
             {{ formatPublishedAt(article.publishedAt) }}
           </time>
         </div>
-      </v-card>
+      </div>
     </article>
   </div>
 </template>
@@ -92,6 +87,16 @@ const BLOG_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
 <style scoped>
 .blog-grid {
   display: grid;
+  gap: var(--bui-space-6);
+}
+
+.blog-card-frame {
+  height: 100%;
+}
+
+.blog-card-date {
+  color: var(--bui-color-text-muted);
+  font-size: var(--bui-font-size-body-sm);
 }
 
 .blog-card {

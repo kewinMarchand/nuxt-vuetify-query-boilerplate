@@ -55,7 +55,7 @@ if (priority) {
           :loading="eager ? 'eager' : 'lazy'"
           :fetchpriority="priority ? 'high' : undefined"
           decoding="async"
-          class="product-image rounded"
+          class="product-image"
         />
       </picture>
       <div class="product-body">
@@ -90,7 +90,7 @@ if (priority) {
   gap: 12px;
   height: 100%;
   padding: 12px;
-  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border: 1px solid var(--bui-color-border-subtle);
   border-radius: 8px;
 }
 
@@ -98,6 +98,7 @@ if (priority) {
   display: block;
   width: 100%;
   height: auto;
+  border-radius: var(--bui-radius-md);
 }
 
 .product-name {
@@ -136,7 +137,7 @@ if (priority) {
   padding: 2px 8px;
   border: 1px solid currentColor;
   border-radius: 4px;
-  color: rgb(var(--v-theme-error));
+  color: var(--bui-color-error);
   font-weight: 600;
   margin-bottom: 0;
 }

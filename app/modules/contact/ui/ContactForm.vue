@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from '@/shared/ui/kit'
+import { Alert, Button, TextArea, TextField } from '@kewinmarchand/boilerplates-ui/vue'
 
 import { useContactForm } from './composables/useContactForm'
 
@@ -18,54 +18,53 @@ const {
 </script>
 
 <template>
-  <form novalidate class="contact-form d-flex flex-column ga-4" @submit="onSubmit">
-    <v-text-field
+  <form novalidate class="contact-form" @submit="onSubmit">
+    <TextField
+      id="contact-nom"
       v-model="name"
       v-bind="nameProps"
-      label="Nom (obligatoire)"
+      label="Nom"
       autocomplete="name"
       required
       data-testid="contact-name"
     />
-    <v-text-field
+    <TextField
+      id="contact-email"
       v-model="email"
       v-bind="emailProps"
-      label="E-mail (obligatoire)"
+      label="E-mail"
       type="email"
       autocomplete="email"
       required
       data-testid="contact-email"
     />
-    <v-textarea
+    <TextArea
+      id="contact-message"
       v-model="message"
       v-bind="messageProps"
-      label="Message (obligatoire)"
-      rows="4"
+      label="Message"
       required
       data-testid="contact-message"
     />
-    <v-btn type="submit" color="primary" :loading="isPending" data-testid="contact-submit">
-      <template #prepend>
-        <Icon name="mail" />
-      </template>
+    <Button type="submit" icon="mail" :loading="isPending" data-testid="contact-submit">
       Envoyer
-      <template #loader>
-        <v-progress-circular indeterminate size="20" width="2" aria-label="Envoi en cours" />
-      </template>
-    </v-btn>
+    </Button>
     <div aria-live="polite">
-      <v-alert v-if="isSuccess" type="success" variant="tonal" data-testid="contact-success">
+      <Alert v-if="isSuccess" variant="success" data-testid="contact-success">
         Merci, votre message a bien été envoyé.
-      </v-alert>
-      <v-alert v-if="isError" type="error" variant="tonal" data-testid="contact-error">
+      </Alert>
+      <Alert v-if="isError" variant="error" data-testid="contact-error">
         L'envoi a échoué. Réessayez dans quelques instants.
-      </v-alert>
+      </Alert>
     </div>
   </form>
 </template>
 
 <style scoped>
 .contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bui-space-4);
   max-width: 560px;
 }
 </style>

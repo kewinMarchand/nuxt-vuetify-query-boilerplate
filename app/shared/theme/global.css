@@ -151,9 +151,9 @@ html[data-js] .no-js-only {
 .native-button {
   min-height: 44px;
   padding-inline: 12px;
-  border: 1px solid rgba(var(--v-theme-on-surface), 0.6);
+  border: 1px solid var(--bui-color-border);
   border-radius: 4px;
-  background: rgb(var(--v-theme-surface));
+  background: var(--bui-color-surface);
   color: inherit;
   font: inherit;
 }
@@ -163,8 +163,8 @@ html[data-js] .no-js-only {
 }
 
 .native-button {
-  border-color: rgb(var(--v-theme-primary));
-  color: rgb(var(--v-theme-primary));
+  border-color: var(--bui-color-primary);
+  color: var(--bui-color-primary);
   font-weight: 600;
 }
 

@@ -48,7 +48,7 @@ defineProps<{
   min-height: 44px;
   padding-inline: 12px;
   border-radius: 22px;
-  color: rgb(var(--v-theme-primary));
+  color: var(--bui-color-primary);
 }
 
 .chip {
