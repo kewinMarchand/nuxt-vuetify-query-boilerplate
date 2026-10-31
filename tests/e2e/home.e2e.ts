@@ -6,9 +6,7 @@ test.describe('Accueil', () => {
   test('le hero porte le h1, les deux CTA et une image LCP prioritaire', async ({ page }) => {
     await gotoHydrated(page, '/')
     const hero = page.getByTestId('home-hero')
-    await expect(hero.getByRole('heading', { level: 1 })).toHaveText(
-      'Nuxt Vuetify Query Boilerplate',
-    )
+    await expect(hero.getByRole('heading', { level: 1 })).toHaveText('Boilerplate Nuxt')
     await expect(page.getByTestId('home-tasks-link')).toHaveAttribute('href', '/taches')
     await expect(page.getByTestId('home-contact-link')).toHaveAttribute('href', '/contact')
 
