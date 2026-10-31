@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
-import { enableEnhancedMode, gotoHydrated, isMobile, linkTo } from '../support/page'
+import { enableDarkMode, enableEnhancedMode, gotoHydrated, isMobile, linkTo } from '../support/page'
 import { DEV_ROUTES, ROUTES } from '../support/routes'
 
 import type { Page } from '@playwright/test'
@@ -13,10 +13,11 @@ const expectNoViolation = async (page: Page) => {
   expect(results.violations).toEqual([])
 }
 
-for (const mode of ['normal', 'renforcé'] as const) {
+for (const mode of ['normal', 'sombre', 'renforcé'] as const) {
   test.describe(`Mode ${mode}`, () => {
     test.beforeEach(async ({ context }) => {
       if (mode === 'renforcé') await enableEnhancedMode(context)
+      if (mode === 'sombre') await enableDarkMode(context)
     })
 
     for (const route of [...ROUTES, ...DEV_ROUTES, '/catalogue?exposition=mi-ombre&tri=prix-asc']) {

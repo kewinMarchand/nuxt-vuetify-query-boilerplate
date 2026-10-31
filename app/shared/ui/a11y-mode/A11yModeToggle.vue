@@ -41,5 +41,14 @@ const { isEnhanced, toggle } = useA11yMode()
   .a11y-mode-toggle-label {
     display: inline;
   }
+
+  /* Texte agrandi : le libellé visible ne tient plus dans le header avec la bascule du thème ; icône seule, nom accessible gardé */
+  [data-a11y-mode='enhanced'] .a11y-mode-toggle {
+    padding-inline: 0;
+  }
+
+  [data-a11y-mode='enhanced'] .a11y-mode-toggle-label {
+    display: none;
+  }
 }
 </style>

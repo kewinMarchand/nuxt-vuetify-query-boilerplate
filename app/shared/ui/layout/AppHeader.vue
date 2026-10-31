@@ -2,6 +2,7 @@
 import { MAIN_NAVIGATION, SITE } from '@/shared/config'
 
 import A11yModeToggle from '../a11y-mode/A11yModeToggle.vue'
+import ColorSchemeToggle from '../color-scheme/ColorSchemeToggle.vue'
 import CategoryMenu from './CategoryMenu.vue'
 import MobileMenu from './MobileMenu.vue'
 import NavLink from './NavLink.vue'
@@ -29,6 +30,7 @@ const [HOME, ...SECONDARY_NAVIGATION] = MAIN_NAVIGATION
       </nav>
       <div class="header-actions">
         <MobileMenu :menu="categoryMenu" />
+        <ColorSchemeToggle />
         <A11yModeToggle />
       </div>
     </div>

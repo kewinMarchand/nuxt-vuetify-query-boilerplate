@@ -2,6 +2,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 import { PRIMARY_COLOR } from './app/shared/theme/tokens'
 import { A11Y_MODE_BOOT_SCRIPT, JS_FLAG_SCRIPT } from './app/shared/ui/a11y-mode/a11yModeBootScript'
+import { COLOR_SCHEME_BOOT_SCRIPT } from './app/shared/ui/color-scheme/colorSchemeBootScript'
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-10-01',
@@ -44,10 +45,13 @@ export default defineNuxtConfig({
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
         { rel: 'manifest', href: '/manifest.webmanifest' },
       ],
-      meta: [{ name: 'theme-color', content: PRIMARY_COLOR }],
+      meta: [
+        { name: 'theme-color', content: PRIMARY_COLOR },
+        { name: 'color-scheme', content: 'light dark' },
+      ],
       script: [
         { innerHTML: JS_FLAG_SCRIPT, tagPosition: 'head' },
-        { innerHTML: A11Y_MODE_BOOT_SCRIPT, tagPosition: 'head' },
+        { innerHTML: A11Y_MODE_BOOT_SCRIPT + COLOR_SCHEME_BOOT_SCRIPT, tagPosition: 'head' },
       ],
     },
   },

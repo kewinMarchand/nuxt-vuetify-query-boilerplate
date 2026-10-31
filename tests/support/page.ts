@@ -11,6 +11,9 @@ export const gotoHydrated = async (page: Page, url: string) => {
 export const enableEnhancedMode = (context: BrowserContext) =>
   context.addInitScript(() => localStorage.setItem('a11y-mode', 'enhanced'))
 
+export const enableDarkMode = (context: BrowserContext) =>
+  context.addInitScript(() => localStorage.setItem('color-scheme', 'dark'))
+
 export const isMobile = (testInfo: TestInfo) => testInfo.project.name === 'mobile'
 
 export const linkTo = (scope: Page | Locator, testId: string, href: string) =>
